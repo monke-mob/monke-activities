@@ -1,0 +1,33 @@
+{
+    "name": "monke activities",
+    "tree": {
+        "$className": "DataModel",
+
+        "ReplicatedStorage": {
+            "$className": "ReplicatedStorage",
+            "$path": "src/shared",
+            "$ignoreUnknownInstances": true,
+
+            "Packages": {
+                "$path": "Packages"
+            }
+        },
+
+        "ServerScriptService": {
+            "$className": "ServerScriptService",
+            "$ignoreUnknownInstances": true,
+            "$path": "src/server"
+        },
+
+        "StarterPlayer": {
+            "$className": "StarterPlayer",
+            "$ignoreUnknownInstances": true,
+
+            "StarterPlayerScripts": {
+                "$className": "StarterPlayerScripts",
+                "$ignoreUnknownInstances": false,
+                "$path": "src/client"
+            }
+        }
+    }
+}
