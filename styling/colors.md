@@ -1,0 +1,1 @@
+## Color pallete for monke activities
