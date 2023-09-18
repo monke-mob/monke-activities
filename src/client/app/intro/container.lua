@@ -38,6 +38,7 @@ local function container(componentProps: componentProps)
 
 	return frame({
 		BackgroundTransparency = rootTransparency,
+		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 		Size = UDim2.fromScale(1, 1),
 		ZIndex = 10,
 

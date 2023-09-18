@@ -6,7 +6,6 @@ local handleButtonSprings = require(script.handleButtonSprings)
 local frame = require(script.Parent.Parent.Parent.components.frame)
 local list = require(script.Parent.Parent.Parent.components.list)
 local subMenuButton = require(script.subMenuButton)
-local shop = require(script.shop)
 
 --[[
 	Handles the home menu.
@@ -17,16 +16,18 @@ local function home()
 	local buttonSprings = handleButtonSprings()
 
 	return frame({
-		Size = UDim2.fromScale(0.275, 1),
+		Size = UDim2.fromScale(0.3, 1),
 		Position = UDim2.fromScale(0.5, 0.5),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 
 		[Fusion.Children] = {
-			list({}),
+			list({
+				Padding = UDim.new(0, 15),
+			}),
 
 			subMenuButton({
 				text = "players",
-				subMenu = "playerList",
+				subMenu = "players",
 				spring = buttonSprings[1],
 			}),
 
@@ -42,8 +43,10 @@ local function home()
 				spring = buttonSprings[3],
 			}),
 
-			shop({
-				springs = buttonSprings
+			subMenuButton({
+				text = "codes",
+				subMenu = "codes",
+				spring = buttonSprings[3],
 			}),
 		},
 	}, {})

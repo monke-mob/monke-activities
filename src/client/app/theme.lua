@@ -1,6 +1,6 @@
 type theme = {
 	font: { [string]: Font },
-	textColor: { [string]: Color3 },
+	foreground: { [string]: Color3 },
 	background: { [string]: Color3 },
 	cornerRadius: { [string]: UDim },
 }
@@ -10,30 +10,43 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local currentTheme = Fusion.Value("default")
-local themeColors = {}
-local themes: theme = {
+local themeColors: theme = {} :: any
+
+local THEMES: theme = {
 	font = {
-		default = Font.fromName("GothamSSm", Enum.FontWeight.Heavy),
+		default = Font.fromName("GothamSSm", Enum.FontWeight.Bold),
 	},
 
-	textColor = {
-		default = Color3.fromRGB(255, 255, 255),
+	attentionFont = {
+		default = Font.fromName("CaesarDressing", Enum.FontWeight.Bold),
+	},
+
+	foreground = {
+		default = Color3.fromRGB(229, 229, 229),
 	},
 
 	background = {
-		default = Color3.fromRGB(0, 0, 0),
+		default = Color3.fromHex("#02080e"),
 	},
 
 	cornerRadius = {
-		default = UDim.new(0, 10),
+		default = UDim.new(0, 15),
 	}
 }
 
+--[[
+	Updates the theme colors.
+
+	@public
+	@param {string} theme [The theme name.]
+	@returns never
+]]
 local function update(theme: string)
 	currentTheme:set(theme)
 end
 
-for name: string, colors in themes do
+-- This sets the starting theme.
+for name: string, colors in THEMES do
 	themeColors[name] = Fusion.Computed(function()
 		return colors[currentTheme:get()]
 	end)
@@ -41,6 +54,6 @@ end
 
 return {
 	update = update,
-	themes = themes,
+	THEMES = THEMES,
 	current = themeColors,
 }
