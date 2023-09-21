@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PhysicsService = game:GetService("PhysicsService")
+local Players = game:GetService("Players")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
@@ -17,6 +18,15 @@ function collisionService:KnitStart()
 	PhysicsService:CollisionGroupSetCollidable("player", "player", false)
 	PhysicsService:CollisionGroupSetCollidable("npc", "npc", false)
 	PhysicsService:CollisionGroupSetCollidable("player", "npc", false)
+
+	-- Get the players that could have already joined.
+	for _index: number, player: Player in ipairs(Players:GetPlayers()) do
+		self:_handlePlayer(player)
+	end
+
+	Players.PlayerAdded:Connect(function(...)
+		self:_handlePlayer(...)
+	end)
 end
 
 --[[
@@ -38,6 +48,24 @@ function collisionService:setInstanceGroup(instance: Instance, group: string)
 	elseif instance:IsA("BasePart") then
 		instance.CollisionGroup = group
 	end
+end
+
+--[[
+    Handles a player.
+
+    @private
+    @param {Player} player [The player.]
+	@returns never
+]]
+function collisionService:_handlePlayer(player: Player)
+	-- Get the current player character, if there is one.
+	if player.Character then
+		self:setInstanceGroup(player.Character, "player")
+	end
+
+	player.CharacterAdded:Connect(function(character: Model)
+		self:setInstanceGroup(character, "player")
+	end)
 end
 
 return collisionService
