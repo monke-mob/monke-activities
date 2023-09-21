@@ -4,6 +4,7 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local frame = require(script.Parent.Parent.components.frame)
 local toggleLogic = require(script.toggleLogic)
+local logo = require(script.logo)
 local home = require(script.home)
 
 --[[
@@ -23,6 +24,7 @@ local function menu()
 		BackgroundColor3 = Color3.fromRGB(255, 255, 127),
 
 		[Fusion.Children] = {
+			logo(transparency),
 			home(),
 		},
 	}, {})

@@ -12,7 +12,7 @@ local subMenuAction = require(script.Parent.Parent.Parent.actions.menu.subMenu)
 --[[
 	Handles the toggle logic for the menu.
 
-	@returns Fusion.Value
+	@returns Fusion.Value, Fusion.Tween
 --]]
 local function toggleLogic()
 	local lightingController = Knit.GetController("lighting")
