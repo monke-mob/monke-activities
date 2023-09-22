@@ -1,7 +1,5 @@
 <div align="center">
 
-# monke activites
-
 ![monke-activities-logo](./assets/monkeActivitiesText.png)
 
 <hr>
