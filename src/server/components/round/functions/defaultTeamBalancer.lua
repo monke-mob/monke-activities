@@ -1,6 +1,6 @@
 local roundTypes = require(script.Parent.Parent.types)
 
-local teamPlugin = require(script.Parent.Parent.plugins.team)
+local teamPlugin = require(script.Parent.Parent.plugins.types.team)
 
 type team = teamPlugin.constructorTeam & {
 	maxPlayers: number,

@@ -3,8 +3,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local roundTypes = require(script.Parent.Parent.types)
 
-local singlePlugin = require(script.Parent.Parent.plugins.single)
-local teamPlugin = require(script.Parent.Parent.plugins.team)
+local singlePlugin = require(script.Parent.Parent.plugins.types.single)
+local teamPlugin = require(script.Parent.Parent.plugins.types.team)
 local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
 
 --[[
