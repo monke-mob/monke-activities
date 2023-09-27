@@ -5,7 +5,7 @@ local teamPlugin = require(script.Parent.team)
 
     @class
     @public
-    @extends team
+    @extends teamPlugin
 ]]
 local class = {}
 class.__index = class
