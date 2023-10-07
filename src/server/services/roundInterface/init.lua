@@ -4,12 +4,22 @@ local Players = game:GetService("Players")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 
+local TIMER = require(ReplicatedStorage.constants.TIMER)
+
 local roundInterfaceService = Knit.CreateService({
 	Name = "roundInterface",
 	_intermissionService = nil,
 	_roundService = nil,
 	_playerJanitor = Janitor.new(),
+	_timer = nil,
 })
+
+--[[
+	@returns never
+]]
+function roundInterfaceService:KnitInit()
+	ReplicatedStorage:SetAttribute(TIMER, 0)
+end
 
 --[[
 	@returns never
@@ -20,6 +30,24 @@ function roundInterfaceService:KnitStart()
 
 	Players.PlayerAdded:Connect(function(...)
 		self:_playerAdded(...)
+	end)
+end
+
+--[[
+	Binds the timer to the state allowing the clients to track the time via the timer attribute.
+
+	@param {} timer [The timer instance.]
+	@returns never
+]]
+function roundInterfaceService:bindTimer(timer)
+	-- Unbind the last timer.
+	if self._timer ~= nil then
+		self._timer:Disconnect()
+		self._timer = nil
+	end
+
+	self._timer = timer.updated:Connect(function(timeRemaining: number)
+		ReplicatedStorage:SetAttribute(TIMER, timeRemaining)
 	end)
 end
 

@@ -8,6 +8,7 @@ local timerComponent = require(script.Parent.Parent.Parent.components.timer)
 
 local intermissionService = Knit.CreateService({
 	Name = "intermission",
+	_roundInterface = nil,
 	_roundService = nil,
 	state = {
 		-- Possible states: "waiting" or "intermission"
@@ -21,6 +22,7 @@ local intermissionService = Knit.CreateService({
 	@returns never
 ]]
 function intermissionService:KnitStart()
+	self._roundInterface = Knit.GetService("roundInterface")
 	self._roundService = Knit.GetService("round")
 end
 
@@ -78,6 +80,7 @@ end
 ]]
 function intermissionService:_start()
 	local timer = timerComponent.new(ROUND.intermissionTime)
+	self._roundInterface:bindTimer(timer)
 	timer:start()
 	self.state.timer = timer
 
