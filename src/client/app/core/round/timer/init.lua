@@ -16,6 +16,7 @@ local function timer()
 		Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromScale(0.35, 0.86),
 		BackgroundTransparency = 0,
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 
 		[Fusion.Children] = {
 			Fusion.New("UIGradient")({
@@ -29,6 +30,7 @@ local function timer()
 			timerLabel(),
 		},
 	}, {
+		hasCornerRadius = true,
 		cornerRadius = UDim.new(0, 20),
 	})
 end
