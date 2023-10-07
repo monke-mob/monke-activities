@@ -10,7 +10,7 @@ local label = require(script.Parent.Parent.Parent.Parent.components.label)
 local function timerLabel()
 	return label({
         Text = timerAction.value,
-		Font = theme.themes.font.caesar,
+		FontFace = theme.themes.font.caesar,
 		TextColor3 = theme.themes.textColor.dark,
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.fromScale(0.5, 0.5),
