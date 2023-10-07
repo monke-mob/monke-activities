@@ -36,7 +36,6 @@ end
 ]]
 function class:start()
 	self._running = true
-	self.updated:Fire(self._timeRemaining)
 
 	local startTick: number = os.clock()
 	self._startTick = startTick
@@ -59,6 +58,9 @@ end
 ]]
 function class:destroy()
 	self:stop()
+
+	self.updated:Destroy()
+	self.ended:Destroy()
 
 	setmetatable(self, nil)
 	table.clear(self)
@@ -95,7 +97,7 @@ function class:_increment()
 	end
 
 	if self._timeRemaining <= 0 then
-		self._running = false
+		self:stop()
 		self.ended:Fire()
 		return
 	end
