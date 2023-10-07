@@ -10,7 +10,7 @@ local intermissionService = Knit.CreateService({
 	Name = "intermission",
 	_roundInterface = nil,
 	_roundService = nil,
-	state = {
+	_state = {
 		-- Possible states: "waiting" or "intermission"
 		stateName = "",
 		players = {},
@@ -41,6 +41,8 @@ function intermissionService:setReady(player: Player, isReady: boolean)
 	elseif isReady == false and playerIndexInLobby ~= nil then
 		table.remove(self._state.players, playerIndexInLobby)
 	end
+
+	self._roundInterface:updatePlayerCount(#self._state.players)
 end
 
 --[[
@@ -63,11 +65,11 @@ function intermissionService:attemptStart()
 		return
 	end
 
-	local playersReady: number = #self._lobbyState.players
+	local playersReady: number = #self._state.players
 
-	if self._lobbyState.stateName == "waiting" and playersReady >= ROUND.minimumPlayers then
+	if self._state.stateName == "waiting" and playersReady >= ROUND.minimumPlayers then
 		self._intermissionService:start()
-	elseif self._lobbyState.stateName == "intermission" and playersReady < ROUND.minimumPlayers then
+	elseif self._state.stateName == "intermission" and playersReady < ROUND.minimumPlayers then
 		self._intermissionService:waitForPlayers()
 	end
 end

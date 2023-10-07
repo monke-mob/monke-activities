@@ -2,7 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
-local frame = require(script.Parent.Parent.Parent.components.frame)
+local theme = require(script.Parent.Parent.Parent.theme)
+local container = require(script.Parent.container)
 local timerLabel = require(script.timerLabel)
 
 --[[
@@ -11,27 +12,17 @@ local timerLabel = require(script.timerLabel)
 	@returns Fusion.Component
 --]]
 local function timer()
-	return frame({
+	return container({
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromScale(0.35, 0.86),
-		BackgroundTransparency = 0,
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 
 		[Fusion.Children] = {
-			Fusion.New("UIGradient")({
-				Color = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, Color3.fromHex("#ffd160")),
-					ColorSequenceKeypoint.new(1, Color3.fromHex("#ffad00")),
-				}),
-				Rotation = 90,
-			}),
-
 			timerLabel(),
 		},
 	}, {
-		hasCornerRadius = true,
 		cornerRadius = UDim.new(0, 20),
+		gradient = theme.themes.gradient.brand,
 	})
 end
 

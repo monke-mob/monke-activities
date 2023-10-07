@@ -4,6 +4,7 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local frame = require(script.Parent.Parent.components.frame)
 local timer = require(script.timer)
+local playerCount = require(script.playerCount)
 
 --[[
 	Handles the round interface.
@@ -18,6 +19,7 @@ local function menu()
 
 		[Fusion.Children] = {
 			timer(),
+			playerCount(),
 		},
 	}, {})
 end

@@ -4,6 +4,7 @@ local Players = game:GetService("Players")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 
+local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
 local TIMER = require(ReplicatedStorage.constants.TIMER)
 
 local roundInterfaceService = Knit.CreateService({
@@ -18,6 +19,7 @@ local roundInterfaceService = Knit.CreateService({
 	@returns never
 ]]
 function roundInterfaceService:KnitInit()
+	ReplicatedStorage:SetAttribute(PLAYER_COUNT, 0)
 	ReplicatedStorage:SetAttribute(TIMER, 0)
 end
 
@@ -52,6 +54,16 @@ function roundInterfaceService:bindTimer(timer)
 end
 
 --[[
+	Updates the amount of the player count.
+
+	@param {number} playerCount [The player count.]
+	@returns never
+]]
+function roundInterfaceService:updatePlayerCount(playerCount: number)
+	ReplicatedStorage:SetAttribute(PLAYER_COUNT, playerCount)
+end
+
+--[[
     Handles a player joining.
 
     @private
@@ -76,6 +88,7 @@ function roundInterfaceService:_playerAdded(player: Player)
 		)
 	end))
 
+	self._intermissionService:setReady(player, true)
 	self._playerJanitor:Add(janitor, "Destroy", player.UserId)
 end
 
