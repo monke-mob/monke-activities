@@ -14,10 +14,12 @@ local themeColors = {}
 local themes: theme = {
 	font = {
 		default = Font.fromName("GothamSSm", Enum.FontWeight.Heavy),
+		caesar = Font.fromId(12187368843, Enum.FontWeight.Bold),
 	},
 
 	textColor = {
 		default = Color3.fromRGB(255, 255, 255),
+		dark = Color3.fromRGB(0, 0, 0),
 	},
 
 	background = {
@@ -26,7 +28,7 @@ local themes: theme = {
 
 	cornerRadius = {
 		default = UDim.new(0, 10),
-	}
+	},
 }
 
 local function update(theme: string)
