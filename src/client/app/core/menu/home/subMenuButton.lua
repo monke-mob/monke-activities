@@ -2,21 +2,20 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
-local subMenuAction = require(script.Parent.Parent.Parent.Parent.actions.menu.subMenu)
-local theme = require(script.Parent.Parent.Parent.Parent.theme)
-local labeledExternalSpringButton =
-	require(script.Parent.Parent.Parent.Parent.components.button.animated.labeledExternalSpring)
-local spring = require(script.Parent.Parent.Parent.Parent.components.spring)
-local list = require(script.Parent.Parent.Parent.Parent.components.list)
-
 local BUTTON_GRADIENT: ColorSequence = ColorSequence.new(Color3.fromHex("#060d15"), Color3.fromHex("#02080e"))
-
 local ICONS = {
 	credits = "rbxassetid://12807070045",
 	settings = "rbxassetid://14811537132",
 	players = "rbxassetid://14799447549",
 	codes = "rbxassetid://12807070045",
 }
+
+local subMenuAction = require(script.Parent.Parent.Parent.Parent.actions.menu.subMenu)
+local theme = require(script.Parent.Parent.Parent.Parent.theme)
+local labeledExternalSpringButton =
+	require(script.Parent.Parent.Parent.Parent.components.button.animated.labeledExternalSpring)
+local spring = require(script.Parent.Parent.Parent.Parent.components.spring)
+local list = require(script.Parent.Parent.Parent.Parent.components.list)
 
 type componentProps = {
 	spring: spring.spring,
