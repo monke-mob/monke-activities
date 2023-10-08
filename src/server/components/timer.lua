@@ -36,8 +36,6 @@ end
 	@returns never
 ]]
 function class:start()
-	print("started timer")
-
 	self._running = true
 
 	local startTick: number = os.clock()
