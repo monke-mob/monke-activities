@@ -12,7 +12,7 @@ export type componentProps = frame.componentProps & {
 }
 
 --[[
-	The basic styling for the round component containers.
+	An extendable class for the round containers.
     
 	@extends frame
 	@param {dictionaryAny} instanceProps [The instance props.]
