@@ -81,7 +81,7 @@ function class:_nextUpdateInterval(tick: number)
 				return
 			end
 
-			self:count()
+			self:_increment()
 		end)
 	end)
 end
