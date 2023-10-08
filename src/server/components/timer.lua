@@ -14,7 +14,8 @@ class.__index = class
     Creates a timer object.
 
     @constructor
-    @param {Model} character [The npc character.]
+    @param {number} startTime [The start time.]
+	@param {number?} interval [How often to increment the timer.]
     @returns class
 ]]
 function class.new(startTime: number, interval: number?)
@@ -35,6 +36,8 @@ end
 	@returns never
 ]]
 function class:start()
+	print("started timer")
+
 	self._running = true
 
 	local startTick: number = os.clock()
