@@ -21,6 +21,13 @@ local intermissionService = Knit.CreateService({
 --[[
 	@returns never
 ]]
+function intermissionService:KnitInit()
+	self._state.stateName = "waiting"
+end
+
+--[[
+	@returns never
+]]
 function intermissionService:KnitStart()
 	self._roundInterface = Knit.GetService("roundInterface")
 	self._roundService = Knit.GetService("round")
@@ -42,6 +49,7 @@ function intermissionService:setReady(player: Player, isReady: boolean)
 		table.remove(self._state.players, playerIndexInLobby)
 	end
 
+	self:attemptStart()
 	self._roundInterface:updatePlayerCount(#self._state.players)
 end
 
@@ -68,9 +76,9 @@ function intermissionService:attemptStart()
 	local playersReady: number = #self._state.players
 
 	if self._state.stateName == "waiting" and playersReady >= ROUND.minimumPlayers then
-		self._intermissionService:start()
+		self:_start()
 	elseif self._state.stateName == "intermission" and playersReady < ROUND.minimumPlayers then
-		self._intermissionService:waitForPlayers()
+		self:_waitForPlayers()
 	end
 end
 
@@ -82,13 +90,15 @@ end
 ]]
 function intermissionService:_start()
 	local timer = timerComponent.new(ROUND.intermissionTime)
+	
 	self._roundInterface:bindTimer(timer)
+	self._state.timer = timer
+
 	timer:start()
-	self.state.timer = timer
 
 	-- If this event fires that means that the round can start. So send a request to the interface to start.
 	timer.ended:Connect(function()
-		self:stop()
+		self:_stop()
 		self._roundService:start()
 	end)
 end
