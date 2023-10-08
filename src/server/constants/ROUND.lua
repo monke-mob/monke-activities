@@ -1,4 +1,4 @@
 return {
 	minimumPlayers = 1,
-	intermissionTime = 10,
+	intermissionTime = 30,
 }
