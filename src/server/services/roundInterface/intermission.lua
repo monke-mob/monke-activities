@@ -34,7 +34,8 @@ function intermissionService:KnitStart()
 end
 
 --[[
-    Toggles if a player is ready or unready.
+    Toggles if a player is ready or unready. This is apart of the intermission service, because being ready
+	only really matters whenever the intermission in on-going.
 
     @param {Player} player [The player.]
     @param {boolean} isReady [The ready state.]
@@ -90,7 +91,7 @@ end
 ]]
 function intermissionService:_start()
 	local timer = timerComponent.new(ROUND.intermissionTime)
-	
+
 	self._roundInterface:bindTimer(timer)
 	self._state.timer = timer
 
@@ -99,7 +100,7 @@ function intermissionService:_start()
 	-- If this event fires that means that the round can start. So send a request to the interface to start.
 	timer.ended:Connect(function()
 		self:_stop()
-		self._roundService:start()
+		self._roundService:start(self._state.players)
 	end)
 end
 

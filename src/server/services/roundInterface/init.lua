@@ -48,6 +48,8 @@ function roundInterfaceService:bindTimer(timer)
 		self._timer = nil
 	end
 
+	ReplicatedStorage:SetAttribute(TIMER, timer.timeRemaining)
+
 	self._timer = timer.updated:Connect(function(timeRemaining: number)
 		ReplicatedStorage:SetAttribute(TIMER, timeRemaining)
 	end)
@@ -67,7 +69,7 @@ end
     Handles a player joining.
 
     @private
-    @param {Player} player [The new/joining player to handle.]
+    @param {Player} player [The new / joining player to handle.]
 	@returns never
 ]]
 function roundInterfaceService:_playerAdded(player: Player)
@@ -88,7 +90,6 @@ function roundInterfaceService:_playerAdded(player: Player)
 		)
 	end))
 
-	self._intermissionService:setReady(player, true)
 	self._playerJanitor:Add(janitor, "Destroy", player.UserId)
 end
 

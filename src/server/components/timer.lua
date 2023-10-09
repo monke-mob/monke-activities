@@ -22,12 +22,28 @@ function class.new(startTime: number, interval: number?)
 	return setmetatable({
 		_running = false,
 		_startTick = nil,
-		_timeRemaining = startTime,
+		timeRemaining = startTime,
 		startTime = startTime,
 		interval = interval or 1,
 		updated = Signal.new(),
 		ended = Signal.new(),
 	}, class)
+end
+
+--[[
+    Destroys the object, clears, and freezes it to render is unusable.
+
+    @returns never
+]]
+function class:destroy()
+	self:stop()
+
+	self.updated:Destroy()
+	self.ended:Destroy()
+
+	setmetatable(self, nil)
+	table.clear(self)
+	table.freeze(self)
 end
 
 --[[
@@ -50,22 +66,6 @@ end
 ]]
 function class:stop()
 	self._running = false
-end
-
---[[
-    Destroys the object, clears, and freezes it to render is unusable.
-
-    @returns never
-]]
-function class:destroy()
-	self:stop()
-
-	self.updated:Destroy()
-	self.ended:Destroy()
-
-	setmetatable(self, nil)
-	table.clear(self)
-	table.freeze(self)
 end
 
 --[[
@@ -97,14 +97,14 @@ function class:_increment()
 		return
 	end
 
-	if self._timeRemaining <= 0 then
+	if self.timeRemaining <= 0 then
 		self:stop()
 		self.ended:Fire()
 		return
 	end
 
-	self._timeRemaining -= 1
-	self.updated:Fire(self._timeRemaining)
+	self.timeRemaining -= 1
+	self.updated:Fire(self.timeRemaining)
 	self:_nextUpdateInterval(self._startTick)
 end
 

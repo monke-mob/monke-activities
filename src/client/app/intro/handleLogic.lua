@@ -18,6 +18,7 @@ type componentProps = {
 	@returns never
 --]]
 local function handleLogic(componentProps: componentProps)
+	local intermissionService = Knit.GetService("intermission")
     local playerController = Knit.GetController("player")
 
 	task.spawn(function()
@@ -52,6 +53,7 @@ local function handleLogic(componentProps: componentProps)
 
 		componentProps.enabled:set(false)
         playerController:enableMovement()
+		intermissionService:setReady(true)
 		StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
 		StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
 	end)

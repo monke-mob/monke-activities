@@ -5,9 +5,9 @@ export type team = {
 	},
 }
 
-type teamID = string | number
+export type teamID = string | number
 
-type teams = {
+export type teams = {
 	[teamID]: team,
 }
 
@@ -17,6 +17,8 @@ export type constructorTeam = {
 		[number]: number,
 	},
 }
+
+local UPDATE_ALL_KEY = "UPDATE_ALL"
 
 --[[
     The class for a team mode.
@@ -45,19 +47,8 @@ function class.new(constructorTeams: { constructorTeam })
 	end
 
 	return setmetatable({
-		_teams = teams,
+		teams = teams,
 	}, class)
-end
-
---[[
-    Adds or subtracts from a teams score by the passed amount.
-
-    @param {teamID} teamID [The team.]
-    @param {number} increment [The amount to increment by.]
-    @returns never
-]]
-function class:incrementTeamScore(teamID: teamID, increment: number)
-	self._teams[teamID] += increment
 end
 
 --[[
@@ -69,6 +60,25 @@ function class:destroy()
 	setmetatable(self, nil)
 	table.clear(self)
 	table.freeze(self)
+end
+
+--[[
+    Adds or subtracts from a teams score by the passed amount.
+
+    @param {teamID} teamID [The team.]
+    @param {number} increment [The amount to increment by.]
+    @returns never
+]]
+function class:incrementTeamScore(teamID: teamID, increment: number)
+	if teamID == UPDATE_ALL_KEY then
+		for teamID: teamID, _team: team in pairs(self.teams) do
+			self:incrementTeamScore(teamID, increment)
+		end
+
+		return
+	end
+
+	self.teams[teamID].score += increment
 end
 
 return class

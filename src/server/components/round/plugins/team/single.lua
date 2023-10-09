@@ -31,8 +31,7 @@ function class.new(players: { number })
 	end
 
 	local baseClass = teamPlugin.new(teams)
-	local self = setmetatable(baseClass, class)
-	return self
+	return setmetatable(baseClass, class)
 end
 
 return class

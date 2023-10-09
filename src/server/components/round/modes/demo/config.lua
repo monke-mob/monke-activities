@@ -1,4 +1,5 @@
 local roundTypes = require(script.Parent.Parent.Parent.types)
+
 local createTeam = require(script.Parent.Parent.Parent.functions.createTeam)
 
 return {
@@ -9,16 +10,19 @@ return {
 		scoreDamage = 1,
 	},
 
-	endingCondition = {
+	endCondition = {
 		type = "time",
-		duration = 60,
+		duration = 20,
+		time = {
+			pointsPerIncrement = 1,
+		},
 	},
 
 	teams = {
 		usesCustomTeamBalancer = false,
 		ids = {
-			[1] = createTeam("team1", 2),
-			[2] = createTeam("team2", 2),
+			[1] = createTeam("rocketer", 1),
+			[2] = createTeam("players", 15),
 		},
 	},
 } :: roundTypes.config

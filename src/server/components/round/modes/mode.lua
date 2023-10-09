@@ -3,8 +3,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local roundTypes = require(script.Parent.Parent.types)
 
-local singlePlugin = require(script.Parent.Parent.plugins.types.single)
-local teamPlugin = require(script.Parent.Parent.plugins.types.team)
+local singlePlugin = require(script.Parent.Parent.plugins.team.single)
+local teamPlugin = require(script.Parent.Parent.plugins.team.team)
+local timePlugin = require(script.Parent.Parent.plugins.endCondition.time)
 local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
 
 --[[
@@ -21,7 +22,7 @@ local function balanceTeams(players: { number }, config: roundTypes.teamsConfig)
 end
 
 --[[
-    The class for a mode.
+    The base class for a game mode.
 
     @class
     @public
@@ -36,12 +37,26 @@ class.__index = class
     @returns class
 ]]
 function class.new(players: { number }, config: roundTypes.config)
+	local teamPlugin = if config.teamType == "single"
+		then singlePlugin.new(players)
+		else teamPlugin.new(balanceTeams(players, config.teams))
+
+	local function incrementTeamScore(...)
+		teamPlugin:incrementTeamScore(...)
+	end
+
+	local endConditionPlugin = if config.endCondition.type == "time"
+		then timePlugin.new(config.endCondition, incrementTeamScore)
+		else timePlugin.new(config.endCondition, incrementTeamScore)
+
+	local janitor = Janitor.new()
+	janitor:Add(teamPlugin, "destroy")
+	janitor:Add(endConditionPlugin, "destroy")
+
 	return setmetatable({
-		_janitor = Janitor.new(),
-		_config = config,
-		_plugin = if config.teamType == "single"
-			then singlePlugin.new(players)
-			else teamPlugin.new(balanceTeams(players, config.teams)),
+		_janitor = janitor,
+		_teamPlugin = teamPlugin,
+		_endConditionPlugin = endConditionPlugin,
 	}, class)
 end
 
@@ -56,6 +71,24 @@ function class:destroy()
 	setmetatable(self, nil)
 	table.clear(self)
 	table.freeze(self)
+end
+
+--[[
+    Starts the mode.
+
+    @returns never
+]]
+function class:start()
+	self._endConditionPlugin:start()
+end
+
+--[[
+    Returns the scores of each team.
+
+    @returns teamPlugin.teams
+]]
+function class:getScores(): teamPlugin.teams
+	return self._teamPlugin.teams
 end
 
 return class
