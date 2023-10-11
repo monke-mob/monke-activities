@@ -70,14 +70,13 @@ function class:destroy()
 end
 
 --[[
-    Prevents a team from gaining any score. This will most likely be called whenever a team is dead.
+    Prevents a team from gaining any score. This is most likely called whenever a teams players are dead.
 
     @param {teamID} teamID [The team.]
-    @param {number} increment [The amount to increment by.]
     @returns never
 ]]
-function class:lockTeamScore(teamID: teamID, increment: number)
-	self.teams[teamID].scoreLocked += increment
+function class:lockTeamScore(teamID: teamID)
+	self.teams[teamID].scoreLocked = true
 end
 
 --[[
