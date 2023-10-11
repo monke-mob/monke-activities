@@ -10,6 +10,20 @@ local Signal = require(ReplicatedStorage.Packages.Signal)
 local class = {}
 class.__index = class
 
+export type class = typeof(setmetatable({}, {})) & {
+	_running: boolean,
+	_startTick: number?,
+	_interval: number,
+	timeRemaining: number,
+	updated: any,
+	ended: any,
+	destroy: () -> never,
+	start: () -> never,
+	stop: () -> never,
+	_nextUpdateInterval: (tick: number) -> never,
+	_increment: () -> never,
+}
+
 --[[
     Creates a timer object.
 
@@ -18,16 +32,16 @@ class.__index = class
 	@param {number?} interval [How often to increment the timer.]
     @returns class
 ]]
-function class.new(startTime: number, interval: number?)
-	return setmetatable({
+function class.new(startTime: number, interval: number?): class
+	local self = setmetatable({
 		_running = false,
 		_startTick = nil,
+		_interval = if typeof(interval) == "number" then interval else 1,
 		timeRemaining = startTime,
-		startTime = startTime,
-		interval = interval or 1,
 		updated = Signal.new(),
 		ended = Signal.new(),
 	}, class)
+	return self
 end
 
 --[[
@@ -72,10 +86,11 @@ end
 	Waits till the next interval to update.
 
 	@private
+	@param {number} tick [The update tick.]
 	@returns never
 ]]
 function class:_nextUpdateInterval(tick: number)
-	delay(self.interval, function()
+	delay(self._interval, function()
 		pcall(function()
 			if tick ~= self._startTick then
 				return
