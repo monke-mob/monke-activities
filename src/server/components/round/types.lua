@@ -1,21 +1,5 @@
-local teamPlugin = require(script.Parent.plugins.team.team)
-
-export type respawningConfig = {
-	enabled: boolean,
-	scoreDamage: number,
-	maxRespawns: number,
-}
-
-export type timeEndConditionConfig = {
+export type timeScoringConfig = {
 	pointsPerIncrement: number,
-}
-
-export type endConditionType = "time" | "score"
-
-export type endConditionConfig = {
-	type: endConditionType,
-	duration: number,
-	time: timeEndConditionConfig?,
 }
 
 export type teamConfig = {
@@ -28,15 +12,34 @@ export type teamsConfig = {
 	ids: { [number]: teamConfig },
 }
 
-export type teamType = "single" | "team"
+type respawningConfig = {
+	enabled: boolean,
+	scoreDamage: number,
+	maxRespawns: number,
+}
+
+type scoreType = "time"
+
+type scoringConfig = {
+	type: scoreType,
+	time: timeScoringConfig?,
+}
+
+type endConditionType = "time" | "score"
+
+type endConditionConfig = {
+	type: endConditionType,
+	duration: number,
+}
+
+type teamType = "single" | "team"
 
 export type config = {
 	teamType: teamType,
 	respawning: respawningConfig,
 	endCondition: endConditionConfig,
+	scoring: scoringConfig,
 	teams: teamsConfig,
 }
-
-export type incrementTeamScore = (teamID: teamPlugin.teamID, increment: number) -> never
 
 return nil

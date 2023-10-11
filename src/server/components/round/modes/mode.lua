@@ -3,17 +3,18 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local roundTypes = require(script.Parent.Parent.types)
 
-local singlePlugin = require(script.Parent.Parent.plugins.team.single)
-local teamPlugin = require(script.Parent.Parent.plugins.team.team)
-local timePlugin = require(script.Parent.Parent.plugins.endCondition.time)
+local singlePlayerPlugin = require(script.Parent.Parent.plugins.team.single)
+local teamTeamPlugin = require(script.Parent.Parent.plugins.team.team)
+local timeEndConditionPlugin = require(script.Parent.Parent.plugins.endCondition.time)
+local timeScorePlugin = require(script.Parent.Parent.plugins.score.time)
 local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
 
 --[[
     Determines which team balancer to use.
 
-    @returns { teamPlugin.constructorTeam }
+    @returns { teamTeamPlugin.constructorTeam }
 ]]
-local function balanceTeams(players: { number }, config: roundTypes.teamsConfig): { teamPlugin.constructorTeam }
+local function balanceTeams(players: { number }, config: roundTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
 	if config.usesCustomTeamBalancer then
 		return {}
 	else
@@ -30,34 +31,44 @@ end
 local class = {}
 class.__index = class
 
+export type class = typeof(setmetatable({}, {})) & {
+	teamPlugin: teamTeamPlugin.class | singlePlayerPlugin.class,
+	endConditionPlugin: timeEndConditionPlugin.class,
+	scorePlugin: timeScorePlugin.class,
+	destroy: () -> never,
+	start: () -> never,
+	getScores: () -> teamTeamPlugin.teams,
+}
+
 --[[
     Creates a mode.
 
     @constructor
     @returns class
 ]]
-function class.new(players: { number }, config: roundTypes.config)
-	local teamPlugin = if config.teamType == "single"
-		then singlePlugin.new(players)
-		else teamPlugin.new(balanceTeams(players, config.teams))
+function class.new(players: { number }, config: roundTypes.config): class
+	-- We have to delcare self here because some of the plugins require access
+	-- to the other plugins.
+	local self = setmetatable({}, class)
 
-	local function incrementTeamScore(...)
-		teamPlugin:incrementTeamScore(...)
-	end
+	self.teamPlugin = if config.teamType == "single"
+		then singlePlayerPlugin.new(players)
+		else teamTeamPlugin.new(balanceTeams(players, config.teams))
 
-	local endConditionPlugin = if config.endCondition.type == "time"
-		then timePlugin.new(config.endCondition, incrementTeamScore)
-		else timePlugin.new(config.endCondition, incrementTeamScore)
+	self.endConditionPlugin = if config.endCondition.type == "time"
+		then timeEndConditionPlugin.new(config.endCondition.duration)
+		else timeEndConditionPlugin.new(config.endCondition.duration)
+
+	self.scorePlugin = if config.scoring.type == "time"
+		then timeScorePlugin.new(self, config.scoring.time :: any)
+		else timeScorePlugin.new(self, config.scoring.time :: any)
 
 	local janitor = Janitor.new()
-	janitor:Add(teamPlugin, "destroy")
-	janitor:Add(endConditionPlugin, "destroy")
+	janitor:Add(self.teamPlugin, "destroy")
+	janitor:Add(self.endConditionPlugin, "destroy")
+	self._janitor = janitor
 
-	return setmetatable({
-		_janitor = janitor,
-		_teamPlugin = teamPlugin,
-		_endConditionPlugin = endConditionPlugin,
-	}, class)
+	return self
 end
 
 --[[
@@ -79,16 +90,16 @@ end
     @returns never
 ]]
 function class:start()
-	self._endConditionPlugin:start()
+	self.endConditionPlugin:start()
 end
 
 --[[
     Returns the scores of each team.
 
-    @returns teamPlugin.teams
+    @returns teamTeamPlugin.teams
 ]]
-function class:getScores(): teamPlugin.teams
-	return self._teamPlugin.teams
+function class:getScores(): teamTeamPlugin.teams
+	return self.teamPlugin.teams
 end
 
 return class

@@ -13,6 +13,10 @@ return {
 	endCondition = {
 		type = "time",
 		duration = 20,
+	},
+
+	scoring = {
+		type = "time",
 		time = {
 			pointsPerIncrement = 1,
 		},

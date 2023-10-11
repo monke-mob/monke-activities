@@ -47,8 +47,9 @@ function roundService:stop()
 		return
 	end
 
-	--local scores = self._state.mode:getScores()
-
+	local scores = self._state.mode:getScores()
+	print(scores)
+	
 	self._state.mode:destroy()
 	self._state.mode = nil
 end

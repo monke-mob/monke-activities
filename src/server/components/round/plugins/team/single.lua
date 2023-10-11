@@ -11,6 +11,8 @@ local class = {}
 class.__index = class
 setmetatable(class, teamPlugin)
 
+export type class = teamPlugin.class
+
 --[[
     Creates and starts the single player plugin.
 
@@ -18,7 +20,7 @@ setmetatable(class, teamPlugin)
     @param {{ number }} players [The players.]
     @returns class
 ]]
-function class.new(players: { number })
+function class.new(players: { number }): class
 	local teams: { teamPlugin.constructorTeam } = {}
 
 	for _index: number, player: number in pairs(players) do

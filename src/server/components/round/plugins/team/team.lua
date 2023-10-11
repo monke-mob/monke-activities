@@ -1,4 +1,5 @@
 export type team = {
+	scoreLocked: boolean,
 	score: number,
 	players: {
 		[number]: number,
@@ -18,8 +19,6 @@ export type constructorTeam = {
 	},
 }
 
-local UPDATE_ALL_KEY = "UPDATE_ALL"
-
 --[[
     The class for a team mode.
 
@@ -29,6 +28,12 @@ local UPDATE_ALL_KEY = "UPDATE_ALL"
 local class = {}
 class.__index = class
 
+export type class = typeof(setmetatable({}, {})) & {
+	teams: teams,
+	destroy: () -> never,
+	incrementTeamScore: (teamID: teamID, increment: number) -> never,
+}
+
 --[[
     Creates and starts the team plugin.
 
@@ -36,19 +41,21 @@ class.__index = class
     @param {{ constructorTeam }} constructorTeams [The list of teams.]
     @returns class
 ]]
-function class.new(constructorTeams: { constructorTeam })
+function class.new(constructorTeams: { constructorTeam }): class
 	local teams: teams = {}
 
 	for _index: number, team: constructorTeam in pairs(constructorTeams) do
 		teams[team.id] = {
+			scoreLocked = false,
 			score = 0,
 			players = team.players,
 		}
 	end
 
-	return setmetatable({
+	local self = setmetatable({
 		teams = teams,
 	}, class)
+	return self
 end
 
 --[[
@@ -63,6 +70,17 @@ function class:destroy()
 end
 
 --[[
+    Prevents a team from gaining any score. This will most likely be called whenever a team is dead.
+
+    @param {teamID} teamID [The team.]
+    @param {number} increment [The amount to increment by.]
+    @returns never
+]]
+function class:lockTeamScore(teamID: teamID, increment: number)
+	self.teams[teamID].scoreLocked += increment
+end
+
+--[[
     Adds or subtracts from a teams score by the passed amount.
 
     @param {teamID} teamID [The team.]
@@ -70,11 +88,7 @@ end
     @returns never
 ]]
 function class:incrementTeamScore(teamID: teamID, increment: number)
-	if teamID == UPDATE_ALL_KEY then
-		for teamID: teamID, _team: team in pairs(self.teams) do
-			self:incrementTeamScore(teamID, increment)
-		end
-
+	if self.teams[teamID].scoreLocked then
 		return
 	end
 
