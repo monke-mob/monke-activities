@@ -6,6 +6,7 @@ local types = require(ReplicatedStorage.types)
 local concatTables = require(ReplicatedStorage.functions.concatTables)
 local addInstanceToChildren = require(script.Parent.Parent.Parent.components.addInstanceToChildren)
 local frame = require(script.Parent.Parent.Parent.components.frame)
+local theme = require(script.Parent.Parent.Parent.theme)
 
 export type componentProps = frame.componentProps & {
 	gradient: ColorSequence,
@@ -35,7 +36,7 @@ local function container(instanceProps: types.dictionaryAny, componentProps: com
 		}, instanceProps),
 		concatTables({
 			hasCornerRadius = true,
-			cornerRadius = UDim.new(0, 15),
+			cornerRadius = theme.themes.cornerRadius.default,
 		}, componentProps)
 	)
 end

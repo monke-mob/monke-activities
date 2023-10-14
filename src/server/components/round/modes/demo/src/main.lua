@@ -1,5 +1,5 @@
-local modeComponent = require(script.Parent.Parent.Parent.mode)
 local config = require(script.Parent.Parent.config)
+local modeComponent = require(script.Parent.Parent.Parent.mode)
 
 local class = {}
 class.__index = class
@@ -13,8 +13,8 @@ setmetatable(class, modeComponent)
     @returns class
 ]]
 function class.new(players: { number })
-	local baseClass = modeComponent.new(players, config)
-	return setmetatable(baseClass, class)
+    local baseClass = modeComponent.new(players, config)
+    return setmetatable(baseClass, class)
 end
 
 return class

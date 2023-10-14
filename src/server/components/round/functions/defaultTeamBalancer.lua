@@ -3,7 +3,7 @@ local roundTypes = require(script.Parent.Parent.types)
 local teamPlugin = require(script.Parent.Parent.plugins.team.team)
 
 type team = teamPlugin.constructorTeam & {
-	maxPlayers: number,
+    maxPlayers: number,
 }
 
 --[[
@@ -14,33 +14,33 @@ type team = teamPlugin.constructorTeam & {
     @returns { teamPlugin.constructorTeam }
 ]]
 local function balanceTeams(players: { number }, config: roundTypes.teamsConfig): { team }
-	local teams: { team } = {}
+    local teams: { team } = {}
 
-	for index: number, team: roundTypes.teamConfig in ipairs(config.ids) do
-		teams[index] = {
-			id = team.id,
-			maxPlayers = team.maxPlayers,
-			players = {},
-		}
-	end
+    for index: number, team: roundTypes.teamConfig in ipairs(config.ids) do
+        teams[index] = {
+            id = team.id,
+            maxPlayers = team.maxPlayers,
+            players = {},
+        }
+    end
 
-	-- This randomizes the players.
-	for index: number = #players, 2, -1 do
-		local randomIndex: number = math.random(index)
-		players[index], players[randomIndex] = players[randomIndex], players[index]
-	end
+    -- This randomizes the players.
+    for index: number = #players, 2, -1 do
+        local randomIndex: number = math.random(index)
+        players[index], players[randomIndex] = players[randomIndex], players[index]
+    end
 
-	-- Add the players to teams.
-	for _index: number, player: number in ipairs(players) do
-		for _index: number, team in ipairs(teams) do
-			if #team.players < team.maxPlayers then
-				table.insert(team.players, player)
-				break
-			end
-		end
-	end
+    -- Add the players to teams.
+    for _index: number, player: number in ipairs(players) do
+        for _index: number, team in ipairs(teams) do
+            if #team.players < team.maxPlayers then
+                table.insert(team.players, player)
+                break
+            end
+        end
+    end
 
-	return teams
+    return teams
 end
 
 return balanceTeams

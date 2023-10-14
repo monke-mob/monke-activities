@@ -21,7 +21,7 @@ local function timer()
 			timerLabel(),
 		},
 	}, {
-		cornerRadius = UDim.new(0, 20),
+		cornerRadius = theme.themes.cornerRadius.large,
 		gradient = theme.themes.gradient.brand,
 	})
 end

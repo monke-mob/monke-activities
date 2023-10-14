@@ -35,7 +35,8 @@ local themes: theme = {
 	},
 
 	cornerRadius = {
-		default = UDim.new(0, 10),
+		default = UDim.new(0, 15),
+		large = UDim.new(0, 20),
 	},
 
 	gradient = {

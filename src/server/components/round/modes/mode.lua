@@ -3,11 +3,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local roundTypes = require(script.Parent.Parent.types)
 
+local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
 local singlePlayerPlugin = require(script.Parent.Parent.plugins.team.single)
 local teamTeamPlugin = require(script.Parent.Parent.plugins.team.team)
 local timeEndConditionPlugin = require(script.Parent.Parent.plugins.endCondition.time)
 local timeScorePlugin = require(script.Parent.Parent.plugins.score.time)
-local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
 
 --[[
     Determines which team balancer to use.
@@ -15,11 +15,11 @@ local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBa
     @returns { teamTeamPlugin.constructorTeam }
 ]]
 local function balanceTeams(players: { number }, config: roundTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
-	if config.usesCustomTeamBalancer then
-		return {}
-	else
-		return defaultTeamBalancer(players, config)
-	end
+    if config.usesCustomTeamBalancer then
+        return {}
+    else
+        return defaultTeamBalancer(players, config)
+    end
 end
 
 --[[
@@ -32,12 +32,12 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-	teamPlugin: teamTeamPlugin.class | singlePlayerPlugin.class,
-	endConditionPlugin: timeEndConditionPlugin.class,
-	scorePlugin: timeScorePlugin.class,
-	destroy: () -> never,
-	start: () -> never,
-	getScores: () -> teamTeamPlugin.teams,
+    teamPlugin: teamTeamPlugin.class | singlePlayerPlugin.class,
+    endConditionPlugin: timeEndConditionPlugin.class,
+    scorePlugin: timeScorePlugin.class,
+    destroy: () -> never,
+    start: () -> never,
+    getScores: () -> teamTeamPlugin.teams,
 }
 
 --[[
@@ -47,28 +47,28 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(players: { number }, config: roundTypes.config): class
-	-- We have to delcare self here because some of the plugins require access
-	-- to the other plugins.
-	local self = setmetatable({}, class)
+    -- We have to delcare self here because some of the plugins require access
+    -- to the other plugins.
+    local self = setmetatable({}, class)
 
-	self.teamPlugin = if config.teamType == "single"
-		then singlePlayerPlugin.new(players)
-		else teamTeamPlugin.new(balanceTeams(players, config.teams))
+    self.teamPlugin = if config.teamType == "single"
+        then singlePlayerPlugin.new(players)
+        else teamTeamPlugin.new(balanceTeams(players, config.teams))
 
-	self.endConditionPlugin = if config.endCondition.type == "time"
-		then timeEndConditionPlugin.new(config.endCondition.duration)
-		else timeEndConditionPlugin.new(config.endCondition.duration)
+    self.endConditionPlugin = if config.endCondition.type == "time"
+        then timeEndConditionPlugin.new(config.endCondition.duration)
+        else timeEndConditionPlugin.new(config.endCondition.duration)
 
-	self.scorePlugin = if config.scoring.type == "time"
-		then timeScorePlugin.new(self, config.scoring.time :: any)
-		else timeScorePlugin.new(self, config.scoring.time :: any)
+    self.scorePlugin = if config.scoring.type == "time"
+        then timeScorePlugin.new(self, config.scoring.time :: any)
+        else timeScorePlugin.new(self, config.scoring.time :: any)
 
-	local janitor = Janitor.new()
-	janitor:Add(self.teamPlugin, "destroy")
-	janitor:Add(self.endConditionPlugin, "destroy")
-	self._janitor = janitor
+    local janitor = Janitor.new()
+    janitor:Add(self.teamPlugin, "destroy")
+    janitor:Add(self.endConditionPlugin, "destroy")
+    self._janitor = janitor
 
-	return self
+    return self
 end
 
 --[[
@@ -77,11 +77,11 @@ end
     @returns never
 ]]
 function class:destroy()
-	self._janitor:Destroy()
+    self._janitor:Destroy()
 
-	setmetatable(self, nil)
-	table.clear(self)
-	table.freeze(self)
+    setmetatable(self, nil)
+    table.clear(self)
+    table.freeze(self)
 end
 
 --[[
@@ -90,7 +90,23 @@ end
     @returns never
 ]]
 function class:start()
-	self.endConditionPlugin:start()
+    self.endConditionPlugin:start()
+end
+
+--[[
+    Removes a player from the round.
+
+	@param {number} player [The player to remove.]
+    @returns never
+]]
+function class:removePlayerFromRound(player: number)
+    local teamID: teamTeamPlugin.teamID? = self.teamPlugin:findTeamByPlayer(player)
+
+    if teamID == nil then
+        return
+    end
+
+    self.teamPlugin:removePlayerFromTeam(teamID, player)
 end
 
 --[[
@@ -99,7 +115,7 @@ end
     @returns teamTeamPlugin.teams
 ]]
 function class:getScores(): teamTeamPlugin.teams
-	return self.teamPlugin.teams
+    return self.teamPlugin.teams
 end
 
 return class
