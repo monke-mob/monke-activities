@@ -1,10 +1,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
-local types = require(ReplicatedStorage.types)
 
+local types = require(ReplicatedStorage.types)
 local concatTables = require(ReplicatedStorage.functions.concatTables)
-local addInstanceToChildren = require(script.Parent.Parent.Parent.components.addInstanceToChildren)
+local addInstanceToChildren = require(script.Parent.Parent.Parent.functions.addInstanceToChildren)
 local frame = require(script.Parent.Parent.Parent.components.frame)
 local theme = require(script.Parent.Parent.Parent.theme)
 

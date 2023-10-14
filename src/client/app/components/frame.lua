@@ -1,11 +1,11 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
-local types = require(ReplicatedStorage.types)
 
 local concatTables = require(ReplicatedStorage.functions.concatTables)
-local roundComponent = require(script.Parent.roundComponent)
+local roundComponent = require(script.Parent.Parent.functions.roundComponent)
 local theme = require(script.Parent.Parent.theme)
+local types = require(ReplicatedStorage.types)
 
 export type componentProps = roundComponent.componentProps
 
@@ -17,17 +17,17 @@ export type componentProps = roundComponent.componentProps
 	@returns Fusion.Component
 --]]
 local function button(instanceProps: types.dictionaryAny, componentProps: componentProps)
-	roundComponent(
-		instanceProps,
-		concatTables({
-			hasCornerRadius = false,
-		}, componentProps)
-	)
+    roundComponent(
+        instanceProps,
+        concatTables({
+            hasCornerRadius = false,
+        }, componentProps)
+    )
 
-	return Fusion.New("Frame")(concatTables({
-		BackgroundColor3 = theme.current.background,
-		BackgroundTransparency = 1,
-	}, instanceProps))
+    return Fusion.New("Frame")(concatTables({
+        BackgroundColor3 = theme.current.background,
+        BackgroundTransparency = 1,
+    }, instanceProps))
 end
 
 return button

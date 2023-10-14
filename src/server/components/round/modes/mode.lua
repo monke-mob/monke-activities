@@ -40,13 +40,17 @@ export type class = typeof(setmetatable({}, {})) & {
     getScores: () -> teamTeamPlugin.teams,
 }
 
+export type players = { number }
+
 --[[
     Creates a mode.
 
     @constructor
+    @param {players} players [The players.]
+    @param {roundTypes.config} config [The config for the mode.]
     @returns class
 ]]
-function class.new(players: { number }, config: roundTypes.config): class
+function class.new(players: players, config: roundTypes.config): class
     -- We have to delcare self here because some of the plugins require access
     -- to the other plugins.
     local self = setmetatable({}, class)

@@ -3,21 +3,22 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local gui = require(script.Parent.components.gui)
-local mouseUnlock = require(script.mouseUnlock)
-local roundInfo = require(script.roundInfo)
 
 --[[
-	Handles the core ui.
+	Handles the intro ui.
 
 	@returns never
 --]]
-local function core()
+local function intro()
+	local enabled = Fusion.Value(true)
+
 	gui({
+		Enabled = enabled,
+
 		[Fusion.Children] = {
-			mouseUnlock(),
-			roundInfo(),
+			
 		},
 	})
 end
 
-return core
+return intro

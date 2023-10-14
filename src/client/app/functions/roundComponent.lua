@@ -2,8 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local types = require(ReplicatedStorage.types)
 
-local addInstanceToChildren = require(script.Parent.addInstanceToChildren)
-local cornerRadius = require(script.Parent.cornerRadius)
+local addInstanceToChildren = require(script.Parent.Parent.functions.addInstanceToChildren)
+local cornerRadius = require(script.Parent.Parent.components.cornerRadius)
 
 export type componentProps = {
 	hasCornerRadius: boolean?,

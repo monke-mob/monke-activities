@@ -7,30 +7,30 @@ local ROUND = require(script.Parent.Parent.Parent.constants.ROUND)
 local timerComponent = require(script.Parent.Parent.Parent.components.timer)
 
 local intermissionService = Knit.CreateService({
-	Name = "intermission",
-	_roundInterface = nil,
-	_roundService = nil,
-	_state = {
-		-- Possible states: "waiting" or "intermission"
-		stateName = "",
-		players = {},
-		timer = nil,
-	},
+    Name = "intermission",
+    _roundInterface = nil,
+    _roundService = nil,
+    _state = {
+        -- Possible states: "waiting" or "intermission"
+        stateName = "",
+        players = {},
+        timer = nil,
+    },
 })
 
 --[[
 	@returns never
 ]]
 function intermissionService:KnitInit()
-	self._state.stateName = "waiting"
+    self._state.stateName = "waiting"
 end
 
 --[[
 	@returns never
 ]]
 function intermissionService:KnitStart()
-	self._roundInterface = Knit.GetService("roundInterface")
-	self._roundService = Knit.GetService("round")
+    self._roundInterface = Knit.GetService("roundInterface")
+    self._roundService = Knit.GetService("round")
 end
 
 --[[
@@ -42,16 +42,16 @@ end
     @returns never
 ]]
 function intermissionService:setReady(player: Player, isReady: boolean)
-	local playerIndexInLobby: number? = table.find(self._state.players, player.UserId)
+    local playerIndexInLobby: number? = table.find(self._state.players, player.UserId)
 
-	if isReady and playerIndexInLobby == nil then
-		table.insert(self._state.players, player.UserId)
-	elseif isReady == false and playerIndexInLobby ~= nil then
-		table.remove(self._state.players, playerIndexInLobby)
-	end
+    if isReady and playerIndexInLobby == nil then
+        table.insert(self._state.players, player.UserId)
+    elseif isReady == false and playerIndexInLobby ~= nil then
+        table.remove(self._state.players, playerIndexInLobby)
+    end
 
-	self:attemptStart()
-	self._roundInterface:updatePlayerCount(#self._state.players)
+    self:attemptStart()
+    self._roundInterface:updatePlayerCount(#self._state.players)
 end
 
 --[[
@@ -59,7 +59,7 @@ end
     @extends setReady
 ]]
 function intermissionService.Client:setReady(...: any)
-	self.Server:setReady(...)
+    self.Server:setReady(...)
 end
 
 --[[
@@ -69,18 +69,18 @@ end
 	@returns never
 ]]
 function intermissionService:attemptStart()
-	-- If a round is already started there is no need to determine anything.
-	if self._roundService:isStarted() then
-		return
-	end
+    -- If a round is already started there is no need to determine anything.
+    if self._roundService:isStarted() then
+        return
+    end
 
-	local playersReady: number = #self._state.players
+    local playersReady: number = #self._state.players
 
-	if self._state.stateName == "waiting" and playersReady >= ROUND.minimumPlayers then
-		self:_start()
-	elseif self._state.stateName == "intermission" and playersReady < ROUND.minimumPlayers then
-		self:_waitForPlayers()
-	end
+    if self._state.stateName == "waiting" and playersReady >= ROUND.minimumPlayers then
+        self:_start()
+    elseif self._state.stateName == "intermission" and playersReady < ROUND.minimumPlayers then
+        self:_waitForPlayers()
+    end
 end
 
 --[[
@@ -90,18 +90,18 @@ end
 	@returns never
 ]]
 function intermissionService:_start()
-	local timer = timerComponent.new(ROUND.intermissionTime)
+    local timer = timerComponent.new(ROUND.intermissionTime)
 
-	self._roundInterface:bindTimer(timer)
-	self._state.timer = timer
+    self._roundInterface:bindTimer(timer)
+    self._state.timer = timer
 
-	timer:start()
+    timer:start()
 
-	-- If this event fires that means that the round can start. So send a request to the interface to start.
-	timer.ended:Connect(function()
-		self:_stop()
-		self._roundService:start(self._state.players)
-	end)
+    -- If this event fires that means that the round can start. So send a request to the interface to start.
+    timer.ended:Connect(function()
+        self:_stop()
+        self._roundService:start(self._state.players)
+    end)
 end
 
 --[[
@@ -111,12 +111,12 @@ end
 	@returns never
 ]]
 function intermissionService:_stop()
-	if self._state.timer == nil then
-		return
-	end
+    if self._state.timer == nil then
+        return
+    end
 
-	self._state.timer:destroy()
-	self._state.timer = nil
+    self._state.timer:destroy()
+    self._state.timer = nil
 end
 
 --[[
@@ -126,8 +126,8 @@ end
 	@returns never
 ]]
 function intermissionService:_waitForPlayers()
-	self:stop()
-	self._state.stateName = "waiting"
+    self:stop()
+    self._state.stateName = "waiting"
 end
 
 return intermissionService
