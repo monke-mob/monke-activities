@@ -9,10 +9,10 @@ local roundTypes = require(script.Parent.Parent.types)
     @returns roundTypes.teamConfig
 ]]
 local function createTeam(id: string, maxPlayers: number): roundTypes.teamConfig
-	return {
-		id = id,
-		maxPlayers = maxPlayers,
-	}
+    return {
+        id = id,
+        maxPlayers = maxPlayers,
+    }
 end
 
 return createTeam

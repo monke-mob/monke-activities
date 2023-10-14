@@ -1,8 +1,8 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Knit = require(ReplicatedStorage.Packages.Knit)
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
+local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
 local TIMER = require(ReplicatedStorage.constants.TIMER)

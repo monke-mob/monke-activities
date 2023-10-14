@@ -13,8 +13,8 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-	_increment: number,
-	_incrementScores: () -> never,
+    _increment: number,
+    _incrementScores: () -> never,
 }
 
 --[[
@@ -26,16 +26,16 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(mode, config: roundTypes.timeScoringConfig): class
-	local self = setmetatable({
-		_mode = mode,
-		_increment = config.pointsPerIncrement,
-	}, class)
+    local self = setmetatable({
+        _mode = mode,
+        _increment = config.pointsPerIncrement,
+    }, class)
 
-	self._mode.endConditionPlugin.timer.updated:Connect(function()
-		self:_incrementScores()
-	end)
+    self._mode.endConditionPlugin.timer.updated:Connect(function()
+        self:_incrementScores()
+    end)
 
-	return self
+    return self
 end
 
 --[[
@@ -44,9 +44,9 @@ end
     @returns class
 ]]
 function class:_incrementScores()
-	for teamID: teamTeamPlugin.teamID, _team: teamTeamPlugin.team in pairs(self._mode.teamPlugin.teams) do
-		self._mode.teamPlugin:incrementTeamScore(teamID, self._increment)
-	end
+    for teamID: teamTeamPlugin.teamID, _team: teamTeamPlugin.team in pairs(self._mode.teamPlugin.teams) do
+        self._mode.teamPlugin:incrementTeamScore(teamID, self._increment)
+    end
 end
 
 return class

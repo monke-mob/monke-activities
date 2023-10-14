@@ -10,15 +10,13 @@ local gui = require(script.Parent.components.gui)
 	@returns never
 --]]
 local function intro()
-	local enabled = Fusion.Value(true)
+    local enabled = Fusion.Value(true)
 
-	gui({
-		Enabled = enabled,
+    gui({
+        Enabled = enabled,
 
-		[Fusion.Children] = {
-			
-		},
-	})
+        [Fusion.Children] = {},
+    })
 end
 
 return intro

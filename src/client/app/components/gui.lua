@@ -1,5 +1,5 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local types = require(ReplicatedStorage.types)
@@ -13,10 +13,10 @@ local concatTables = require(ReplicatedStorage.functions.concatTables)
 	@returns Fusion.Component
 --]]
 local function gui(instanceProps: types.dictionaryAny)
-	return Fusion.New("ScreenGui")(concatTables({
-		IgnoreGuiInset = true,
-		Parent = Players.LocalPlayer.PlayerGui,
-	}, instanceProps))
+    return Fusion.New("ScreenGui")(concatTables({
+        IgnoreGuiInset = true,
+        Parent = Players.LocalPlayer.PlayerGui,
+    }, instanceProps))
 end
 
 return gui

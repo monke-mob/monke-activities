@@ -12,11 +12,11 @@ local types = require(ReplicatedStorage.types)
 	@returns never
 --]]
 local function addInstanceToChildren(props: types.dictionaryAny, instance)
-	if props[Fusion.Children] == nil then
-		props[Fusion.Children] = {}
-	end
+    if props[Fusion.Children] == nil then
+        props[Fusion.Children] = {}
+    end
 
-	table.insert(props[Fusion.Children], instance)
+    table.insert(props[Fusion.Children], instance)
 end
 
 return addInstanceToChildren

@@ -7,8 +7,8 @@ local roundInterface = nil
 local roundService = nil
 
 Knit:OnStart():andThen(function()
-	roundInterface = Knit.GetService("roundInterface")
-	roundService = Knit.GetService("round")
+    roundInterface = Knit.GetService("roundInterface")
+    roundService = Knit.GetService("round")
 end)
 
 --[[
@@ -21,10 +21,10 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-	timer: timerComponent.class,
-	destroy: () -> never,
-	start: () -> never,
-	_end: () -> never,
+    timer: timerComponent.class,
+    destroy: () -> never,
+    start: () -> never,
+    _end: () -> never,
 }
 
 --[[
@@ -35,10 +35,10 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(time: number): class
-	local self = setmetatable({
-		timer = timerComponent.new(time),
-	}, class)
-	return self
+    local self = setmetatable({
+        timer = timerComponent.new(time),
+    }, class)
+    return self
 end
 
 --[[
@@ -47,11 +47,11 @@ end
     @returns never
 ]]
 function class:destroy()
-	self.timer:destroy()
+    self.timer:destroy()
 
-	setmetatable(self, nil)
-	table.clear(self)
-	table.freeze(self)
+    setmetatable(self, nil)
+    table.clear(self)
+    table.freeze(self)
 end
 
 --[[
@@ -60,13 +60,13 @@ end
     @returns never
 ]]
 function class:start()
-	roundInterface:bindTimer(self.timer)
+    roundInterface:bindTimer(self.timer)
 
-	self.timer.ended:Connect(function()
-		self:_end()
-	end)
+    self.timer.ended:Connect(function()
+        self:_end()
+    end)
 
-	self.timer:start()
+    self.timer:start()
 end
 
 --[[
@@ -75,7 +75,7 @@ end
     @returns never
 ]]
 function class:_end()
-	roundService:stop()
+    roundService:stop()
 end
 
 return class

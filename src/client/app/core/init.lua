@@ -12,12 +12,12 @@ local roundInfo = require(script.roundInfo)
 	@returns never
 --]]
 local function core()
-	gui({
-		[Fusion.Children] = {
-			mouseUnlock(),
-			roundInfo(),
-		},
-	})
+    gui({
+        [Fusion.Children] = {
+            mouseUnlock(),
+            roundInfo(),
+        },
+    })
 end
 
 return core

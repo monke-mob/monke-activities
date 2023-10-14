@@ -7,8 +7,8 @@ local intro = require(script.intro)
     @returns never
 ]]
 local function app()
-	core()
-	intro()
+    core()
+    intro()
 end
 
 return app

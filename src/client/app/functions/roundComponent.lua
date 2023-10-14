@@ -6,8 +6,8 @@ local addInstanceToChildren = require(script.Parent.Parent.functions.addInstance
 local cornerRadius = require(script.Parent.Parent.components.cornerRadius)
 
 export type componentProps = {
-	hasCornerRadius: boolean?,
-	cornerRadius: UDim?,
+    hasCornerRadius: boolean?,
+    cornerRadius: UDim?,
 }
 
 --[[
@@ -19,16 +19,16 @@ export type componentProps = {
 	@returns never
 --]]
 local function roundComponent(instanceProps: types.dictionaryAny, componentProps: componentProps)
-	if componentProps.hasCornerRadius == false then
-		return
-	end
+    if componentProps.hasCornerRadius == false then
+        return
+    end
 
-	addInstanceToChildren(
-		instanceProps,
-		cornerRadius({
-			CornerRadius = componentProps.cornerRadius,
-		})
-	)
+    addInstanceToChildren(
+        instanceProps,
+        cornerRadius({
+            CornerRadius = componentProps.cornerRadius,
+        })
+    )
 end
 
 return roundComponent

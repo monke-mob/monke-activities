@@ -11,17 +11,17 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-	_running: boolean,
-	_startTick: number?,
-	_interval: number,
-	timeRemaining: number,
-	updated: any,
-	ended: any,
-	destroy: () -> never,
-	start: () -> never,
-	stop: () -> never,
-	_nextUpdateInterval: (tick: number) -> never,
-	_increment: () -> never,
+    _running: boolean,
+    _startTick: number?,
+    _interval: number,
+    timeRemaining: number,
+    updated: any,
+    ended: any,
+    destroy: () -> never,
+    start: () -> never,
+    stop: () -> never,
+    _nextUpdateInterval: (tick: number) -> never,
+    _increment: () -> never,
 }
 
 --[[
@@ -33,15 +33,15 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(startTime: number, interval: number?): class
-	local self = setmetatable({
-		_running = false,
-		_startTick = nil,
-		_interval = if typeof(interval) == "number" then interval else 1,
-		timeRemaining = startTime,
-		updated = Signal.new(),
-		ended = Signal.new(),
-	}, class)
-	return self
+    local self = setmetatable({
+        _running = false,
+        _startTick = nil,
+        _interval = if typeof(interval) == "number" then interval else 1,
+        timeRemaining = startTime,
+        updated = Signal.new(),
+        ended = Signal.new(),
+    }, class)
+    return self
 end
 
 --[[
@@ -50,14 +50,14 @@ end
     @returns never
 ]]
 function class:destroy()
-	self:stop()
+    self:stop()
 
-	self.updated:Destroy()
-	self.ended:Destroy()
+    self.updated:Destroy()
+    self.ended:Destroy()
 
-	setmetatable(self, nil)
-	table.clear(self)
-	table.freeze(self)
+    setmetatable(self, nil)
+    table.clear(self)
+    table.freeze(self)
 end
 
 --[[
@@ -66,11 +66,11 @@ end
 	@returns never
 ]]
 function class:start()
-	self._running = true
+    self._running = true
 
-	local startTick: number = os.clock()
-	self._startTick = startTick
-	self:_nextUpdateInterval(self._startTick)
+    local startTick: number = os.clock()
+    self._startTick = startTick
+    self:_nextUpdateInterval(self._startTick)
 end
 
 --[[
@@ -79,7 +79,7 @@ end
 	@returns never
 ]]
 function class:stop()
-	self._running = false
+    self._running = false
 end
 
 --[[
@@ -90,15 +90,15 @@ end
 	@returns never
 ]]
 function class:_nextUpdateInterval(tick: number)
-	delay(self._interval, function()
-		pcall(function()
-			if tick ~= self._startTick then
-				return
-			end
+    delay(self._interval, function()
+        pcall(function()
+            if tick ~= self._startTick then
+                return
+            end
 
-			self:_increment()
-		end)
-	end)
+            self:_increment()
+        end)
+    end)
 end
 
 --[[
@@ -108,19 +108,19 @@ end
 	@returns never
 ]]
 function class:_increment()
-	if self._running == false then
-		return
-	end
+    if self._running == false then
+        return
+    end
 
-	if self.timeRemaining <= 0 then
-		self:stop()
-		self.ended:Fire()
-		return
-	end
+    if self.timeRemaining <= 0 then
+        self:stop()
+        self.ended:Fire()
+        return
+    end
 
-	self.timeRemaining -= 1
-	self.updated:Fire(self.timeRemaining)
-	self:_nextUpdateInterval(self._startTick)
+    self.timeRemaining -= 1
+    self.updated:Fire(self.timeRemaining)
+    self:_nextUpdateInterval(self._startTick)
 end
 
 return class

@@ -1,9 +1,9 @@
 if script:FindFirstAncestorOfClass("Player") == nil then
-	return
+    return
 end
 
 repeat
-	task.wait()
+    task.wait()
 until game:IsLoaded()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")

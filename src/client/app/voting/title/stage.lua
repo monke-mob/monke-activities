@@ -2,9 +2,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
+local stageAction = require(script.Parent.Parent.Parent.actions.voting.stage)
 local strokeLabel = require(script.Parent.Parent.Parent.components.label.stroke)
 local theme = require(script.Parent.Parent.Parent.theme)
-local stageAction = require(script.Parent.Parent.Parent.actions.voting.stage)
 
 --[[
     The stage label.
@@ -23,8 +23,8 @@ local function timer()
             Fusion.New("UIGradient")({
                 Rotation = 90,
                 Color = theme.themes.gradient.brand,
-            })
-        }
+            }),
+        },
     })
 end
 

@@ -6,8 +6,8 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local ADMINS = require(ServerScriptService.constants.ADMINS)
 
 local playerService = Knit.CreateService({
-	Name = "player",
-	Client = {},
+    Name = "player",
+    Client = {},
 })
 
 --[[
@@ -17,7 +17,7 @@ local playerService = Knit.CreateService({
     @returns boolean
 ]]
 function playerService:isAdmin(player: Player): boolean
-	return table.find(ADMINS, player.UserId) ~= nil
+    return table.find(ADMINS, player.UserId) ~= nil
 end
 
 --[[
@@ -25,7 +25,7 @@ end
     @extends isAdmin
 ]]
 function playerService.Client:isAdmin(...: any): boolean
-	return self.Server:isAdmin(...)
+    return self.Server:isAdmin(...)
 end
 
 return playerService

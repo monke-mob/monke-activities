@@ -2,14 +2,14 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
-local types = require(ReplicatedStorage.types)
-local concatTables = require(ReplicatedStorage.functions.concatTables)
 local addInstanceToChildren = require(script.Parent.Parent.Parent.functions.addInstanceToChildren)
+local concatTables = require(ReplicatedStorage.functions.concatTables)
 local frame = require(script.Parent.Parent.Parent.components.frame)
 local theme = require(script.Parent.Parent.Parent.theme)
+local types = require(ReplicatedStorage.types)
 
 export type componentProps = frame.componentProps & {
-	gradient: ColorSequence,
+    gradient: ColorSequence,
 }
 
 --[[
@@ -21,24 +21,24 @@ export type componentProps = frame.componentProps & {
 	@returns Fusion.Component
 --]]
 local function container(instanceProps: types.dictionaryAny, componentProps: componentProps)
-	addInstanceToChildren(
-		instanceProps,
-		Fusion.New("UIGradient")({
-			Color = componentProps.gradient,
-			Rotation = 90,
-		})
-	)
+    addInstanceToChildren(
+        instanceProps,
+        Fusion.New("UIGradient")({
+            Color = componentProps.gradient,
+            Rotation = 90,
+        })
+    )
 
-	return frame(
-		concatTables({
-			BackgroundTransparency = 0,
-			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		}, instanceProps),
-		concatTables({
-			hasCornerRadius = true,
-			cornerRadius = theme.themes.cornerRadius.default,
-		}, componentProps)
-	)
+    return frame(
+        concatTables({
+            BackgroundTransparency = 0,
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        }, instanceProps),
+        concatTables({
+            hasCornerRadius = true,
+            cornerRadius = theme.themes.cornerRadius.default,
+        }, componentProps)
+    )
 end
 
 return container

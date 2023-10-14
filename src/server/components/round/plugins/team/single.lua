@@ -21,19 +21,19 @@ export type class = teamPlugin.class
     @returns class
 ]]
 function class.new(players: { number }): class
-	local teams: { teamPlugin.constructorTeam } = {}
+    local teams: { teamPlugin.constructorTeam } = {}
 
-	for _index: number, player: number in pairs(players) do
-		table.insert(teams, {
-			id = player,
-			players = {
-				player,
-			},
-		})
-	end
+    for _index: number, player: number in pairs(players) do
+        table.insert(teams, {
+            id = player,
+            players = {
+                player,
+            },
+        })
+    end
 
-	local baseClass = teamPlugin.new(teams)
-	return setmetatable(baseClass, class)
+    local baseClass = teamPlugin.new(teams)
+    return setmetatable(baseClass, class)
 end
 
 return class

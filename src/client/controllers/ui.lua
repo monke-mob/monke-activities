@@ -5,14 +5,14 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local app = require(script.Parent.Parent.app)
 
 local uiController = Knit.CreateController({
-	Name = "ui",
+    Name = "ui",
 })
 
 --[[
 	@returns never
 --]]
 function uiController:KnitInit()
-	app()
+    app()
 end
 
 return uiController
