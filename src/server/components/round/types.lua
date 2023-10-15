@@ -1,3 +1,7 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local types = require(ReplicatedStorage.types)
+
 export type timeScoringConfig = {
     pointsPerIncrement: number,
 }
@@ -32,10 +36,8 @@ type endConditionConfig = {
     duration: number,
 }
 
-type teamType = "single" | "team"
-
 export type config = {
-    teamType: teamType,
+    teamType: types.teamType,
     respawning: respawningConfig,
     endCondition: endConditionConfig,
     scoring: scoringConfig,

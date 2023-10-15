@@ -2,12 +2,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
-local clientTypes = require(script.Parent.Parent.Parent.types)
 local frame = require(script.Parent.Parent.components.frame)
 local list = require(script.Parent.Parent.components.list)
 local optionsAction = require(script.Parent.Parent.actions.voting.options)
 local panel = require(script.Parent.panel)
 local stageAction = require(script.Parent.Parent.actions.voting.stage)
+local types = require(ReplicatedStorage.types)
 
 --[[
     Holds voting panels. 
@@ -27,7 +27,7 @@ local function panelContainer()
                 Padding = UDim.new(0.04, 0),
             }),
 
-            Fusion.ForValues(optionsAction.value, function(option: clientTypes.votingOption)
+            Fusion.ForValues(optionsAction.value, function(option: types.votingOption)
                 return panel({
                     data = option,
                     aspectRatio = aspectRatio,

@@ -3,10 +3,10 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local button = require(script.Parent.Parent.components.button)
-local clientTypes = require(script.Parent.Parent.Parent.types)
+local types = require(ReplicatedStorage.types)
 
 type componentsProps = {
-    data: clientTypes.votingOption,
+    data: types.votingOption,
     aspectRatio: number,
 }
 
@@ -20,7 +20,6 @@ local function panel(componentsProps: componentsProps)
     return button({
         Text = "hello",
         Size = UDim2.fromScale(0, 1),
-
 
         [Fusion.Children] = {},
     }, {})
