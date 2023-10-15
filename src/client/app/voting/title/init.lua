@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local frame = require(script.Parent.Parent.components.frame)
-local stage = require(script.timer)
+local stage = require(script.stage)
 local timer = require(script.timer)
 
 --[[
