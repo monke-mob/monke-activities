@@ -34,6 +34,7 @@ end
 --[[
 	Updates the player count action with the new player count.
 	
+    @private
 	@returns never
 --]]
 function roundDataController:_playerCountUpdated()
@@ -43,7 +44,8 @@ end
 
 --[[
 	Updates the timer action with the new time.
-	
+    
+	@private
 	@returns never
 --]]
 function roundDataController:_timerUpdated()
