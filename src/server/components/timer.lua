@@ -14,12 +14,14 @@ export type class = typeof(setmetatable({}, {})) & {
     _running: boolean,
     _startTick: number?,
     _interval: number,
+    _startTime: number,
     timeRemaining: number,
     updated: any,
     ended: any,
     destroy: () -> never,
     start: () -> never,
     stop: () -> never,
+    restart: () -> never,
     _nextUpdateInterval: (tick: number) -> never,
     _increment: () -> never,
 }
@@ -37,6 +39,7 @@ function class.new(startTime: number, interval: number?): class
         _running = false,
         _startTick = nil,
         _interval = if typeof(interval) == "number" then interval else 1,
+        _startTime = startTime,
         timeRemaining = startTime,
         updated = Signal.new(),
         ended = Signal.new(),
@@ -80,6 +83,17 @@ end
 ]]
 function class:stop()
     self._running = false
+end
+
+--[[
+	Restarts the timer.
+
+	@returns never
+]]
+function class:restart()
+    self:stop()
+    self.timeRemaining = self._startTime
+    self:start()
 end
 
 --[[
