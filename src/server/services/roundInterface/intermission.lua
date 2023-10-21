@@ -10,6 +10,7 @@ local intermissionService = Knit.CreateService({
     Name = "intermission",
     _roundInterface = nil,
     _roundService = nil,
+    _votingService = nil,
     _state = {
         -- Possible states: "waiting" or "intermission"
         stateName = "",
@@ -31,6 +32,7 @@ end
 function intermissionService:KnitStart()
     self._roundInterface = Knit.GetService("roundInterface")
     self._roundService = Knit.GetService("round")
+    self._votingService = Knit.GetService("voting")
 end
 
 --[[
@@ -102,6 +104,8 @@ function intermissionService:_start()
         self:_stop()
         self._roundService:start(self._state.players)
     end)
+
+    self._votingService:start()
 end
 
 --[[

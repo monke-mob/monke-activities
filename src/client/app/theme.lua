@@ -17,12 +17,14 @@ local themeColors = {}
 local themes: theme = {
     font = {
         default = Font.fromName("GothamSSm", Enum.FontWeight.Heavy),
+        bold = Font.fromName("GothamSSm", Enum.FontWeight.Bold),
         light = Font.fromName("GothamSSm", Enum.FontWeight.Medium),
         caesar = Font.fromId(12187368843, Enum.FontWeight.Bold),
     },
 
     textColor = {
         default = Color3.fromRGB(255, 255, 255),
+        light = Color3.fromRGB(229, 229, 229),
         dark = Color3.fromRGB(0, 0, 0),
     },
 

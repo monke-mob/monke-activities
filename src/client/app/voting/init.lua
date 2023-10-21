@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local gui = require(script.Parent.components.gui)
+local title = require(script.title)
 local panelContainer = require(script.panelContainer)
 
 --[[
@@ -17,6 +18,7 @@ local function voting()
         Enabled = enabled,
 
         [Fusion.Children] = {
+            title(),
             panelContainer(),
         },
     })

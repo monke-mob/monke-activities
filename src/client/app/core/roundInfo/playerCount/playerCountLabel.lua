@@ -10,7 +10,7 @@ local theme = require(script.Parent.Parent.Parent.Parent.theme)
 local function timerLabel()
     return label({
         Text = playerCountAction.value,
-        TextColor3 = theme.current.foreground,
+        TextColor3 = theme.themes.textColor.light,
         FontFace = theme.themes.font.light,
         Size = UDim2.fromScale(0, 0.4),
         TextScaled = true,

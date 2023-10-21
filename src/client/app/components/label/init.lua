@@ -17,7 +17,7 @@ export type instanceProps = types.dictionaryAny
 local function label(instanceProps: instanceProps)
     return Fusion.New("TextLabel")(concatTables({
         FontFace = theme.current.font,
-        TextColor3 = theme.current.foreground,
+        TextColor3 = theme.current.default,
         BackgroundTransparency = 1,
     }, instanceProps))
 end

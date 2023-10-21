@@ -5,19 +5,9 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
 local TIMER = require(ReplicatedStorage.constants.TIMER)
 
-local playerCountAction = require(script.Parent.Parent.Parent.app.actions.round.playerCount)
-local timerAction = require(script.Parent.Parent.Parent.app.actions.round.timer)
-
---[[
-	Formats a time (in seconds) to MM:SS.
-
-	@param {number} seconds [The amount of seconds.]
-	@returns string
-]]
-local function formatTime(seconds: number): string
-    local minutes: number = math.floor(seconds / 60)
-    return string.format("%02d:%02d", minutes, seconds % 60)
-end
+local playerCountAction = require(script.Parent.Parent.app.actions.round.playerCount)
+local timerAction = require(script.Parent.Parent.app.actions.round.timer)
+local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
 
 local roundDataController = Knit.CreateController({
     Name = "roundData",
@@ -49,9 +39,7 @@ end
 	@returns never
 --]]
 function roundDataController:_timerUpdated()
-    local timeInSeconds: number = ReplicatedStorage:GetAttribute(TIMER)
-    local timeFormatted: string = formatTime(timeInSeconds)
-    timerAction:set(timeFormatted)
+    updateTimeActionWithAttribute(timerAction, TIMER)
 end
 
 return roundDataController
