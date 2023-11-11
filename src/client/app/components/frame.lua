@@ -16,7 +16,7 @@ export type componentProps = roundComponent.componentProps
 	@param {componentProps} componentProps [The component props.]
 	@returns Fusion.Component
 --]]
-local function button(instanceProps: types.dictionaryAny, componentProps: componentProps)
+local function frame(instanceProps: types.dictionaryAny, componentProps: componentProps)
     roundComponent(
         instanceProps,
         concatTables({
@@ -30,4 +30,4 @@ local function button(instanceProps: types.dictionaryAny, componentProps: compon
     }, instanceProps))
 end
 
-return button
+return frame
