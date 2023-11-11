@@ -1,6 +1,4 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local VOTING = require(ReplicatedStorage.constants.VOTING)
+local VOTING = require(script.Parent.VOTING)
 
 return {
     minimumPlayers = 1,
