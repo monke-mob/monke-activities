@@ -1,4 +1,4 @@
-local roundTypes = require(script.Parent.Parent.Parent.types)
+local modeTypes = require(script.Parent.Parent.Parent.types)
 
 local teamTeamPlugin = require(script.Parent.Parent.Parent.plugins.team.team)
 
@@ -21,11 +21,11 @@ export type class = typeof(setmetatable({}, {})) & {
     Creates the end condition.
 
     @constructor
-    @param {roundTypes.timeScoringConfig} config [The config.]
-    @param {roundTypes.incrementTeamScore} incrementTeamScore [The function to update a teams score.]
+    @param {modeTypes.timeScoringConfig} config [The config.]
+    @param {modeTypes.incrementTeamScore} incrementTeamScore [The function to update a teams score.]
     @returns class
 ]]
-function class.new(mode, config: roundTypes.timeScoringConfig): class
+function class.new(mode, config: modeTypes.timeScoringConfig): class
     local self = setmetatable({
         _mode = mode,
         _increment = config.pointsPerIncrement,

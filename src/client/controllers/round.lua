@@ -17,6 +17,9 @@ local roundDataController = Knit.CreateController({
 	@returns never
 --]]
 function roundDataController:KnitInit()
+    self:_playerCountUpdated()
+    self:_timerUpdated()
+
     ReplicatedStorage:GetAttributeChangedSignal(PLAYER_COUNT):Connect(self._playerCountUpdated)
     ReplicatedStorage:GetAttributeChangedSignal(TIMER):Connect(self._timerUpdated)
 end

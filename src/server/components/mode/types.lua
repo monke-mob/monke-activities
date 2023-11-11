@@ -44,4 +44,11 @@ export type config = {
     teams: teamsConfig,
 }
 
+export type info = {
+    id: string,
+    name: string,
+    type: types.teamType,
+    description: string,
+}
+
 return nil

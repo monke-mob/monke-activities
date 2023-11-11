@@ -1,4 +1,4 @@
-local roundTypes = require(script.Parent.Parent.Parent.types)
+local modeTypes = require(script.Parent.Parent.Parent.types)
 
 local createTeam = require(script.Parent.Parent.Parent.functions.createTeam)
 
@@ -29,4 +29,4 @@ return {
             [2] = createTeam("players", 15),
         },
     },
-} :: roundTypes.config
+} :: modeTypes.config

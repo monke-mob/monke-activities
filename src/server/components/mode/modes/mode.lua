@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
-local roundTypes = require(script.Parent.Parent.types)
+local modeTypes = require(script.Parent.Parent.types)
 
 local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
 local singlePlayerPlugin = require(script.Parent.Parent.plugins.team.single)
@@ -14,7 +14,7 @@ local timeScorePlugin = require(script.Parent.Parent.plugins.score.time)
 
     @returns { teamTeamPlugin.constructorTeam }
 ]]
-local function balanceTeams(players: { number }, config: roundTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
+local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
     if config.usesCustomTeamBalancer then
         return {}
     else
@@ -47,10 +47,10 @@ export type players = { number }
 
     @constructor
     @param {players} players [The players.]
-    @param {roundTypes.config} config [The config for the mode.]
+    @param {modeTypes.config} config [The config for the mode.]
     @returns class
 ]]
-function class.new(players: players, config: roundTypes.config): class
+function class.new(players: players, config: modeTypes.config): class
     -- We have to delcare self here because some of the plugins require access
     -- to the other plugins.
     local self = setmetatable({}, class)

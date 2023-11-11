@@ -24,7 +24,8 @@ local function panelContainer()
 
         [Fusion.Children] = {
             list({
-                Padding = UDim.new(0.04, 0),
+                Padding = UDim.new(0.015, 0),
+                FillDirection = Enum.FillDirection.Horizontal,
             }),
 
             Fusion.ForValues(optionsAction.value, function(option: types.votingOption)
@@ -32,7 +33,7 @@ local function panelContainer()
                     data = option,
                     aspectRatio = aspectRatio,
                 })
-            end),
+            end, Fusion.cleanup),
         },
     }, {})
 end

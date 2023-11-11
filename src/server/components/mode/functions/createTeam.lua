@@ -1,4 +1,4 @@
-local roundTypes = require(script.Parent.Parent.types)
+local modeTypes = require(script.Parent.Parent.types)
 
 --[[
     Creates a team config from the passed values. If you're wondering why turn this into a function
@@ -6,9 +6,9 @@ local roundTypes = require(script.Parent.Parent.types)
 
     @param {string} players [The players.]
     @param {number} config [The mode team config.]
-    @returns roundTypes.teamConfig
+    @returns modeTypes.teamConfig
 ]]
-local function createTeam(id: string, maxPlayers: number): roundTypes.teamConfig
+local function createTeam(id: string, maxPlayers: number): modeTypes.teamConfig
     return {
         id = id,
         maxPlayers = maxPlayers,

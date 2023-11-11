@@ -1,4 +1,4 @@
-local roundTypes = require(script.Parent.Parent.types)
+local modeTypes = require(script.Parent.Parent.types)
 
 local teamPlugin = require(script.Parent.Parent.plugins.team.team)
 
@@ -10,13 +10,13 @@ type team = teamPlugin.constructorTeam & {
     Balances teams by seperating the players as evenly as possible.
 
     @param {{ number }} players [The players.]
-    @param {roundTypes.teamsConfig} config [The mode team config.]
+    @param {modeTypes.teamsConfig} config [The mode team config.]
     @returns { teamPlugin.constructorTeam }
 ]]
-local function balanceTeams(players: { number }, config: roundTypes.teamsConfig): { team }
+local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { team }
     local teams: { team } = {}
 
-    for index: number, team: roundTypes.teamConfig in ipairs(config.ids) do
+    for index: number, team: modeTypes.teamConfig in ipairs(config.ids) do
         teams[index] = {
             id = team.id,
             maxPlayers = team.maxPlayers,

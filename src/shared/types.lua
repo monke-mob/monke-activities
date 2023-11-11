@@ -7,7 +7,7 @@ export type teamType = "single" | "team"
 export type votingOption = {
     name: string,
     description: string,
-    teamType: teamType,
+    teamType: teamType?,
 }
 
 return nil

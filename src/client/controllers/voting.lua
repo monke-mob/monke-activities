@@ -6,22 +6,38 @@ local IS_VOTING = require(ReplicatedStorage.constants.IS_VOTING)
 local VOTING_STAGE = require(ReplicatedStorage.constants.VOTING_STAGE)
 local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
 
-local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
-local timerAction = require(script.Parent.Parent.app.actions.voting.timer)
+local optionsAction = require(script.Parent.Parent.app.actions.voting.options)
 local stageAction = require(script.Parent.Parent.app.actions.voting.stage)
+local timerAction = require(script.Parent.Parent.app.actions.voting.timer)
+local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
 local votingAction = require(script.Parent.Parent.app.actions.voting.voting)
 
 local votingController = Knit.CreateController({
     Name = "voting",
+    _votingService = nil,
 })
 
 --[[
 	@returns never
 --]]
 function votingController:KnitInit()
-    ReplicatedStorage:GetAttributeChangedSignal(IS_VOTING):Connect(self._isVotingUpdated)
-    ReplicatedStorage:GetAttributeChangedSignal(VOTING_STAGE):Connect(self._stageUpdated)
-    ReplicatedStorage:GetAttributeChangedSignal(VOTING_TIMER):Connect(self._timerUpdated)
+    self._votingService = Knit.GetService("voting")
+
+    self:_isVotingUpdated()
+    self:_stageUpdated()
+    self:_timerUpdated()
+
+    ReplicatedStorage:GetAttributeChangedSignal(IS_VOTING):Connect(function()
+        self:_isVotingUpdated()
+    end)
+
+    ReplicatedStorage:GetAttributeChangedSignal(VOTING_STAGE):Connect(function()
+        self:_stageUpdated()
+    end)
+
+    ReplicatedStorage:GetAttributeChangedSignal(VOTING_TIMER):Connect(function()
+        self:_timerUpdated()
+    end)
 end
 
 --[[
@@ -42,6 +58,11 @@ end
 --]]
 function votingController:_stageUpdated()
     stageAction:set(ReplicatedStorage:GetAttribute(VOTING_STAGE))
+
+    -- The options need updated, as this is a new stage.
+    self._votingService:getOptions():andThen(function(options)
+        optionsAction:set(options)
+    end)
 end
 
 --[[

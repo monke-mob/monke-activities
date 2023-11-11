@@ -15,6 +15,8 @@ local types = require(ReplicatedStorage.types)
 
 local votingService = Knit.CreateService({
     Name = "voting",
+    _mapService = nil,
+    _modeService = nil,
     _timer = timerComponent.new(VOTING.timePerStage),
     _state = {
         chosen = {
@@ -22,6 +24,7 @@ local votingService = Knit.CreateService({
             gamemode = nil,
         },
         options = {},
+        alreadyVoted = {},
     },
 })
 
@@ -29,6 +32,9 @@ local votingService = Knit.CreateService({
 	@returns never
 ]]
 function votingService:KnitInit()
+    self._mapService = Knit.GetService("map")
+    self._modeService = Knit.GetService("mode")
+
     ReplicatedStorage:SetAttribute(IS_VOTING, false)
     ReplicatedStorage:SetAttribute(VOTING_STAGE, "")
     ReplicatedStorage:SetAttribute(VOTING_TIMER, 0)
@@ -45,7 +51,8 @@ end
 ]]
 function votingService:start()
     ReplicatedStorage:SetAttribute(IS_VOTING, true)
-    self:_setStage("map", {})
+    -- TODO: Implement blacklisted maps, aka maps that where used in last rounds selection.
+    self:_setStage("map", self._mapService:getRandomMapInfos(2, {}))
 end
 
 --[[
@@ -54,7 +61,19 @@ end
 	@returns { types.votingOption }
 ]]
 function votingService.Client:getOptions(): { types.votingOption }
-    return self._state.options
+    return self.Server._state.options
+end
+
+--[[
+    Votes
+
+    @param {Player} player [The player.]
+	@returns never
+]]
+function votingService.Client:vote(player: Player)
+    if table.find(self.Server._state.alreadyVoted, player.UserId) then
+        return
+    end
 end
 
 --[[
@@ -77,15 +96,18 @@ end
 	@returns never
 ]]
 function votingService:_setStage(stage: string, options: { types.votingOption })
+    self._state.options = options
     ReplicatedStorage:SetAttribute(VOTING_STAGE, stage)
     self._timer:restart()
 
     local endedConnection: RBXScriptConnection
     endedConnection = self._timer.ended:Connect(function()
         endedConnection:Disconnect()
+        endedConnection = nil :: any
 
         if stage == "map" then
-        elseif stage == "voting" then
+            self:_setStage("mode", self._modeService:getRandomModesFromMap(3, nil :: any))
+        elseif stage == "mode" then
             self:_stop()
         end
     end)
