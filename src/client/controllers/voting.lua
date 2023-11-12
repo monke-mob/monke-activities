@@ -2,8 +2,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local IS_VOTING = require(ReplicatedStorage.constants.IS_VOTING)
-local VOTING_STAGE = require(ReplicatedStorage.constants.VOTING_STAGE)
 local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
 
 local optionsAction = require(script.Parent.Parent.app.actions.voting.options)
@@ -24,15 +22,13 @@ function votingController:KnitInit()
     self._votingService = Knit.GetService("voting")
 
     self:_isVotingUpdated()
-    self:_stageUpdated()
-    self:_timerUpdated()
 
-    ReplicatedStorage:GetAttributeChangedSignal(IS_VOTING):Connect(function()
-        self:_isVotingUpdated()
+    self._votingService.toggleVoting:Connect(function(...)
+        self:_isVotingUpdated(...)
     end)
 
-    ReplicatedStorage:GetAttributeChangedSignal(VOTING_STAGE):Connect(function()
-        self:_stageUpdated()
+    self._votingService.setStage:Connect(function(...)
+        self:_stageUpdated(...)
     end)
 
     ReplicatedStorage:GetAttributeChangedSignal(VOTING_TIMER):Connect(function()
@@ -46,8 +42,13 @@ end
 	@private
 	@returns never
 --]]
-function votingController:_isVotingUpdated()
-    votingAction:set(ReplicatedStorage:GetAttribute(IS_VOTING))
+function votingController:_isVotingUpdated(isVoting: boolean)
+    if typeof(isVoting) ~= "boolean" then
+        local _worked: boolean, isVotingPromise: boolean = self._votingService:isStarted():await()
+        isVoting = isVotingPromise
+    end
+
+    votingAction:set(isVoting)
 end
 
 --[[
@@ -56,8 +57,8 @@ end
 	@private
 	@returns never
 --]]
-function votingController:_stageUpdated()
-    stageAction:set(ReplicatedStorage:GetAttribute(VOTING_STAGE))
+function votingController:_stageUpdated(stage: string)
+    stageAction:set(stage)
 
     -- The options need updated, as this is a new stage.
     self._votingService:getOptions():andThen(function(options)

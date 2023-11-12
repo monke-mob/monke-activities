@@ -29,11 +29,12 @@ local function panelContainer()
             }),
 
             Fusion.ForPairs(optionsAction.value, function(id: number, option: types.votingOption)
-                return id, panel({
-                    id = id,
-                    data = option,
-                    aspectRatio = aspectRatio,
-                })
+                return id,
+                    panel({
+                        id = id,
+                        data = option,
+                        aspectRatio = aspectRatio,
+                    })
             end, Fusion.cleanup),
         },
     }, {})

@@ -5,9 +5,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local IS_VOTING = require(ReplicatedStorage.constants.IS_VOTING)
 local VOTING = require(script.Parent.Parent.constants.VOTING)
-local VOTING_STAGE = require(ReplicatedStorage.constants.VOTING_STAGE)
 local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
 
 local mapTypes = require(script.Parent.Parent.components.map.types)
@@ -21,6 +19,7 @@ local votingService = Knit.CreateService({
     _modeService = nil,
     _timer = timerComponent.new(VOTING.timePerStage),
     _state = {
+        started = false,
         chosen = {
             map = nil,
             gamemode = nil,
@@ -29,6 +28,11 @@ local votingService = Knit.CreateService({
         alreadyVoted = {},
         votes = {},
         results = {},
+    },
+    Client = {
+        setStage = Knit.CreateSignal(),
+        toggleVoting = Knit.CreateSignal(),
+        updateVoteCount = Knit.CreateSignal(),
     },
 })
 
@@ -39,8 +43,6 @@ function votingService:KnitInit()
     self._mapService = Knit.GetService("map")
     self._modeService = Knit.GetService("mode")
 
-    ReplicatedStorage:SetAttribute(IS_VOTING, false)
-    ReplicatedStorage:SetAttribute(VOTING_STAGE, "")
     ReplicatedStorage:SetAttribute(VOTING_TIMER, 0)
 
     self._timer.updated:Connect(function(timeRemaining: number)
@@ -54,9 +56,10 @@ end
 	@returns never
 ]]
 function votingService:start()
-    ReplicatedStorage:SetAttribute(IS_VOTING, true)
+    self._state.started = true
+    self.Client.toggleVoting:FireAll(true)
     -- TODO: Implement blacklisted maps, aka maps that where used in last rounds selection.
-    self:_setStage("map", self._mapService:getRandomMapInfos(2, {}))
+    self:_setStage("map", self._mapService :getRandomMapInfos(2, {}))
 end
 
 --[[
@@ -66,6 +69,15 @@ end
 ]]
 function votingService:getResults(): { [string]: string }
     return self._state.results
+end
+
+--[[
+    Returns the is voting.
+
+	@returns boolean
+]]
+function votingService.Client:isStarted(): boolean
+    return self.Server._state.started
 end
 
 --[[
@@ -89,6 +101,7 @@ function votingService.Client:vote(player: Player, voteID: number)
     end
 
     self.Server._state.votes[voteID] += 1
+    self.updateVoteCount:FireAll(voteID, self.Server._state.votes)
 end
 
 --[[
@@ -98,8 +111,9 @@ end
 	@returns never
 ]]
 function votingService:_stop()
-    ReplicatedStorage:SetAttribute(IS_VOTING, false)
+    self._state.started = false
     self._state.options = {}
+    self.Client.toggleVoting:FireAll(false)
 end
 
 --[[
@@ -135,7 +149,7 @@ end
 ]]
 function votingService:_setStage(stage: string, options: { types.votingOption })
     self._state.options = options
-    ReplicatedStorage:SetAttribute(VOTING_STAGE, stage)
+    self.Client.setStage:FireAll(stage, options)
     self._timer:restart()
     self._state.votes = {}
 
