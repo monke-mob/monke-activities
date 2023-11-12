@@ -14,7 +14,7 @@ local types = require(ReplicatedStorage.types)
 --]]
 local function cornerRadius(instanceProps: types.dictionaryAny)
     return Fusion.New("UICorner")(concatTables({
-        CornerRadius = theme.current.cornerRadius,
+        CornerRadius = theme.cornerRadius.primary,
     }, instanceProps))
 end
 

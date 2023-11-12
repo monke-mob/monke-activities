@@ -21,8 +21,8 @@ local function timer()
             timerLabel(),
         },
     }, {
-        cornerRadius = theme.themes.cornerRadius.large,
-        gradient = theme.themes.gradient.brand,
+        cornerRadius = theme.cornerRadius.large,
+        gradient = theme.gradient.brand,
     })
 end
 

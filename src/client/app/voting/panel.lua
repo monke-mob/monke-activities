@@ -69,16 +69,16 @@ local function panel(componentsProps: componentsProps)
 
                     label({
                         Text = componentsProps.data.name,
-                        TextColor3 = theme.themes.textColor.light,
-                        FontFace = theme.themes.font.bold,
+                        TextColor3 = theme.foreground.light,
+                        FontFace = theme.font.bold,
                         Size = UDim2.fromScale(1, 0.18),
                         TextScaled = true,
                     }),
 
                     label({
                         Text = "10 votes",
-                        TextColor3 = theme.themes.textColor.light,
-                        FontFace = theme.themes.font.light,
+                        TextColor3 = theme.foreground.light,
+                        FontFace = theme.font.light,
                         Size = UDim2.fromScale(1, 0.105),
                         TextScaled = true,
                     }),

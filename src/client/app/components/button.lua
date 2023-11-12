@@ -20,9 +20,9 @@ local function button(instanceProps: types.dictionaryAny, componentProps: compon
     roundComponent(instanceProps, componentProps)
 
     return Fusion.New("TextButton")(concatTables({
-        BackgroundColor3 = theme.current.background,
-        FontFace = theme.current.font,
-        TextColor3 = theme.current.textColor,
+        BackgroundColor3 = theme.background.primary,
+        FontFace = theme.font.primary,
+        TextColor3 = theme.foreground.primary,
         Text = "",
         AutoButtonColor = false,
     }, instanceProps))

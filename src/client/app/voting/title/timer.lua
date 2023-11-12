@@ -10,8 +10,8 @@ local timerAction = require(script.Parent.Parent.Parent.actions.voting.timer)
 local function timer()
     return strokeLabel({
         Text = timerAction.value,
-        FontFace = theme.themes.font.caesar,
-        TextColor3 = theme.themes.textColor.default,
+        FontFace = theme.font.caesar,
+        TextColor3 = theme.foreground.primary,
         AnchorPoint = Vector2.new(0, 1),
         Position = UDim2.fromScale(0, 1),
         Size = UDim2.fromScale(1, 0.375),

@@ -35,8 +35,8 @@ local function container(instanceProps: types.dictionaryAny, componentProps: com
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
         }, instanceProps),
         concatTables({
+            cornerRadius = theme.cornerRadius.primary,
             hasCornerRadius = true,
-            cornerRadius = theme.themes.cornerRadius.default,
         }, componentProps)
     )
 end

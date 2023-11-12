@@ -25,7 +25,7 @@ local function frame(instanceProps: types.dictionaryAny, componentProps: compone
     )
 
     return Fusion.New("Frame")(concatTables({
-        BackgroundColor3 = theme.current.background,
+        BackgroundColor3 = theme.background.primary,
         BackgroundTransparency = 1,
     }, instanceProps))
 end

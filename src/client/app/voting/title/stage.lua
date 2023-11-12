@@ -14,15 +14,15 @@ local theme = require(script.Parent.Parent.Parent.theme)
 local function timer()
     return strokeLabel({
         Text = stageAction.value,
-        FontFace = theme.themes.font.caesar,
-        TextColor3 = theme.themes.textColor.default,
+        FontFace = theme.font.caesar,
+        TextColor3 = theme.foreground.primary,
         Size = UDim2.fromScale(1, 0.625),
         TextScaled = true,
 
         [Fusion.Children] = {
             Fusion.New("UIGradient")({
                 Rotation = 90,
-                Color = theme.themes.gradient.brand,
+                Color = theme.gradient.brand,
             }),
         },
     })

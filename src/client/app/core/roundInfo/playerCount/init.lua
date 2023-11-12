@@ -26,7 +26,7 @@ local function timer()
 
             Fusion.New("ImageLabel")({
                 Image = "rbxassetid://14799447549",
-                ImageColor3 = theme.themes.textColor.light,
+                ImageColor3 = theme.foreground.light,
                 Size = UDim2.fromScale(0, 0.4),
                 BackgroundTransparency = 1,
 
@@ -41,7 +41,7 @@ local function timer()
             playerCountLabel(),
         },
     }, {
-        gradient = theme.themes.gradient.dark,
+        gradient = theme.gradient.dark,
     })
 end
 
