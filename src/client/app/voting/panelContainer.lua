@@ -28,8 +28,9 @@ local function panelContainer()
                 FillDirection = Enum.FillDirection.Horizontal,
             }),
 
-            Fusion.ForValues(optionsAction.value, function(option: types.votingOption)
-                return panel({
+            Fusion.ForPairs(optionsAction.value, function(id: number, option: types.votingOption)
+                return id, panel({
+                    id = id,
                     data = option,
                     aspectRatio = aspectRatio,
                 })

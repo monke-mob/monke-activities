@@ -20,8 +20,9 @@ function mapService:KnitInit()
             continue
         end
 
-        local map: mapTypes.info = require(mapContainer:FindFirstChild("info"))
-        self._maps[map.id] = { info = map, container = mapContainer }
+        local info: mapTypes.info = require(mapContainer:FindFirstChild("info"))
+        local config: mapTypes.config = require(mapContainer:FindFirstChild("config"))
+        self._maps[info.id] = { info = info, config = config, container = mapContainer }
     end
 end
 
@@ -68,9 +69,19 @@ function mapService:getRandomMapInfos(count: number, blacklist: { string })
 end
 
 --[[
+    Gets a map config from its ID.
+
+    @param {string} id [The id of the map.]
+    @returns mapTypes.config
+]]
+function mapService:getConfigFromID(id: string)
+    return self._maps[id].config
+end
+
+--[[
     Loads a map.
 
-    @param {string} name [The id of the map.]
+    @param {string} id [The id of the map.]
 	@returns never
 ]]
 function mapService:loadMap(id: string)

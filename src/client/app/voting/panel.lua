@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
+local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local button = require(script.Parent.Parent.components.button)
 local cornerRadius = require(script.Parent.Parent.components.cornerRadius)
@@ -10,7 +11,14 @@ local list = require(script.Parent.Parent.components.list)
 local theme = require(script.Parent.Parent.theme)
 local types = require(ReplicatedStorage.types)
 
+local votingService
+
+Knit:OnStart():andThen(function()
+    votingService = Knit.GetService("voting")
+end)
+
 type componentsProps = {
+    id: number,
     data: types.votingOption,
     aspectRatio: any,
 }
@@ -25,6 +33,10 @@ local function panel(componentsProps: componentsProps)
     return button({
         Size = UDim2.fromScale(0, 1),
         BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+
+        [Fusion.OnEvent("Activated")] = function()
+            votingService:vote(componentsProps.id)
+        end,
 
         [Fusion.Children] = {
             Fusion.New("UIAspectRatioConstraint")({
