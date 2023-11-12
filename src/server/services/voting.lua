@@ -25,6 +25,8 @@ local votingService = Knit.CreateService({
         },
         options = {},
         alreadyVoted = {},
+        votes = {},
+        results = {}
     },
 })
 
@@ -70,10 +72,12 @@ end
     @param {Player} player [The player.]
 	@returns never
 ]]
-function votingService.Client:vote(player: Player)
-    if table.find(self.Server._state.alreadyVoted, player.UserId) then
+function votingService.Client:vote(player: Player,voteID: number)
+    if table.find(self.Server._state.alreadyVoted, player.UserId) or self.Server._state.results[voteID] ~= nil then
         return
     end
+
+    self.Server._state.votes[voteID] += 1
 end
 
 --[[
@@ -99,6 +103,11 @@ function votingService:_setStage(stage: string, options: { types.votingOption })
     self._state.options = options
     ReplicatedStorage:SetAttribute(VOTING_STAGE, stage)
     self._timer:restart()
+    self._state.votes = {}
+
+    for index: number, _option: types.votingOption in ipairs(options) do
+        self._state.votes[index] = 0
+    end
 
     local endedConnection: RBXScriptConnection
     endedConnection = self._timer.ended:Connect(function()
