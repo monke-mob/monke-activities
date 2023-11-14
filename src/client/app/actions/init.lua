@@ -7,7 +7,6 @@ export type action = {
     value: any,
     _lastValue: any,
     _signal: RBXScriptSignal,
-
     set: <a>(self: a, value: any) -> never,
     get: <a>(self: a) -> any,
     connect: <a>(self: a, ...any) -> RBXScriptConnection,
@@ -30,9 +29,9 @@ class.__index = class
 	@returns never
 --]]
 function class:set(value: any)
-    -- Dont need to update if its the same
-    -- as the last value.
-    if value == self._lastValue then
+    -- Dont need to update if its the same as the last value.
+    -- However if its a array/dictionary then dont check.
+    if value == self._lastValue and typeof(value) ~= "table" then
         return
     end
 
