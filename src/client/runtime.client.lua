@@ -9,5 +9,10 @@ until game:IsLoaded()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
+
+local app = require(script.Parent.app)
+
 Knit.AddControllersDeep(script.Parent:WaitForChild("controllers"))
-Knit.Start():catch(warn)
+Knit.Start():andThen(function()
+    app()
+end):catch(warn)
