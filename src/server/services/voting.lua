@@ -100,8 +100,9 @@ function votingService.Client:vote(player: Player, voteID: number)
         return
     end
 
+    table.insert(self.Server._state.alreadyVoted, player.UserId)
     self.Server._state.votes[voteID] += 1
-    self.updateVoteCount:FireAll(voteID, self.Server._state.votes)
+    self.Server.Client.updateVoteCount:FireAll(voteID, self.Server._state.votes[voteID])
 end
 
 --[[
@@ -148,10 +149,11 @@ end
 	@returns never
 ]]
 function votingService:_setStage(stage: string, options: { types.votingOption })
+    self._state.votes = {}
+    self._state.alreadyVoted = {}
     self._state.options = options
     self.Client.setStage:FireAll(stage, options)
     self._timer:restart()
-    self._state.votes = {}
 
     -- Set the option votes to 0.
     for index: number, _option: types.votingOption in ipairs(options) do

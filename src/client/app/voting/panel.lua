@@ -10,6 +10,7 @@ local label = require(script.Parent.Parent.components.label)
 local list = require(script.Parent.Parent.components.list)
 local theme = require(script.Parent.Parent.theme)
 local types = require(ReplicatedStorage.types)
+local votesAction = require(script.Parent.Parent.actions.voting.votes)
 
 local votingService
 
@@ -88,7 +89,10 @@ local function panel(componentsProps: componentsProps)
                     }),
 
                     label({
-                        Text = "10 votes",
+                        Text = Fusion.Computed(function()
+                            local votes: number = votesAction.value:get()[componentsProps.id]
+                            return `{votes} {if votes == 1 then "vote" else "votes"}`
+                        end),
                         TextColor3 = theme.foreground.light,
                         FontFace = theme.font.light,
                         Size = UDim2.fromScale(1, 0.105),
