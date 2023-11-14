@@ -4,6 +4,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
 
+local roundInfoVisibleAction = require(script.Parent.Parent.app.actions.round.visible)
 local votesAction = require(script.Parent.Parent.app.actions.voting.votes)
 local optionsAction = require(script.Parent.Parent.app.actions.voting.options)
 local stageAction = require(script.Parent.Parent.app.actions.voting.stage)
@@ -24,10 +25,10 @@ local votingController = Knit.CreateController({
 function votingController:KnitStart()
     self._votingService = Knit.GetService("voting")
 
-    self:_isVotingUpdated()
+    self:_toggleVoting()
 
     self._votingService.toggleVoting:Connect(function(...)
-        self:_isVotingUpdated(...)
+        self:_toggleVoting(...)
     end)
 
     self._votingService.setStage:Connect(function(...)
@@ -49,13 +50,14 @@ end
 	@private
 	@returns never
 --]]
-function votingController:_isVotingUpdated(isVoting: boolean)
-    if typeof(isVoting) ~= "boolean" then
-        local _success: boolean, isVotingPromise: boolean = self._votingService:isStarted():await()
-        isVoting = isVotingPromise
+function votingController:_toggleVoting(voting: boolean)
+    if typeof(voting) ~= "boolean" then
+        local _success: boolean, votingPromise: boolean = self._votingService:isStarted():await()
+        voting = votingPromise
     end
 
-    votingAction:set(isVoting)
+    votingAction:set(voting)
+    roundInfoVisibleAction:set(not voting)
 end
 
 --[[
