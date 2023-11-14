@@ -21,7 +21,7 @@ local votingController = Knit.CreateController({
 --[[
 	@returns never
 --]]
-function votingController:KnitInit()
+function votingController:KnitStart()
     self._votingService = Knit.GetService("voting")
 
     self:_isVotingUpdated()

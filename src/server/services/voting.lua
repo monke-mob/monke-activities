@@ -40,14 +40,19 @@ local votingService = Knit.CreateService({
 	@returns never
 ]]
 function votingService:KnitInit()
-    self._mapService = Knit.GetService("map")
-    self._modeService = Knit.GetService("mode")
-
     ReplicatedStorage:SetAttribute(VOTING_TIMER, 0)
 
     self._timer.updated:Connect(function(timeRemaining: number)
         ReplicatedStorage:SetAttribute(VOTING_TIMER, timeRemaining)
     end)
+end
+
+--[[
+	@returns never
+]]
+function votingService:KnitStart()
+    self._mapService = Knit.GetService("map")
+    self._modeService = Knit.GetService("mode")
 end
 
 --[[
@@ -160,6 +165,7 @@ function votingService:_setStage(stage: string, options: { types.votingOption })
         self._state.votes[index] = 0
     end
 
+    -- TODO: Maybe improve this section to look better.
     local endedConnection: RBXScriptConnection
     endedConnection = self._timer.ended:Connect(function()
         endedConnection:Disconnect()
