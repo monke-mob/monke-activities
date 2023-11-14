@@ -59,7 +59,7 @@ function votingService:start()
     self._state.started = true
     self.Client.toggleVoting:FireAll(true)
     -- TODO: Implement blacklisted maps, aka maps that where used in last rounds selection.
-    self:_setStage("map", self._mapService :getRandomMapInfos(2, {}))
+    self:_setStage("map", self._mapService:getRandomMapInfos(2, {}))
 end
 
 --[[
@@ -100,9 +100,9 @@ function votingService.Client:vote(player: Player, voteID: number)
         return
     end
 
-    table.insert(self.Server._state.alreadyVoted, player.UserId)
     self.Server._state.votes[voteID] += 1
     self.Server.Client.updateVoteCount:FireAll(voteID, self.Server._state.votes[voteID])
+    table.insert(self.Server._state.alreadyVoted, player.UserId)
 end
 
 --[[
