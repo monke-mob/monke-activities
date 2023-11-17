@@ -20,8 +20,9 @@ function modeService:KnitInit()
             continue
         end
 
-        local mode: modeTypes.info = require(modeContainer:FindFirstChild("info"))
-        self._modes[mode.id] = { info = mode, container = modeContainer }
+        local info: modeTypes.info = require(modeContainer:FindFirstChild("info"))
+        local config: modeTypes.config = require(modeContainer:FindFirstChild("config"))
+        self._modes[info.id] = { info = info, config = config, container = modeContainer }
     end
 end
 
@@ -59,6 +60,16 @@ function modeService:getRandomModesFromMap(count: number, mapConfig: mapTypes.co
     modesChosen = nil :: any
 
     return modes
+end
+
+--[[
+    Gets a mode config from its ID.
+
+    @param {string} id [The id of the mode.]
+    @returns modeTypes.config
+]]
+function modeService:getConfigFromID(id: string)
+    return self._modes[id].config
 end
 
 return modeService

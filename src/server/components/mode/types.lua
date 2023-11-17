@@ -37,6 +37,7 @@ type endConditionConfig = {
 }
 
 export type config = {
+    src: Folder,
     teamType: types.teamType,
     respawning: respawningConfig,
     endCondition: endConditionConfig,

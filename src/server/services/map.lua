@@ -22,7 +22,7 @@ function mapService:KnitInit()
 
         local info: mapTypes.info = require(mapContainer:FindFirstChild("info"))
         local config: mapTypes.config = require(mapContainer:FindFirstChild("config"))
-        self._maps[info.id] = { info = info, config = config, container = mapContainer }
+        self._maps[info.id] = { info = info, config = config, src = mapContainer:FindFirstChild("src") }
     end
 end
 
@@ -85,7 +85,7 @@ end
 	@returns never
 ]]
 function mapService:loadMap(id: string)
-    local map: Folder = self.maps:Clone()
+    local map: Folder = self._maps[id].src:Clone()
     map.Parent = workspace
     self._currentMap = map
 end

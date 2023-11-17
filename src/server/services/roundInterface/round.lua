@@ -2,11 +2,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local demoMode = require(script.Parent.Parent.Parent.components.mode.modes.demo.src.main)
 local modeComponent = require(script.Parent.Parent.Parent.components.mode.modes.mode)
 
 local roundService = Knit.CreateService({
     Name = "round",
+    _mapService = nil,
+    _modeService = nil,
+    _votingService = nil,
     _state = {
         started = false,
         roundType = "",
@@ -17,6 +19,15 @@ local roundService = Knit.CreateService({
 })
 
 --[[
+	@returns never
+]]
+function roundService:KnitStart()
+    self._mapService = Knit.GetService("map")
+    self._modeService = Knit.GetService("mode")
+    self._votingService = Knit.GetService("voting")
+end
+
+--[[
 	Starts a round.
 
 	@param {modeComponent.players} players [The players.]
@@ -25,7 +36,13 @@ local roundService = Knit.CreateService({
 function roundService:start(players: modeComponent.players)
     self._state.started = true
 
-    local mode = demoMode.new(players)
+    local results: {[string]: string} = self._votingService:getResults()
+
+    self._mapService:loadMap(results.map)
+
+    -- TODO: Move to mode service.
+    local modeConfig = self._modeService:getConfigFromID(results.mode)
+    local mode = require(modeConfig.src.main).new(players)
     self._state.mode = mode
     mode:start()
 end
@@ -52,6 +69,7 @@ function roundService:stop()
     local scores = self._state.mode:getScores()
     print(scores)
 
+    self._mapService:removeMap()
     self._state.mode:destroy()
     self._state.mode = nil
 end

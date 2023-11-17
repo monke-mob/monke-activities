@@ -1,8 +1,9 @@
+local createTeam = require(script.Parent.Parent.Parent.functions.createTeam)
 local modeTypes = require(script.Parent.Parent.Parent.types)
 
-local createTeam = require(script.Parent.Parent.Parent.functions.createTeam)
-
 return {
+    src = script.Parent.src,
+
     teamType = "single",
 
     respawning = {
