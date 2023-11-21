@@ -11,8 +11,7 @@ export type componentProps = {
 }
 
 --[[
-	Adds an instance to the children array.
-	If a child array is not available it will create one.
+	Adds a corner radius component if one is needed.
 	
 	@param {dictionaryAny} instanceProps [The instance props.]
 	@param {componentProps} componentProps [The component props.]

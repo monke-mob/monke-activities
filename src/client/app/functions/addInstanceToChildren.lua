@@ -4,8 +4,8 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local types = require(ReplicatedStorage.types)
 
 --[[
-	Adds an instance to the children array.
-	If a child array is not available it will create one.
+	Adds an instance to the children array. If a child array is not
+	available it will create one.
 
 	@param {dictionaryAny} props [The props to add to.]
 	@param {Fusion.Component} instance [The instance add.]
