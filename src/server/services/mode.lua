@@ -3,12 +3,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local mapTypes = require(script.Parent.Parent.components.map.types)
+local modeComponent = require(script.Parent.Parent.components.mode.modes)
 local modeTypes = require(script.Parent.Parent.components.mode.types)
 
 local modeService = Knit.CreateService({
     Name = "mode",
     _modes = {},
-    _currentMode = nil,
+    _current = nil,
 })
 
 --[[
@@ -22,7 +23,8 @@ function modeService:KnitInit()
 
         local info: modeTypes.info = require(modeContainer:FindFirstChild("info"))
         local config: modeTypes.config = require(modeContainer:FindFirstChild("config"))
-        self._modes[info.id] = { info = info, config = config, container = modeContainer }
+        self._modes[info.id] =
+            { info = info, config = config, container = modeContainer }
     end
 end
 
@@ -63,13 +65,30 @@ function modeService:getRandomModesFromMap(count: number, mapConfig: mapTypes.co
 end
 
 --[[
-    Gets a mode config from its ID.
+    Loads a mode.
 
     @param {string} id [The id of the mode.]
-    @returns modeTypes.config
+    @param {modeComponent.players} players [The players participating in the mode.]
+	@returns never
 ]]
-function modeService:getConfigFromID(id: string)
-    return self._modes[id].config
+function modeService:load(id: string, players: modeComponent.players)
+    local mode = require(self._modes[id].config.src).new(players)
+    mode:start()
+    self._current = mode
+end
+
+--[[
+    Destroys the current mode.
+
+	@returns never
+]]
+function modeService:remove()
+    if self._current == nil then
+        return
+    end
+
+    self._current:Destroy()
+    self._current = nil
 end
 
 return modeService

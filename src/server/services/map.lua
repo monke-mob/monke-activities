@@ -8,7 +8,7 @@ local mapTypes = require(script.Parent.Parent.components.map.types)
 local mapService = Knit.CreateService({
     Name = "map",
     _maps = {},
-    _currentMap = nil,
+    _current = nil,
 })
 
 --[[
@@ -84,10 +84,10 @@ end
     @param {string} id [The id of the map.]
 	@returns never
 ]]
-function mapService:loadMap(id: string)
+function mapService:load(id: string)
     local map: Folder = self._maps[id].src:Clone()
     map.Parent = workspace
-    self._currentMap = map
+    self._current = map
 end
 
 --[[
@@ -95,13 +95,13 @@ end
 
 	@returns never
 ]]
-function mapService:removeMap()
-    if self._currentMap == nil then
+function mapService:remove()
+    if self._current == nil then
         return
     end
 
-    self._currentMap:Destroy()
-    self._currentMap = nil
+    self._current:Destroy()
+    self._current = nil
 end
 
 return mapService

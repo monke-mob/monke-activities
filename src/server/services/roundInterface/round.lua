@@ -37,14 +37,8 @@ function roundService:start(players: modeComponent.players)
     self._state.started = true
 
     local results: {[string]: string} = self._votingService:getResults()
-
-    self._mapService:loadMap(results.map)
-
-    -- TODO: Move to mode service.
-    local modeConfig = self._modeService:getConfigFromID(results.mode)
-    local mode = require(modeConfig.src.main).new(players)
-    self._state.mode = mode
-    mode:start()
+    self._mapService:load(results.map)
+    self._modeService:load(results.mode, players)
 end
 
 --[[
@@ -69,9 +63,8 @@ function roundService:stop()
     local scores = self._state.mode:getScores()
     print(scores)
 
-    self._mapService:removeMap()
-    self._state.mode:destroy()
-    self._state.mode = nil
+    self._mapService:remove()
+    self._modeService:remove()
 end
 
 return roundService

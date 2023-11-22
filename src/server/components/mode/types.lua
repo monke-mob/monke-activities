@@ -22,11 +22,12 @@ type respawningConfig = {
     maxRespawns: number,
 }
 
-type scoreType = "time"
+type scoreType = "none" | "time" | "custom"
 
 type scoringConfig = {
     type: scoreType,
     time: timeScoringConfig?,
+    src: ModuleScript?,
 }
 
 type endConditionType = "time" | "score"

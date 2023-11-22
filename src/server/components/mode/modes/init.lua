@@ -1,13 +1,14 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
-local modeTypes = require(script.Parent.Parent.types)
 
-local defaultTeamBalancer = require(script.Parent.Parent.functions.defaultTeamBalancer)
-local singlePlayerPlugin = require(script.Parent.Parent.plugins.team.single)
-local teamTeamPlugin = require(script.Parent.Parent.plugins.team.team)
-local timeEndConditionPlugin = require(script.Parent.Parent.plugins.endCondition.time)
-local timeScorePlugin = require(script.Parent.Parent.plugins.score.time)
+local defaultTeamBalancer = require(script.Parent.functions.defaultTeamBalancer)
+local modeTypes = require(script.Parent.types)
+local noneScorePlugin = require(script.Parent.plugins.score.none)
+local singlePlayerPlugin = require(script.Parent.plugins.team.single)
+local teamTeamPlugin = require(script.Parent.plugins.team.team)
+local timeEndConditionPlugin = require(script.Parent.plugins.endCondition.time)
+local timeScorePlugin = require(script.Parent.plugins.score.time)
 
 --[[
     Determines which team balancer to use.
@@ -63,9 +64,13 @@ function class.new(players: players, config: modeTypes.config): class
         then timeEndConditionPlugin.new(config.endCondition.duration)
         else timeEndConditionPlugin.new(config.endCondition.duration)
 
-    self.scorePlugin = if config.scoring.type == "time"
-        then timeScorePlugin.new(self, config.scoring.time :: any)
-        else timeScorePlugin.new(self, config.scoring.time :: any)
+    self.scorePlugin = if config.scoring.type == "none"
+        then noneScorePlugin.new(self)
+        else if config.scoring.type == "custom"
+            then require(config.scoring.src :: any).new(self)
+            else if config.scoring.type == "time"
+                then timeScorePlugin.new(self, config.scoring.time :: any)
+                else timeScorePlugin.new(self, config.scoring.time :: any)
 
     local janitor = Janitor.new()
     janitor:Add(self.teamPlugin, "destroy")
