@@ -6,7 +6,6 @@ local teamTeamPlugin = require(script.Parent.Parent.Parent.plugins.team.team)
 
     @class
     @public
-    @extends baseEndConditionPlugin
 ]]
 local class = {}
 class.__index = class
