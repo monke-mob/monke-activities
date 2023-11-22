@@ -19,7 +19,7 @@ export type class = typeof(setmetatable({}, {})) & {
     Creates the score plugin.
 
     @constructor
-    @param {modeComponent.class} mode [The mode..]
+    @param {modeComponent.class} mode [The mode.]
     @param {modeTypes.timeScoringConfig} config [The config.]
     @returns class
 ]]
