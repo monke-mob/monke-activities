@@ -1,5 +1,6 @@
 local core = require(script.core)
 local intro = require(script.intro)
+local voting = require(script.voting)
 
 --[[
     Handles starting the ui modules.
@@ -7,8 +8,9 @@ local intro = require(script.intro)
     @returns never
 ]]
 local function app()
-	core()
-	intro()
+    core()
+    intro()
+    voting()
 end
 
 return app

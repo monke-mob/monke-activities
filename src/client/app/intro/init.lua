@@ -2,8 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
-local gui = require(script.Parent.components.gui)
 local container = require(script.container)
+local gui = require(script.Parent.components.gui)
 
 --[[
 	Handles the intro ui.
@@ -11,17 +11,17 @@ local container = require(script.container)
 	@returns never
 --]]
 local function intro()
-	local enabled = Fusion.Value(true)
+    local enabled = Fusion.Value(true)
 
-	gui({
-		Enabled = enabled,
+    gui({
+        Enabled = enabled,
 
-		[Fusion.Children] = {
-			container({
-				enabled = enabled,
-			}),
-		},
-	})
+        [Fusion.Children] = {
+            container({
+                enabled = enabled,
+            }),
+        },
+    })
 end
 
 return intro

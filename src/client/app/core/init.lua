@@ -4,6 +4,7 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local gui = require(script.Parent.components.gui)
 local mouseUnlock = require(script.mouseUnlock)
+local roundInfo = require(script.roundInfo)
 
 --[[
 	Handles the core ui.
@@ -11,11 +12,12 @@ local mouseUnlock = require(script.mouseUnlock)
 	@returns never
 --]]
 local function core()
-	gui({
-		[Fusion.Children] = {
-			mouseUnlock(),
-		},
-	})
+    gui({
+        [Fusion.Children] = {
+            mouseUnlock(),
+            roundInfo(),
+        },
+    })
 end
 
 return core

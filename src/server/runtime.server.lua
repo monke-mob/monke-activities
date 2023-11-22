@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
-Knit.AddServices(script.Parent.services)
+
+Knit.AddServicesDeep(script.Parent.services)
 Knit.Start():catch(warn)
