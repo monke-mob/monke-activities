@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local modeComponent = require(script.Parent.Parent.Parent.components.mode.modes.mode)
+local modeComponent = require(script.Parent.Parent.Parent.components.mode.modes)
 
 local roundService = Knit.CreateService({
     Name = "round",

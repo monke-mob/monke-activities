@@ -1,5 +1,6 @@
 local config = require(script.Parent.config)
 local modeComponent = require(script.Parent.Parent)
+local freezePlayer = require(script.Parent.Parent.Parent.functions.freezePlayer)
 
 local class = {}
 class.__index = class

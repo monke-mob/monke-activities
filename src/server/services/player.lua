@@ -13,11 +13,11 @@ local playerService = Knit.CreateService({
 --[[
     Returns true or false depending on if the player is a game admin.
 
-    @param {Player} player [The player.]
+    @param {number} userID [The ID of the player.]
     @returns boolean
 ]]
-function playerService:isAdmin(player: Player): boolean
-    return table.find(ADMINS, player.UserId) ~= nil
+function playerService:isAdmin(userID: number): boolean
+    return table.find(ADMINS, userID) ~= nil
 end
 
 --[[
