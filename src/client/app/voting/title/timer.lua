@@ -11,7 +11,6 @@ local function timer()
     return strokeLabel({
         Text = timerAction.value,
         FontFace = theme.font.caesar,
-        TextColor3 = theme.foreground.primary,
         AnchorPoint = Vector2.new(0, 1),
         Position = UDim2.fromScale(0, 1),
         Size = UDim2.fromScale(1, 0.375),

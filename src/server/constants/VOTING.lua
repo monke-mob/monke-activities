@@ -1,3 +1,3 @@
 return {
-    timePerStage = 5,
+    timePerStage = 10,
 }

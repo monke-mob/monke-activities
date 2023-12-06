@@ -15,6 +15,7 @@ local function intro()
 
     gui({
         Enabled = enabled,
+        DisplayOrder = 100,
 
         [Fusion.Children] = {
             container({

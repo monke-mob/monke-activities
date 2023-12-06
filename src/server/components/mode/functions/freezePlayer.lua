@@ -1,11 +1,14 @@
+local Players = game:GetService("Players")
+
 --[[
     Freezes a player and makes them invisible.
 
-    @param {Player} player [The player.]
+    @param {number} userID [The ID of the player.]
     @param {boolean} frozen [Whether to freeze the player or not.]
     @returns never
 ]]
-local function freezePlayer(player: Player, frozen: boolean)
+local function freezePlayer(userID: number, frozen: boolean)
+    local player: Player = Players:GetPlayerByUserId(userID)
     local character: Model = player.Character or player.CharacterAdded:Wait()
     local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
     characterRoot.Anchored = frozen

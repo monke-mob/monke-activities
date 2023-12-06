@@ -39,6 +39,7 @@ export type class = typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     start: () -> never,
     getScores: () -> teamTeamPlugin.teams,
+    _janitor: any,
 }
 
 export type players = { number }
@@ -52,8 +53,6 @@ export type players = { number }
     @returns class
 ]]
 function class.new(players: players, config: modeTypes.config): class
-    -- We have to delcare self here because some of the plugins require access
-    -- to the other plugins.
     local self = setmetatable({}, class)
 
     self.teamPlugin = if config.teamType == "single"

@@ -4,6 +4,7 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local addInstanceToChildren = require(script.Parent.Parent.Parent.functions.addInstanceToChildren)
 local label = require(script.Parent)
+local theme = require(script.Parent.Parent.Parent.theme)
 
 --[[
 	Extends the label class and adds a stroke. Replicates the stroke of the game logo text.
@@ -16,7 +17,7 @@ local function strokeLabel(instanceProps: label.instanceProps)
         instanceProps,
         Fusion.New("UIStroke")({
             Thickness = 3,
-            Color = Color3.fromRGB(0, 0, 0),
+            Color = theme.foreground.dark,
         })
     )
 

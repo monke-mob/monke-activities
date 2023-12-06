@@ -1,16 +1,18 @@
-local core = require(script.core)
-local intro = require(script.intro)
-local voting = require(script.voting)
+local blacklistedNames: { string } = {"actions", "components", "theme", "functions"}
 
 --[[
-    Handles starting the ui modules.
+    Starts the ui modules.
 
     @returns never
 ]]
 local function app()
-    core()
-    intro()
-    voting()
+    for _index: number, instance: Instance in ipairs(script:GetChildren()) do
+        if instance:IsA("ModuleScript") == false or table.find(blacklistedNames, instance.Name) then
+            continue
+        end
+
+        require(instance)()
+    end
 end
 
 return app

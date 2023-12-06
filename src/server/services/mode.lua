@@ -10,6 +10,10 @@ local modeService = Knit.CreateService({
     Name = "mode",
     _modes = {},
     _current = nil,
+    Client = {
+        setMode = Knit.CreateSignal(),
+        event = Knit.CreateSignal(),
+    },
 })
 
 --[[
@@ -23,8 +27,7 @@ function modeService:KnitInit()
 
         local info: modeTypes.info = require(modeContainer:FindFirstChild("info"))
         local config: modeTypes.config = require(modeContainer:FindFirstChild("config"))
-        self._modes[info.id] =
-            { info = info, config = config, container = modeContainer }
+        self._modes[info.id] = { info = info, config = config, container = modeContainer }
     end
 end
 
@@ -72,6 +75,8 @@ end
 	@returns never
 ]]
 function modeService:load(id: string, players: modeComponent.players)
+    self.Client.setMode:FireAll(id)
+    
     local mode = require(self._modes[id].config.src).new(players)
     mode:start()
     self._current = mode

@@ -17,8 +17,10 @@ return {
     },
 
     scoring = {
-        type = "custom",
-        src = script.Parent.src.scorePlugin,
+        type = "time",
+        time = {
+            pointsPerIncrement = 1,
+        },
     },
 
     teams = {
@@ -27,5 +29,10 @@ return {
             [1] = createTeam("rocketer", 1),
             [2] = createTeam("players", 15),
         },
+    },
+
+    mode = {
+        timeBetweenSwaps = 10,
+        amountOfTriesPerPlayer = 2,
     },
 } :: modeTypes.config

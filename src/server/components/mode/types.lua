@@ -44,6 +44,7 @@ export type config = {
     endCondition: endConditionConfig,
     scoring: scoringConfig,
     teams: teamsConfig,
+    mode: any,
 }
 
 export type info = {
