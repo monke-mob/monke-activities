@@ -87,10 +87,12 @@ end
 ]]
 function class:_copyPlayerAtPosition(userID: number)
     local player: Player = Players:GetPlayerByUserId(userID)
-    print(player)
     local character: Model = player.Character or player.CharacterAdded:Wait()
+    character.Archivable = true
     character = character:Clone()
-    print(character)
+    character.Parent = workspace
+    character.Archivable = false
+    self._janitor:Add(character)
     local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
     characterRoot.Anchored = true
 
