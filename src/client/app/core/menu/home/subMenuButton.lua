@@ -57,7 +57,7 @@ local function subMenuButton(componentProps: componentProps)
 
 			Fusion.New("ImageLabel")({
 				Image = ICONS[componentProps.subMenu],
-				ImageColor3 = theme.current.foreground,
+				ImageColor3 = theme.foreground.light,
 				ImageTransparency = componentProps.spring.Transparency,
 				Size = UDim2.fromScale(0, 0.9),
 				BackgroundTransparency = 1,

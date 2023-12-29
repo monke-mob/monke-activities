@@ -1,59 +1,34 @@
-type theme = {
-	font: { [string]: Font },
-	foreground: { [string]: Color3 },
-	background: { [string]: Color3 },
-	cornerRadius: { [string]: UDim },
-}
-
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local Fusion = require(ReplicatedStorage.Packages.Fusion)
-
-local currentTheme = Fusion.Value("default")
-local themeColors: theme = {} :: any
-
-local THEMES: theme = {
-	font = {
-		default = Font.fromName("GothamSSm", Enum.FontWeight.Bold),
-	},
-
-	attentionFont = {
-		default = Font.fromName("CaesarDressing", Enum.FontWeight.Bold),
-	},
-
-	foreground = {
-		default = Color3.fromRGB(229, 229, 229),
-	},
-
-	background = {
-		default = Color3.fromHex("#02080e"),
-	},
-
-	cornerRadius = {
-		default = UDim.new(0, 15),
-	}
-}
-
---[[
-	Updates the theme colors.
-
-	@public
-	@param {string} theme [The theme name.]
-	@returns never
-]]
-local function update(theme: string)
-	currentTheme:set(theme)
-end
-
--- This sets the starting theme.
-for name: string, colors in THEMES do
-	themeColors[name] = Fusion.Computed(function()
-		return colors[currentTheme:get()]
-	end)
-end
-
 return {
-	update = update,
-	THEMES = THEMES,
-	current = themeColors,
+    font = {
+        primary = Font.fromName("GothamSSm", Enum.FontWeight.Heavy),
+        bold = Font.fromName("GothamSSm", Enum.FontWeight.Bold),
+        light = Font.fromName("GothamSSm", Enum.FontWeight.Medium),
+        caesar = Font.fromId(12187368843, Enum.FontWeight.Bold),
+    },
+
+    foreground = {
+        primary = Color3.fromRGB(255, 255, 255),
+        light = Color3.fromRGB(229, 229, 229),
+        dark = Color3.fromRGB(0, 0, 0),
+    },
+
+    background = {
+        primary = Color3.fromRGB(0, 0, 0),
+    },
+
+    cornerRadius = {
+        primary = UDim.new(0, 15),
+        large = UDim.new(0, 20),
+    },
+
+    gradient = {
+        brand = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromHex("#ffd160")),
+            ColorSequenceKeypoint.new(1, Color3.fromHex("#ffad00")),
+        }),
+        dark = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromHex("#060d15")),
+            ColorSequenceKeypoint.new(1, Color3.fromHex("#02080e")),
+        }),
+    },
 }
