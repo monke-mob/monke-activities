@@ -1,13 +1,18 @@
 if script:FindFirstAncestorOfClass("Player") == nil then
-	return
+    return
 end
 
 repeat
-	task.wait()
+    task.wait()
 until game:IsLoaded()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
-Knit.AddControllers(script.Parent:WaitForChild("controllers"))
-Knit.Start():catch(warn)
+
+local app = require(script.Parent.app)
+
+Knit.AddControllersDeep(script.Parent:WaitForChild("controllers"))
+Knit.Start():andThen(function()
+    app()
+end):catch(warn)

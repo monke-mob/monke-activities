@@ -1,0 +1,3 @@
+return {
+    timePerStage = 10,
+}
