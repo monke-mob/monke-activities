@@ -23,7 +23,7 @@ local function menuToggle()
             button({
                 AnchorPoint = Vector2.new(1, 0.5),
                 Position = UDim2.fromScale(1, 0.5),
-                Size = UDim2.fromScale(0.245, 0.65),
+                Size = UDim2.fromScale(0, 1),
                 BackgroundTransparency = 0,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 
@@ -45,7 +45,9 @@ local function menuToggle()
                     Fusion.New("ImageLabel")({
                         ImageColor3 = theme.foreground.light,
                         Image = "rbxassetid://14800609693",
+                        AnchorPoint = Vector2.new(0.5, 0.5),
                         Size = UDim2.fromScale(0, 0.4),
+                        Position = UDim2.fromScale(0.5, 0.5),
                         BackgroundTransparency = 1,
 
                         [Fusion.Children] = {
