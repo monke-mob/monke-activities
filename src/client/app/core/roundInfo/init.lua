@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local frame = require(script.Parent.Parent.components.frame)
+local menuToggle = require(script.menuToggle)
 local playerCount = require(script.playerCount)
 local timer = require(script.timer)
 local visibleAction = require(script.Parent.Parent.actions.round.visible)
@@ -20,6 +21,7 @@ local function menu()
         AnchorPoint = Vector2.new(0.5, 1),
 
         [Fusion.Children] = {
+            menuToggle(),
             timer(),
             playerCount(),
         },
