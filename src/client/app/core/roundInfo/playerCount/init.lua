@@ -25,8 +25,8 @@ local function timer()
             }),
 
             Fusion.New("ImageLabel")({
-                Image = "rbxassetid://14799447549",
                 ImageColor3 = theme.foreground.light,
+                Image = "rbxassetid://14799447549",
                 Size = UDim2.fromScale(0, 0.4),
                 BackgroundTransparency = 1,
 
