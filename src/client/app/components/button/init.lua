@@ -11,6 +11,7 @@ export type componentProps = roundComponent.componentProps
 
 --[[
 	The base class for a `TextButton`.
+
 	@param {dictionaryAny} instanceProps [The instance props.]
 	@param {componentProps} componentProps [The component props.]
 	@returns Fusion.Component

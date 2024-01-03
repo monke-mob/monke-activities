@@ -3,19 +3,19 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local types = require(ReplicatedStorage.types)
 
-local concatTables = require(ReplicatedStorage.functions.concatTables)
-local addInstanceToChildren = require(script.Parent.Parent.Parent.addInstanceToChildren)
-local springComponent = require(script.Parent.Parent.Parent.spring)
-local label = require(script.Parent.Parent.Parent.label)
+local addInstanceToChildren = require(script.Parent.Parent.Parent.Parent.functions.addInstanceToChildren)
 local animatedButton = require(script.Parent)
+local concatTables = require(ReplicatedStorage.functions.concatTables)
+local label = require(script.Parent.Parent.Parent.label)
+local springComponent = require(script.Parent.Parent.Parent.spring)
 
 export type instanceProps = animatedButton.instanceProps & {
-	label: types.dictionaryAny,
-	preLabelChildren: types.dictionaryAny | nil,
+    label: types.dictionaryAny,
+    preLabelChildren: types.dictionaryAny | nil,
 }
 
 export type componentProps = animatedButton.componentProps & {
-	spring: springComponent.spring,
+    spring: springComponent.spring,
 }
 
 --[[
@@ -29,31 +29,31 @@ export type componentProps = animatedButton.componentProps & {
 	@returns Fusion.Component
 --]]
 local function labeledExternalSpringButton(instanceProps: instanceProps, componentProps: componentProps)
-	instanceProps.button.BackgroundTransparency = componentProps.spring.Transparency
-	instanceProps.label.TextTransparency = componentProps.spring.Transparency
+    instanceProps.button.BackgroundTransparency = componentProps.spring.Transparency
+    instanceProps.label.TextTransparency = componentProps.spring.Transparency
 
-	-- Add the component instances to the children.
-	addInstanceToChildren(
-		instanceProps.button,
-		Fusion.New("UIScale")({
-			Scale = componentProps.spring.Scale,
-		})
-	)
+    -- Add the component instances to the children.
+    addInstanceToChildren(
+        instanceProps.button,
+        Fusion.New("UIScale")({
+            Scale = componentProps.spring.Scale,
+        })
+    )
 
-	addInstanceToChildren(instanceProps.button, instanceProps.preLabelChildren)
+    addInstanceToChildren(instanceProps.button, instanceProps.preLabelChildren)
 
-	addInstanceToChildren(
-		instanceProps.button,
-		label(concatTables({
-			Size = UDim2.fromScale(0, 0.9),
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.fromScale(0.5, 0.5),
-			TextScaled = true,
-			AutomaticSize = Enum.AutomaticSize.X,
-		}, instanceProps.label))
-	)
+    addInstanceToChildren(
+        instanceProps.button,
+        label(concatTables({
+            Size = UDim2.fromScale(0, 0.9),
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            Position = UDim2.fromScale(0.5, 0.5),
+            TextScaled = true,
+            AutomaticSize = Enum.AutomaticSize.X,
+        }, instanceProps.label))
+    )
 
-	return animatedButton(instanceProps, componentProps)
+    return animatedButton(instanceProps, componentProps)
 end
 
 return labeledExternalSpringButton
