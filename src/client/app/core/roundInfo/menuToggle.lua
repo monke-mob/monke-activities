@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local button = require(script.Parent.Parent.Parent.components.button)
-local container = require(script.Parent.container)
+local menuOpenAction = require(script.Parent.Parent.Parent.actions.menu.open)
 local theme = require(script.Parent.Parent.Parent.theme)
 
 --[[
@@ -12,23 +12,22 @@ local theme = require(script.Parent.Parent.Parent.theme)
 	@returns Fusion.Component
 --]]
 local function menuToggle()
-    return container({
+    return button({
         AnchorPoint = Vector2.new(0, 0.5),
         Position = UDim2.fromScale(0.05, 0.5),
         Size = UDim2.fromScale(0.245, 0.65),
+        BackgroundTransparency = 0,
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+
+        [Fusion.OnEvent("Activated")] = function()
+            menuOpenAction:set(true)
+        end,
 
         [Fusion.Children] = {
-            button({
-                AnchorPoint = Vector2.new(0.5, 0.5),
-                Size = UDim2.fromScale(1, 1),
-                Position = UDim2.fromScale(0.5, 0.5),
-                BackgroundTransparency = 1,
-                ZIndex = 2,
-
-                [Fusion.OnEvent("Activated")] = function()
-                    
-                end,
-            }, {}),
+            Fusion.New("UIGradient")({
+                Color = theme.gradient.dark,
+                Rotation = 90,
+            }),
 
             Fusion.New("ImageLabel")({
                 ImageColor3 = theme.foreground.light,
@@ -44,9 +43,7 @@ local function menuToggle()
                 },
             }),
         },
-    }, {
-        gradient = theme.gradient.dark,
-    })
+    }, {})
 end
 
 return menuToggle
