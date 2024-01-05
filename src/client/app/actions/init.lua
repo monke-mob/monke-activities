@@ -3,16 +3,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local Signal = require(ReplicatedStorage.Packages.Signal)
 
-export type action = {
-    value: any,
-    _lastValue: any,
-    _signal: RBXScriptSignal,
-    set: <a>(self: a, value: any) -> never,
-    get: <a>(self: a) -> any,
-    connect: <a>(self: a, ...any) -> RBXScriptConnection,
-    _fireSignal: <a>(self: a, value: any) -> never,
-}
-
 --[[
 	This is a signal class which uses a `Fusion.Value` object
 	and a signal object to allow the ui to communicate.
@@ -21,6 +11,16 @@ export type action = {
 ]]
 local class = {}
 class.__index = class
+
+export type class = typeof(setmetatable({}, {})) & {
+    value: any,
+    _lastValue: any,
+    _signal: RBXScriptSignal,
+    set: <a>(self: a, value: any) -> never,
+    get: <a>(self: a) -> any,
+    connect: <a>(self: a, ...any) -> RBXScriptConnection,
+    _fireSignal: <a>(self: a, value: any) -> never,
+}
 
 --[[
 	Exposes the `value:set` method directly and
@@ -68,8 +68,10 @@ end
 --]]
 function class:_fireSignal(...: any)
     if self._signal ~= nil then
-        self._signal:Fire(...)
+        return
     end
+
+    self._signal:Fire(...)
 end
 
 --[[
@@ -78,9 +80,9 @@ end
 	@constructor class
 	@param [any] value [The starting value.]
 	@param [boolean?] hasSignal [Whether the action has a signal.]
-	@returns action
+	@returns class
 --]]
-return function(value: any, hasSignal: boolean?): action
+return function(value: any, hasSignal: boolean?): class
     return setmetatable({
         value = Fusion.Value(value),
         _lastValue = value,
