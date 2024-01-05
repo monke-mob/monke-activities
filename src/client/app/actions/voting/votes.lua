@@ -1,4 +1,4 @@
 local actionClass = require(script.Parent.Parent)
 
-local votesAction: actionClass.action = actionClass({}, true)
+local votesAction: actionClass.class = actionClass({}, true)
 return votesAction

@@ -1,4 +1,4 @@
 local actionClass = require(script.Parent.Parent)
 
-local optionsAction: actionClass.action = actionClass({}, false)
+local optionsAction: actionClass.class = actionClass({}, false)
 return optionsAction

@@ -1,4 +1,4 @@
 local actionClass = require(script.Parent.Parent)
 
-local playerCountAction: actionClass.action = actionClass(0, false)
+local playerCountAction: actionClass.class = actionClass(0, false)
 return playerCountAction

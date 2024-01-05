@@ -4,14 +4,16 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
 
-local roundInfoVisibleAction = require(script.Parent.Parent.app.actions.round.visible)
-local votesAction = require(script.Parent.Parent.app.actions.voting.votes)
+local canToggleMenuAction = require(script.Parent.Parent.app.actions.menu.canToggle)
+local menuOpenAction = require(script.Parent.Parent.app.actions.menu.open)
 local optionsAction = require(script.Parent.Parent.app.actions.voting.options)
+local roundInfoVisibleAction = require(script.Parent.Parent.app.actions.round.visible)
 local stageAction = require(script.Parent.Parent.app.actions.voting.stage)
 local timerAction = require(script.Parent.Parent.app.actions.voting.timer)
-local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
-local votingAction = require(script.Parent.Parent.app.actions.voting.voting)
 local types = require(ReplicatedStorage.types)
+local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
+local votesAction = require(script.Parent.Parent.app.actions.voting.votes)
+local votingAction = require(script.Parent.Parent.app.actions.voting.voting)
 
 local votingController = Knit.CreateController({
     Name = "voting",
@@ -58,6 +60,8 @@ function votingController:_toggleVoting(voting: boolean)
 
     votingAction:set(voting)
     roundInfoVisibleAction:set(not voting)
+    menuOpenAction:set(false)
+    canToggleMenuAction:set(not voting)
 end
 
 --[[

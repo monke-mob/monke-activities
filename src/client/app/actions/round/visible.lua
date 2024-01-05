@@ -1,4 +1,4 @@
 local actionClass = require(script.Parent.Parent)
 
-local visibleAction: actionClass.action = actionClass(true, true)
+local visibleAction: actionClass.class = actionClass(true, true)
 return visibleAction

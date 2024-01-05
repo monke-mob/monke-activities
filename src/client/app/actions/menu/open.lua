@@ -1,4 +1,4 @@
 local actionClass = require(script.Parent.Parent)
 
-local menuOpenAction: actionClass.action = actionClass(false, true)
+local menuOpenAction: actionClass.class = actionClass(false, true)
 return menuOpenAction

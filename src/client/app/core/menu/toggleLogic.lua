@@ -7,6 +7,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local canToggleMenuAction = require(script.Parent.Parent.Parent.actions.menu.canToggle)
 local menuOpenAction = require(script.Parent.Parent.Parent.actions.menu.open)
 local mouseUnlockAction = require(script.Parent.Parent.Parent.actions.mouseUnlock)
+local roundInfoVisibleAction = require(script.Parent.Parent.Parent.actions.round.visible)
 local subMenuAction = require(script.Parent.Parent.Parent.actions.menu.subMenu)
 
 local lightingController = Knit.GetController("lighting")
@@ -22,6 +23,7 @@ local function toggle()
 
     -- Determine to toggle all screens or open the home screen.
     if isOpen then
+        roundInfoVisibleAction:set(false)
         visible:set(true)
         subMenuAction.set("home")
         playerController:disableMovement()

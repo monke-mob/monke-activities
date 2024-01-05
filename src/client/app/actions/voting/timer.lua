@@ -1,4 +1,4 @@
 local actionClass = require(script.Parent.Parent)
 
-local timerAction: actionClass.action = actionClass("00:00", false)
+local timerAction: actionClass.class = actionClass("00:00", false)
 return timerAction
