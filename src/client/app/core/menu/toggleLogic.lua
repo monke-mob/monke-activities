@@ -28,6 +28,7 @@ local function toggle()
         subMenuAction.set("home")
         playerController:disableMovement()
     else
+        roundInfoVisibleAction:set(true)
         subMenuAction.closeAll()
         playerController:enableMovement()
         lightingController:toggleTweenable("ExposureCompensation", true)
