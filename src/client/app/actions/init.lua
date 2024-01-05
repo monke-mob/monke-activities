@@ -67,7 +67,7 @@ end
 	@returns never
 --]]
 function class:_fireSignal(...: any)
-    if self._signal ~= nil then
+    if self._signal == nil then
         return
     end
 
