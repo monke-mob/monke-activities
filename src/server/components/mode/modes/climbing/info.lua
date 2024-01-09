@@ -2,7 +2,7 @@ local modeTypes = require(script.Parent.Parent.Parent.types)
 
 return {
     id = "climbing",
-    name = "Climbing",
-    type = "team",
-    description = "A climbing mode.",
+    name = "climbing",
+    type = "single",
+    description = "Who can go the farest?",
 } :: modeTypes.info
