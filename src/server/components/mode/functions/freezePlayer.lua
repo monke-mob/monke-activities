@@ -13,12 +13,15 @@ local function freezePlayer(userID: number, frozen: boolean)
     local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
     characterRoot.Anchored = frozen
 
-    for _index: number, instance: BasePart in pairs(character:GetChildren() :: any) do
-        if instance.Name == "HumanoidRootPart" or instance:IsA("BasePart") == false then
+    for _index: number, instance: Instance in pairs(character:GetDescendants()) do
+        if
+            instance.Name == "HumanoidRootPart"
+            or (instance:IsA("BasePart") == false and instance:IsA("Decal") == false)
+        then
             continue
         end
 
-        instance.Transparency = if frozen then 1 else 0
+        (instance :: any).Transparency = if frozen then 1 else 0
     end
 end
 
