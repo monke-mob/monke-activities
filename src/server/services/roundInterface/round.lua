@@ -4,11 +4,12 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local modeComponent = require(script.Parent.Parent.Parent.components.mode.modes)
 
+local mapService
+local modeService
+local votingService
+
 local roundService = Knit.CreateService({
     Name = "round",
-    _mapService = nil,
-    _modeService = nil,
-    _votingService = nil,
     _state = {
         started = false,
         roundType = "",
@@ -20,9 +21,9 @@ local roundService = Knit.CreateService({
 	@returns never
 ]]
 function roundService:KnitStart()
-    self._mapService = Knit.GetService("map")
-    self._modeService = Knit.GetService("mode")
-    self._votingService = Knit.GetService("voting")
+    mapService = Knit.GetService("map")
+    modeService = Knit.GetService("mode")
+    votingService = Knit.GetService("voting")
 end
 
 --[[
@@ -34,9 +35,9 @@ end
 function roundService:start(players: modeComponent.players)
     self._state.started = true
 
-    local results: { [string]: string } = self._votingService:getResults()
-    self._mapService:load(results.map)
-    self._modeService:load(results.mode, players)
+    local results: { [string]: string } = votingService:getResults()
+    mapService:load(results.map)
+    modeService:load(results.mode, players)
 end
 
 --[[
@@ -58,11 +59,11 @@ function roundService:stop()
         return
     end
 
-    local scores = self._modeService:getMode():getScores()
+    local scores = modeService:getMode():getScores()
     print(scores)
 
-    self._mapService:remove()
-    self._modeService:remove()
+    mapService:remove()
+    modeService:remove()
 end
 
 return roundService
