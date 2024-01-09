@@ -76,7 +76,7 @@ end
 ]]
 function modeService:load(id: string, players: modeComponent.players)
     self.Client.setMode:FireAll(id)
-    
+
     local mode = require(self._modes[id].config.src).new(players)
     mode:start()
     self._current = mode
@@ -94,6 +94,15 @@ function modeService:remove()
 
     self._current:Destroy()
     self._current = nil
+end
+
+--[[
+    Returns the current mode.
+
+	@returns modeComponent.class?
+]]
+function modeService:getMode()
+    return self._current
 end
 
 return modeService
