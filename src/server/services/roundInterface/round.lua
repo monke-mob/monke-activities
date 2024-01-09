@@ -13,8 +13,6 @@ local roundService = Knit.CreateService({
         started = false,
         roundType = "",
         players = {},
-        map = nil,
-        mode = nil,
     },
 })
 
@@ -36,7 +34,7 @@ end
 function roundService:start(players: modeComponent.players)
     self._state.started = true
 
-    local results: {[string]: string} = self._votingService:getResults()
+    local results: { [string]: string } = self._votingService:getResults()
     self._mapService:load(results.map)
     self._modeService:load(results.mode, players)
 end
@@ -60,7 +58,7 @@ function roundService:stop()
         return
     end
 
-    local scores = self._state.mode:getScores()
+    local scores = self._modeService:getMode():getScores()
     print(scores)
 
     self._mapService:remove()
