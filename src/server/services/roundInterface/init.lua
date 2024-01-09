@@ -7,10 +7,11 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
 local TIMER = require(ReplicatedStorage.constants.TIMER)
 
+local intermissionService
+local roundService
+
 local roundInterfaceService = Knit.CreateService({
     Name = "roundInterface",
-    _intermissionService = nil,
-    _roundService = nil,
     _playerJanitor = Janitor.new(),
     _timer = nil,
 })
@@ -27,8 +28,8 @@ end
 	@returns never
 ]]
 function roundInterfaceService:KnitStart()
-    self._intermissionService = Knit.GetService("intermission")
-    self._roundService = Knit.GetService("round")
+    intermissionService = Knit.GetService("intermission")
+    roundService = Knit.GetService("round")
 
     Players.PlayerAdded:Connect(function(...)
         self:_playerAdded(...)
@@ -101,14 +102,14 @@ end
 	@returns never
 ]]
 function roundInterfaceService:_playerLeaving(player: Player)
-    self._intermissionService:setReady(player, false)
+    intermissionService:setReady(player, false)
     self._playerJanitor:Remove(player.UserId)
 
-    if self._roundService:isStarted() then
-        self._roundService:removePlayer(player)
+    if roundService:isStarted() then
+        roundService:removePlayer(player)
     end
 
-    self._intermissionService:attemptStart()
+    intermissionService:attemptStart()
 end
 
 return roundInterfaceService
