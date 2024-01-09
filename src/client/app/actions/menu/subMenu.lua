@@ -6,9 +6,9 @@ local playerListOpenAction = require(script.Parent.playerListOpen)
 
 export type subMenu = "home" | "playerList" | ""
 
-local subMenuActionMap: { [subMenu]: action.action } = {
-	home = homeOpenAction,
-	playerList = playerListOpenAction,
+local subMenuActionMap: { [subMenu]: action.class } = {
+    home = homeOpenAction,
+    playerList = playerListOpenAction,
 }
 local currentSubMenu: subMenu
 
@@ -28,24 +28,24 @@ subMenuAction.transitionTime = 1
 	@returns never
 --]]
 function subMenuAction.swap(newSubMenu: subMenu)
-	-- Dont update if we cant toggle the menu or
-	-- if the current menu sub menu is the requested
-	-- sub menu.
-	if canToggleMenuAction:get() == false or newSubMenu == currentSubMenu then
-		return
-	end
+    -- Dont update if we cant toggle the menu or
+    -- if the current menu sub menu is the requested
+    -- sub menu.
+    if canToggleMenuAction:get() == false or newSubMenu == currentSubMenu then
+        return
+    end
 
-	canToggleMenuAction:set(false)
-	subMenuActionMap[currentSubMenu]:set(false)
+    canToggleMenuAction:set(false)
+    subMenuActionMap[currentSubMenu]:set(false)
 
-	delay(subMenuAction.transitionTime, function()
-		currentSubMenu = newSubMenu
-		subMenuActionMap[newSubMenu]:set(true)
+    delay(subMenuAction.transitionTime, function()
+        currentSubMenu = newSubMenu
+        subMenuActionMap[newSubMenu]:set(true)
 
-		delay(subMenuAction.transitionTime, function()
-			canToggleMenuAction:set(true)
-		end)
-	end)
+        delay(subMenuAction.transitionTime, function()
+            canToggleMenuAction:set(true)
+        end)
+    end)
 end
 
 --[[
@@ -55,14 +55,14 @@ end
 	@returns never
 --]]
 function subMenuAction.set(subMenu: subMenu)
-	-- Dont update if the current sub menu is the
-	-- requested sub menu.
-	if subMenu == currentSubMenu then
-		return
-	end
+    -- Dont update if the current sub menu is the
+    -- requested sub menu.
+    if subMenu == currentSubMenu then
+        return
+    end
 
-	currentSubMenu = subMenu
-	subMenuActionMap[subMenu]:set(true)
+    currentSubMenu = subMenu
+    subMenuActionMap[subMenu]:set(true)
 end
 
 --[[
@@ -71,13 +71,13 @@ end
 	@returns never
 --]]
 function subMenuAction.closeAll()
-	currentSubMenu = ""
+    currentSubMenu = ""
 
-	-- Have to give the `subMenuActionMap` variable the
-	-- type of any or else it will cause an type error.
-	for _subMenu: subMenu, subMenuAction: action.action in pairs(subMenuActionMap :: any) do
-		subMenuAction:set(false)
-	end
+    -- Have to give the `subMenuActionMap` variable the
+    -- type of any or else it will cause an type error.
+    for _subMenu: subMenu, subMenuAction: action.class in pairs(subMenuActionMap :: any) do
+        subMenuAction:set(false)
+    end
 end
 
 return subMenuAction
