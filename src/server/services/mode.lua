@@ -20,6 +20,7 @@ local modeService = Knit.CreateService({
 	@returns never
 ]]
 function modeService:KnitInit()
+    -- Storing all of the modes allows for easier access to them.
     for _index: number, modeContainer: Folder in pairs(script.Parent.Parent.components.mode.modes:GetChildren()) do
         if modeContainer:IsA("Folder") == false then
             continue
@@ -77,6 +78,8 @@ end
 function modeService:load(id: string, players: modeComponent.players)
     self.Client.setMode:FireAll(id)
 
+    -- Its best to only require the mode whenever its needed
+    -- to save on memory and increase performance.
     local mode = require(self._modes[id].config.src).new(players)
     mode:start()
     self._current = mode
