@@ -6,6 +6,10 @@ local ROUND = require(script.Parent.Parent.Parent.constants.ROUND)
 
 local timerComponent = require(script.Parent.Parent.Parent.components.timer)
 
+local roundInterface
+local roundService
+local votingService
+
 local intermissionService = Knit.CreateService({
     Name = "intermission",
     _roundInterface = nil,
@@ -30,9 +34,9 @@ end
 	@returns never
 ]]
 function intermissionService:KnitStart()
-    self._roundInterface = Knit.GetService("roundInterface")
-    self._roundService = Knit.GetService("round")
-    self._votingService = Knit.GetService("voting")
+    roundInterface = Knit.GetService("roundInterface")
+    roundService = Knit.GetService("round")
+    votingService = Knit.GetService("voting")
 end
 
 --[[
@@ -53,7 +57,7 @@ function intermissionService:setReady(player: Player, isReady: boolean)
     end
 
     self:attemptStart()
-    self._roundInterface:updatePlayerCount(#self._state.players)
+    roundInterface:updatePlayerCount(#self._state.players)
 end
 
 --[[
@@ -72,7 +76,7 @@ end
 ]]
 function intermissionService:attemptStart()
     -- If a round is already started there is no need to determine anything.
-    if self._roundService:isStarted() then
+    if roundService:isStarted() then
         return
     end
 
@@ -94,7 +98,7 @@ end
 function intermissionService:_start()
     local timer = timerComponent.new(ROUND.intermissionTime)
 
-    self._roundInterface:bindTimer(timer)
+    roundInterface:bindTimer(timer)
     self._state.timer = timer
 
     timer:start()
@@ -102,10 +106,10 @@ function intermissionService:_start()
     -- If this event fires that means that the round can start. So send a request to the interface to start.
     timer.ended:Connect(function()
         self:_stop()
-        self._roundService:start(self._state.players)
+        roundService:start(self._state.players)
     end)
 
-    self._votingService:start()
+    votingService:start()
 end
 
 --[[
