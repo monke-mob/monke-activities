@@ -13,7 +13,7 @@ local timeScorePlugin = require(script.Parent.plugins.score.time)
 local mapService
 
 Knit:OnStart():andThen(function()
-    mapService = Knit.GetService("mode")
+    mapService = Knit.GetService("map")
 end)
 
 --[[
