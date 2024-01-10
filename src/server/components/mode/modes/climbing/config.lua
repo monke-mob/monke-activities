@@ -17,10 +17,7 @@ return {
     },
 
     scoring = {
-        type = "time",
-        time = {
-            pointsPerIncrement = 1,
-        },
+        type = "none",
     },
 
     teams = {
@@ -33,7 +30,7 @@ return {
 
     mode = {
         timeBetweenSwaps = 10, --[[How long each player gets.]]
-        amountOfTriesPerPlayer = 2, --[[The amount of attempts each player gets.]]
+        amountOfTriesPerPlayer = 1, --[[The amount of attempts each player gets.]]
         studScoreModifier = 0.5, --[[Change this number to affect the scores. One studs score is equal to this number.]]
     },
 } :: modeTypes.config
