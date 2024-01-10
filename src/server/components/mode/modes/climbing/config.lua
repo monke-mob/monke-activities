@@ -4,8 +4,6 @@ local modeTypes = require(script.Parent.Parent.Parent.types)
 return {
     src = script.Parent.src,
 
-    teamType = "team",
-
     respawning = {
         enabled = true,
         scoreDamage = 1,
@@ -21,6 +19,7 @@ return {
     },
 
     teams = {
+        type = "single",
         usesCustomTeamBalancer = false,
         ids = {
             [1] = createTeam("rocketer", 1),
