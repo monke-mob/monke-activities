@@ -79,7 +79,7 @@ function class:_setPlayerTurn(userID: number)
         local score: number = self:_calculatePlayerScore(character)
         self.scorePlugin:incrementScore(self._currentPlayer, score)
 
-        self:_copyPlayerAtPosition(character)
+        self:_copyCharacterAtPosition(character)
         freezePlayer(self._currentPlayer, true)
     end
 
