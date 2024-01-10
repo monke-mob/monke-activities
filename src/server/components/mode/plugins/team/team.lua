@@ -34,7 +34,7 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-    teams: teams,
+    _teams: teams,
     destroy: () -> never,
     incrementTeamScore: (teamID: teamID, increment: number) -> never,
 }
@@ -67,7 +67,7 @@ function class.new(constructorTeams: { constructorTeam }): class
     end
 
     local self = setmetatable({
-        teams = teams,
+        _teams = teams,
     }, class)
     return self
 end
@@ -90,7 +90,7 @@ end
     @returns never
 ]]
 function class:lockTeamScore(teamID: teamID)
-    self.teams[teamID].scoreLocked = true
+    self._teams[teamID].scoreLocked = true
 end
 
 --[[
@@ -102,7 +102,7 @@ end
 function class:attemptToLockTeamScore(teamID: teamID)
     local allPlayersRemoved: boolean = true
 
-    for player: number, playerData in pairs(self.teams[teamID].players) do
+    for player: number, playerData in pairs(self._teams[teamID].players) do
         if playerData.removed == false then
             allPlayersRemoved = false
             break
@@ -122,7 +122,7 @@ end
     @returns never
 ]]
 function class:removePlayerFromTeam(teamID: teamID, player: number)
-    self.teams[teamID].players[player].removed = true
+    self._teams[teamID].players[player].removed = true
     self:attemptToLockTeamScore(teamID)
 end
 
@@ -134,14 +134,14 @@ end
     @returns never
 ]]
 function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlayer: number?)
-    if self.teams[teamID].scoreLocked then
+    if self._teams[teamID].scoreLocked then
         return
     end
 
-    self.teams[teamID].score += increment
+    self._teams[teamID].score += increment
 
     if scoringPlayer ~= nil then
-        self.teams[teamID].players[scoringPlayer].score += increment
+        self._teams[teamID].players[scoringPlayer].score += increment
     end
 end
 
@@ -152,7 +152,7 @@ end
     @returns teamID?
 ]]
 function class:findTeamFromPlayer(player: number): teamID?
-    for teamID: teamID, team: team in pairs(self.teams) do
+    for teamID: teamID, team: team in pairs(self._teams) do
         if team.players[player] ~= nil then
             return teamID
         end
