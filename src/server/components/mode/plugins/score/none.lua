@@ -27,7 +27,7 @@ end
 
 --[[
     Increments a team score. This is just a wrapper around `incrementTeamScore` but all scoring
-    should gothrough the score plugin.
+    should go through the score plugin.
 
     @returns class
 ]]
