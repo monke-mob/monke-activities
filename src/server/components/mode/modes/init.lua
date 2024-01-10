@@ -63,7 +63,7 @@ function class.new(players: players, config: modeTypes.config): class
     local self = setmetatable({}, class)
     self._map = mapService:getMap()
 
-    self.teamPlugin = if config.teamType == "single"
+    self.teamPlugin = if config.teams.type == "single"
         then singlePlayerPlugin.new(players)
         else teamTeamPlugin.new(balanceTeams(players, config.teams))
 

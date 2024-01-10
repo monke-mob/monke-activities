@@ -12,6 +12,7 @@ export type teamConfig = {
 }
 
 export type teamsConfig = {
+    type: types.teamType,
     usesCustomTeamBalancer: boolean,
     ids: { [number]: teamConfig },
 }
@@ -39,7 +40,6 @@ type endConditionConfig = {
 
 export type config = {
     src: Folder,
-    teamType: types.teamType,
     respawning: respawningConfig,
     endCondition: endConditionConfig,
     scoring: scoringConfig,
