@@ -43,7 +43,6 @@ end
 	@returns never
 ]]
 function roundInterfaceService:bindTimer(timer)
-    -- Unbind the last timer.
     if self._timer ~= nil then
         self._timer:Disconnect()
         self._timer = nil
