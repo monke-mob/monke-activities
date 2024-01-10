@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
+local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local defaultTeamBalancer = require(script.Parent.functions.defaultTeamBalancer)
 local modeTypes = require(script.Parent.types)
@@ -9,6 +10,11 @@ local singlePlayerPlugin = require(script.Parent.plugins.team.single)
 local teamTeamPlugin = require(script.Parent.plugins.team.team)
 local timeEndConditionPlugin = require(script.Parent.plugins.endCondition.time)
 local timeScorePlugin = require(script.Parent.plugins.score.time)
+local mapService
+
+Knit:OnStart():andThen(function()
+    mapService = Knit.GetService("mode")
+end)
 
 --[[
     Determines which team balancer to use.
@@ -40,6 +46,7 @@ export type class = typeof(setmetatable({}, {})) & {
     start: () -> never,
     getScores: () -> teamTeamPlugin.teams,
     _janitor: any,
+    _map: Instance,
 }
 
 export type players = { number }
@@ -54,6 +61,7 @@ export type players = { number }
 ]]
 function class.new(players: players, config: modeTypes.config): class
     local self = setmetatable({}, class)
+    self._map = mapService:getMap()
 
     self.teamPlugin = if config.teamType == "single"
         then singlePlayerPlugin.new(players)

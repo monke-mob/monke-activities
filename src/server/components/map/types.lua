@@ -1,8 +1,10 @@
 export type compatibleModes = { string }
 
 export type config = {
+    src: Instance,
     compatibleModes: compatibleModes,
     effects: { string },
+    data: any,
 }
 
 export type info = {

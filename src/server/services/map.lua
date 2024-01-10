@@ -22,7 +22,7 @@ function mapService:KnitInit()
 
         local info: mapTypes.info = require(mapContainer:FindFirstChild("info"))
         local config: mapTypes.config = require(mapContainer:FindFirstChild("config"))
-        self._maps[info.id] = { info = info, config = config, src = mapContainer:FindFirstChild("src") }
+        self._maps[info.id] = { info = info, config = config, src = config.src }
     end
 end
 
@@ -102,6 +102,15 @@ function mapService:remove()
 
     self._current:Destroy()
     self._current = nil
+end
+
+--[[
+    Returns the current map.
+
+    @returns Instance
+]]
+function mapService:getMap()
+    return self._current
 end
 
 return mapService

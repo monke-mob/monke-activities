@@ -1,5 +1,5 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
@@ -30,6 +30,7 @@ function class.new(players: modeComponent.players)
     mode._currentPlayer = nil
     mode._currentPlayerIndex = 0
     mode._cycle = 1
+    mode._spawn = baseClass._map:FindFirstChild("spawn")
 
     -- Freeze all of the players to start with.
     for _index: number, player: number in pairs(players) do
@@ -64,30 +65,47 @@ end
 --[[
     Sets it to be a players turn.
 
-    @param {number} player [The player.]
+    @param {number} userID [The player.]
     @returns never
 ]]
-function class:_setPlayerTurn(player: number)
-    modeService.Client.event:FireAll("playerTurn", player)
-    
+function class:_setPlayerTurn(userID: number)
+    modeService.Client.event:FireAll("playerTurn", userID)
+
     if self._currentPlayer ~= nil then
-        self:_copyPlayerAtPosition(self._currentPlayer)
+        local player: Player = Players:GetPlayerByUserId(userID)
+        local character: Model = player.Character or player.CharacterAdded:Wait()
+
+        local score: number = self:_calculatePlayerScore(character)
+        self.scorePlugin:incrementScore(self._currentPlayer, score)
+
+        self:_copyPlayerAtPosition(character)
         freezePlayer(self._currentPlayer, true)
     end
 
-    self._currentPlayer = player
-    freezePlayer(player, false)
+    self._currentPlayer = userID
+    freezePlayer(userID, false)
+end
+
+--[[
+    Calculates a players score based on their position.
+
+    @param {Model} character [The character.]
+    @returns number
+]]
+function class:_calculatePlayerScore(character: Model): number
+    local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
+    local endY: number = characterRoot.Position.Y
+    local startY: number = self._spawn.Position.Y
+    return config.mode.studScoreModifier * (endY - startY)
 end
 
 --[[
     Sets it to be a players turn.
 
-    @param {number} player [The player.]
+    @param {Model} character [The character.]
     @returns never
 ]]
-function class:_copyPlayerAtPosition(userID: number)
-    local player: Player = Players:GetPlayerByUserId(userID)
-    local character: Model = player.Character or player.CharacterAdded:Wait()
+function class:_copyCharacterAtPosition(character: Model)
     character.Archivable = true
     character = character:Clone()
     character.Parent = workspace
