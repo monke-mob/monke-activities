@@ -6,6 +6,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local config = require(script.Parent.config)
 local freezePlayer = require(script.Parent.Parent.Parent.functions.freezePlayer)
 local modeComponent = require(script.Parent.Parent)
+local teleportPlayer = require(script.Parent.Parent.Parent.functions.teleportPlayer)
 local modeService
 
 Knit:OnStart():andThen(function()
@@ -30,7 +31,7 @@ function class.new(players: modeComponent.players)
     mode._currentPlayer = nil
     mode._currentPlayerIndex = 0
     mode._cycle = 1
-    mode._spawn = baseClass._map:FindFirstChild("spawn")
+    mode._spawn = baseClass._map:FindFirstChild("spawn").CFrame
 
     -- Freeze all of the players to start with.
     for _index: number, player: number in pairs(players) do
@@ -84,6 +85,7 @@ function class:_setPlayerTurn(userID: number)
 
     self._currentPlayer = userID
     freezePlayer(userID, false)
+    teleportPlayer(userID, self._spawn)
 end
 
 --[[
@@ -95,7 +97,7 @@ end
 function class:_calculatePlayerScore(character: Model): number
     local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
     local endY: number = characterRoot.Position.Y
-    local startY: number = self._spawn.Position.Y
+    local startY: number = self._spawn.Y
     return config.mode.studScoreModifier * (endY - startY)
 end
 
