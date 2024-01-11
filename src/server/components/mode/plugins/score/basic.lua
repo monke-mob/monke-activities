@@ -1,4 +1,7 @@
 --[[
+    NOTE: All scores are held by the team plugins the score plugins give a wrapper around the team plugin functions
+    and handle any extra features. However, all scoring should go through the score plugins regardless.
+
     The most basic score plugin, it does nothing on its own besides providing a function to increment score.
     This plugin is intended for use with modes that have a custom scoring system but dont need a plugin to do assign scoring.
     Take the climbing mode for example: it gives users a score whenever their turn is finished and based on how far they went, no need
