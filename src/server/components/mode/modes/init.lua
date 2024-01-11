@@ -23,7 +23,7 @@ end)
 ]]
 local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
     if config.customTeamBalancer ~= nil then
-        return config.customTeamBalancer(players)
+        return require(config.customTeamBalancer)(players)
     else
         return defaultTeamBalancer(players, config)
     end
@@ -71,13 +71,15 @@ function class.new(players: players, config: modeTypes.config): class
         then timeEndConditionPlugin.new(config.endCondition.duration)
         else timeEndConditionPlugin.new(config.endCondition.duration)
 
-    self.scorePlugin = if config.scoring.type == "basic"
-        then basicScorePlugin.new(self)
-        else if config.scoring.type == "custom"
-            then require(config.scoring.src :: any).new(self)
-            else if config.scoring.type == "time"
-                then timeScorePlugin.new(self, config.scoring.time :: any)
-                else timeScorePlugin.new(self, config.scoring.time :: any)
+    if config.scoring.customScorePlugin ~= nil then
+        self.scorePlugin = require(config.scoring.customScorePlugin).new(self)
+    elseif config.scoring.type == "basic" then
+        self.scorePlugin = basicScorePlugin.new(self)
+    elseif config.scoring.type == "time" then
+        -- Have to cast config.scoring.time to any because its type states it could be nil but
+        -- if the type is time it wont be as its required.
+        self.scorePlugin = timeScorePlugin.new(self, config.scoring.time :: any)
+    end
 
     local janitor = Janitor.new()
     janitor:Add(self.teamPlugin, "destroy")
