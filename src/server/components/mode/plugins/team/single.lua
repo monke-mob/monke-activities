@@ -1,7 +1,7 @@
 local teamPlugin = require(script.Parent.team)
 
 --[[
-    The class for a single player mode.
+    This plugin simply extends the team plugin and assigns each player their own team.
 
     @class
     @public

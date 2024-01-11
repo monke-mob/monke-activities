@@ -25,7 +25,7 @@ export type constructorTeam = {
 }
 
 --[[
-    The class for a team mode.
+    The basic class for a team plugin.
 
     @class
     @public
