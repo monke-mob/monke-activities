@@ -1,5 +1,8 @@
 --[[
     The most basic score plugin, it does nothing on its own besides providing a function to increment score.
+    This plugin is intended for use with modes that have a custom scoring system but dont need a plugin to do assign scoring.
+    Take the climbing mode for example: it gives users a score whenever their turn is finished and based on how far they went, no need
+    for it to be a custom plugin but just use this plugin to give scores.
 
     @class
     @public
