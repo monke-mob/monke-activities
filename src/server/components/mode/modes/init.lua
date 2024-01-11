@@ -22,8 +22,8 @@ end)
     @returns { teamTeamPlugin.constructorTeam }
 ]]
 local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
-    if config.usesCustomTeamBalancer then
-        return {}
+    if config.customTeamBalancer ~= nil then
+        return config.customTeamBalancer(players)
     else
         return defaultTeamBalancer(players, config)
     end

@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local teamPlugin = require(script.Parent.plugins.team.team)
 local types = require(ReplicatedStorage.types)
 
 export type timeScoringConfig = {
@@ -13,7 +14,7 @@ export type teamConfig = {
 
 export type teamsConfig = {
     type: types.teamType,
-    usesCustomTeamBalancer: boolean,
+    customTeamBalancer: ((players: { number }) -> { teamPlugin.constructorTeam })?,
     ids: { [number]: teamConfig },
 }
 
