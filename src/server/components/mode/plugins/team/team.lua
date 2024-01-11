@@ -94,27 +94,6 @@ function class:lockTeamScore(teamID: teamID)
 end
 
 --[[
-    Attempts to lock a teams score. If all players are removed then it will lock.
-
-    @param {teamID} teamID [The team.]
-    @returns never
-]]
-function class:attemptToLockTeamScore(teamID: teamID)
-    local allPlayersRemoved: boolean = true
-
-    for player: number, playerData in pairs(self._teams[teamID].players) do
-        if playerData.removed == false then
-            allPlayersRemoved = false
-            break
-        end
-    end
-
-    if allPlayersRemoved then
-        self:lockTeamScore(teamID)
-    end
-end
-
---[[
     Sets a players removed status to true.
 
     @param {teamID} teamID [The team.]
@@ -123,7 +102,7 @@ end
 ]]
 function class:removePlayerFromTeam(teamID: teamID, player: number)
     self._teams[teamID].players[player].removed = true
-    self:attemptToLockTeamScore(teamID)
+    self:_attemptToLockTeamScoreIfPlayersRemoved(teamID)
 end
 
 --[[
@@ -159,6 +138,28 @@ function class:findTeamFromPlayer(player: number): teamID?
     end
 
     return nil
+end
+
+--[[
+    Attempts to lock a teams score. If all players are removed then it will lock.
+
+    @private
+    @param {teamID} teamID [The team.]
+    @returns never
+]]
+function class:_attemptToLockTeamScoreIfPlayersRemoved(teamID: teamID)
+    local allPlayersRemoved: boolean = true
+
+    for player: number, playerData in pairs(self._teams[teamID].players) do
+        if playerData.removed == false then
+            allPlayersRemoved = false
+            break
+        end
+    end
+
+    if allPlayersRemoved then
+        self:lockTeamScore(teamID)
+    end
 end
 
 return class
