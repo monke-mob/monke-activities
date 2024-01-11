@@ -3,9 +3,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local basicScorePlugin = require(script.Parent.plugins.score.basic)
 local defaultTeamBalancer = require(script.Parent.functions.defaultTeamBalancer)
 local modeTypes = require(script.Parent.types)
-local noneScorePlugin = require(script.Parent.plugins.score.none)
 local singlePlayerPlugin = require(script.Parent.plugins.team.single)
 local teamTeamPlugin = require(script.Parent.plugins.team.team)
 local timeEndConditionPlugin = require(script.Parent.plugins.endCondition.time)
@@ -71,8 +71,8 @@ function class.new(players: players, config: modeTypes.config): class
         then timeEndConditionPlugin.new(config.endCondition.duration)
         else timeEndConditionPlugin.new(config.endCondition.duration)
 
-    self.scorePlugin = if config.scoring.type == "none"
-        then noneScorePlugin.new(self)
+    self.scorePlugin = if config.scoring.type == "basic"
+        then basicScorePlugin.new(self)
         else if config.scoring.type == "custom"
             then require(config.scoring.src :: any).new(self)
             else if config.scoring.type == "time"

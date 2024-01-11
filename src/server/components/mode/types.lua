@@ -24,7 +24,7 @@ type respawningConfig = {
     maxRespawns: number,
 }
 
-type scoreType = "none" | "time" | "custom"
+type scoreType = "basic" | "time" | "custom"
 
 type scoringConfig = {
     type: scoreType,
