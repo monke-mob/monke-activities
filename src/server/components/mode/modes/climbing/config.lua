@@ -20,7 +20,6 @@ return {
 
     teams = {
         type = "single",
-        usesCustomTeamBalancer = false,
         ids = {
             [1] = createTeam("rocketer", 1),
             [2] = createTeam("players", 15),
