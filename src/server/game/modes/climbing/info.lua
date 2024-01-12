@@ -1,4 +1,4 @@
-local modeTypes = require(script.Parent.Parent.Parent.types)
+local modeTypes = require(script.Parent.Parent.Parent.Parent.components.mode.types)
 
 return {
     id = "climbing",

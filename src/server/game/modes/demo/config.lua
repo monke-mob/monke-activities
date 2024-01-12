@@ -1,5 +1,5 @@
-local createTeam = require(script.Parent.Parent.Parent.functions.createTeam)
-local modeTypes = require(script.Parent.Parent.Parent.types)
+local createTeam = require(script.Parent.Parent.Parent.Parent.components.mode.functions.createTeam)
+local modeTypes = require(script.Parent.Parent.Parent.Parent.components.mode.types)
 
 return {
     src = script.Parent.src,

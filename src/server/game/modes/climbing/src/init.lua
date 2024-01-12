@@ -4,9 +4,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local config = require(script.Parent.config)
-local freezePlayer = require(script.Parent.Parent.Parent.functions.freezePlayer)
-local modeComponent = require(script.Parent.Parent)
-local teleportPlayer = require(script.Parent.Parent.Parent.functions.teleportPlayer)
+local freezePlayer = require(script.Parent.Parent.Parent.Parent.components.mode.functions.freezePlayer)
+local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
+local teleportPlayer = require(script.Parent.Parent.Parent.Parent.components.mode.functions.teleportPlayer)
 local modeService
 
 Knit:OnStart():andThen(function()

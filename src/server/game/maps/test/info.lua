@@ -1,4 +1,4 @@
-local mapTypes = require(script.Parent.Parent.Parent.types)
+local mapTypes = require(script.Parent.Parent.Parent.Parent.components.map.types)
 
 return {
     id = "test",

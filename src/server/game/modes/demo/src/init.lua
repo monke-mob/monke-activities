@@ -1,5 +1,5 @@
 local config = require(script.Parent.config)
-local modeComponent = require(script.Parent.Parent)
+local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
 
 local class = {}
 class.__index = class
