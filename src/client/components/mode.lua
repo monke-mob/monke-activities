@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 
 --[[
-    The base class for a game mode.
+    The base class for a mode.
 
     @class
     @public
@@ -16,14 +16,10 @@ export type class = typeof(setmetatable({}, {})) & {
     _janitor: any,
 }
 
-export type players = { number }
-
 --[[
     Creates a mode.
 
     @constructor
-    @param {players} players [The players.]
-    @param {modeTypes.config} config [The config for the mode.]
     @returns class
 ]]
 function class.new(): class
