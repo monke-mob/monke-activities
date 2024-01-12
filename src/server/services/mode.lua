@@ -115,7 +115,7 @@ end
     @param {string} id [The ID of the mode.]
 	@returns modeTypes.info?
 ]]
-function modeService.Client:getInfo(id: string)
+function modeService.Client:getInfo(_player: Player, id: string)
     return self.Server._modes[id].info
 end
 
