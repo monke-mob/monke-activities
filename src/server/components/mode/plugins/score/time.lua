@@ -1,5 +1,14 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Knit = require(ReplicatedStorage.Packages.Knit)
+
 local modeTypes = require(script.Parent.Parent.Parent.types)
 local teamTeamPlugin = require(script.Parent.Parent.Parent.plugins.team.team)
+local modeService
+
+Knit:OnStart():andThen(function()
+    modeService = Knit.GetService("mode")
+end)
 
 --[[
     The class for a timed mode that gives player points for the longer they survive.
@@ -19,13 +28,11 @@ export type class = typeof(setmetatable({}, {})) & {
     Creates the score plugin.
 
     @constructor
-    @param {modeComponent.class} mode [The mode.]
     @param {modeTypes.timeScoringConfig} config [The config.]
     @returns class
 ]]
-function class.new(mode, config: modeTypes.timeScoringConfig): class
+function class.new(config: modeTypes.timeScoringConfig): class
     local self = setmetatable({
-        _mode = mode,
         _increment = config.pointsPerIncrement,
     }, class)
 
@@ -43,7 +50,7 @@ end
 ]]
 function class:_incrementScores()
     for teamID: teamTeamPlugin.teamID, _team: teamTeamPlugin.team in pairs(self._mode.teamPlugin.teams) do
-        self._mode.teamPlugin:incrementTeamScore(teamID, self._increment)
+        modeService:getMode().teamPlugin:incrementTeamScore(teamID, self._increment)
     end
 end
 

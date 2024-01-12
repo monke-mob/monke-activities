@@ -1,3 +1,13 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Knit = require(ReplicatedStorage.Packages.Knit)
+
+local modeService
+
+Knit:OnStart():andThen(function()
+    modeService = Knit.GetService("mode")
+end)
+
 --[[
     NOTE: All scores are held by the team plugins the score plugins give a wrapper around the team plugin functions
     and handle any extra features. However, all scoring should go through the score plugins regardless.
@@ -21,13 +31,10 @@ export type class = typeof(setmetatable({}, {})) & {
     Creates the score plugin.
 
     @constructor
-    @param {modeComponent.class} mode [The mode.]
     @returns class
 ]]
-function class.new(mode): class
-    local self = setmetatable({
-        _mode = mode,
-    }, class)
+function class.new(): class
+    local self = setmetatable({}, class)
     return self
 end
 
@@ -38,7 +45,7 @@ end
     @returns class
 ]]
 function class:incrementScore(...)
-    self._mode.teamPlugin:incrementTeamScore(...)
+    modeService:getMode().teamPlugin:incrementTeamScore(...)
 end
 
 return class

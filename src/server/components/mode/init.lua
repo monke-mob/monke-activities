@@ -74,11 +74,11 @@ function class.new(players: players, config: modeTypes.config): class
     if config.scoring.customScorePlugin ~= nil then
         self.scorePlugin = require(config.scoring.customScorePlugin).new(self)
     elseif config.scoring.type == "basic" then
-        self.scorePlugin = basicScorePlugin.new(self)
+        self.scorePlugin = basicScorePlugin.new()
     elseif config.scoring.type == "time" then
         -- Have to cast config.scoring.time to any because its type states it could be nil but
         -- if the type is time it wont be as its required.
-        self.scorePlugin = timeScorePlugin.new(self, config.scoring.time :: any)
+        self.scorePlugin = timeScorePlugin.new(config.scoring.time :: any)
     end
 
     local janitor = Janitor.new()
