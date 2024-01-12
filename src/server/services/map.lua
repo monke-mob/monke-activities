@@ -113,13 +113,13 @@ function mapService:getMap()
 end
 
 --[[
-    Gets the info of a mode.
+    Gets the info of a map.
 
-    @param {string} id [The ID of the mode.]
-	@returns modeTypes.info?
+    @param {string} id [The ID of the map.]
+	@returns mapTypes.info?
 ]]
-function mapService.Client:getInfo(id: string)
-    return self._maps[id].info
+function mapService.Client:getInfo(_player: Player, id: string)
+    return self.Server._maps[id].info
 end
 
 return mapService
