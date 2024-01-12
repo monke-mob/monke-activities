@@ -33,7 +33,7 @@ function modeService:KnitInit()
 end
 
 --[[
-    Gets a number of mode infos.
+    Gets a random amount of mode infos.
 
     @param {number} count [The number of modes to be chosen.]
     @param {mapTypes.config} mapConfig [The map config.]
