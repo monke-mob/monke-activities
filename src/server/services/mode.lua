@@ -21,7 +21,7 @@ local modeService = Knit.CreateService({
 ]]
 function modeService:KnitInit()
     -- Storing all of the modes allows for easier access to them.
-    for _index: number, modeContainer: Folder in pairs(script.Parent.Parent.components.mode.modes:GetChildren()) do
+    for _index: number, modeContainer: Folder in pairs(script.Parent.Parent.game.modes:GetChildren()) do
         if modeContainer:IsA("Folder") == false then
             continue
         end

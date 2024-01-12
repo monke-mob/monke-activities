@@ -15,7 +15,7 @@ local mapService = Knit.CreateService({
 	@returns never
 ]]
 function mapService:KnitInit()
-    for _index: number, mapContainer: Folder in pairs(script.Parent.Parent.components.map.maps:GetChildren()) do
+    for _index: number, mapContainer: Folder in pairs(script.Parent.Parent.game.maps:GetChildren()) do
         if mapContainer:IsA("Folder") == false then
             continue
         end
