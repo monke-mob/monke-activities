@@ -31,7 +31,7 @@ export type class = typeof(setmetatable({}, {})) & {
     Sets up the mode timer.
 
     @constructor
-    @param {number} time [The time.]
+    @param {number} time [The time that the round will last for.]
     @returns class
 ]]
 function class.new(time: number): class
