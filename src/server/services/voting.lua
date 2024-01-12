@@ -17,8 +17,6 @@ local modeService
 
 local votingService = Knit.CreateService({
     Name = "voting",
-    _mapService = nil,
-    _modeService = nil,
     _timer = timerComponent.new(VOTING.timePerStage),
     _state = {
         started = false,

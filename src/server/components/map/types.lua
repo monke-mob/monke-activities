@@ -9,6 +9,7 @@ export type config = {
 }
 
 export type info = {
+    id: string,
     name: string,
     description: string,
 }
