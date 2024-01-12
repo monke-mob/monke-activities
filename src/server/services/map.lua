@@ -26,25 +26,24 @@ function mapService:KnitInit()
     end
 end
 
+type map = { info: mapTypes.info, config: mapTypes.config, container: Folder }
+
 --[[
     Gets a number of map infos.
 
     @param {number} count [The number of maps.]
-    @param {{ string }} blacklist [The ids of the maps that cannot be chosen from.]
+    @param {{ string }} blacklist [The IDs of the maps that cannot be chosen from.]
 	@returns { mapTypes.info }
 ]]
 function mapService:getRandomMapInfos(count: number, blacklist: { string })
-    local mapsFlattened: { mapTypes.info } = TableUtil.Map(
-        TableUtil.Values(self._maps),
-        function(map: { info: mapTypes.info, container: Folder })
-            return map.info
-        end
-    )
+    local mapsFlattened: { map } = TableUtil.Map(TableUtil.Values(self._maps), function(map: map)
+        return map
+    end)
     local maps: { mapTypes.info } = {}
 
     -- Remove blacklisted maps.
-    for index: number, map: mapTypes.info in ipairs(mapsFlattened) do
-        if table.find(blacklist, map.id) == nil then
+    for index: number, map: { info: mapTypes.info, config: mapTypes.config, container: Folder } in ipairs(mapsFlattened) do
+        if table.find(blacklist, map.config.id) == nil then
             continue
         end
 
@@ -57,7 +56,7 @@ function mapService:getRandomMapInfos(count: number, blacklist: { string })
         end
 
         local index: number = math.random(1, #mapsFlattened)
-        local map: mapTypes.info = mapsFlattened[index]
+        local map: mapTypes.info = mapsFlattened[index].info
         table.remove(mapsFlattened, index)
         table.insert(maps, map)
     end
