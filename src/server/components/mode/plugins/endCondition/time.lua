@@ -2,13 +2,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local basicEndCondition = require(script.Parent.basic)
 local timerComponent = require(script.Parent.Parent.Parent.Parent.timer)
 local roundInterface = nil
-local roundService = nil
 
 Knit:OnStart():andThen(function()
     roundInterface = Knit.GetService("roundInterface")
-    roundService = Knit.GetService("round")
 end)
 
 --[[
@@ -20,7 +19,7 @@ end)
 local class = {}
 class.__index = class
 
-export type class = typeof(setmetatable({}, {})) & {
+export type class = basicEndCondition.class & typeof(setmetatable({}, {})) & {
     timer: timerComponent.class,
     destroy: () -> never,
     start: () -> never,
@@ -35,23 +34,14 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(time: number): class
+    local baseClass = basicEndCondition.new()
     local self = setmetatable({
         timer = timerComponent.new(time),
-    }, class)
+    }, baseClass)
+
+    self._janitor:Add(self.timer)
+
     return self
-end
-
---[[
-    Destroys the object, clears, and freezes it to render is unusable.
-
-    @returns never
-]]
-function class:destroy()
-    self.timer:destroy()
-
-    setmetatable(self, nil)
-    table.clear(self)
-    table.freeze(self)
 end
 
 --[[
@@ -63,19 +53,10 @@ function class:start()
     roundInterface:bindTimer(self.timer)
 
     self.timer.ended:Connect(function()
-        self:_end()
+        self:stop()
     end)
 
     self.timer:start()
-end
-
---[[
-    Handles ending the round.
-
-    @returns never
-]]
-function class:_end()
-    roundService:stop()
 end
 
 return class
