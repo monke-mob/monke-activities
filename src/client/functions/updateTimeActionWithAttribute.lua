@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local actionClass = require(script.Parent.Parent.app.actions)
+local actionClass = require(script.Parent.Parent.components.app.actions)
 local formatTime = require(script.Parent.formatTime)
 
 --[[

@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local modeAction = require(script.Parent.Parent.app.actions.mode)
+local modeAction = require(script.Parent.Parent.components.app.actions.mode)
 
 local modeController = Knit.CreateController({
     Name = "mode",
