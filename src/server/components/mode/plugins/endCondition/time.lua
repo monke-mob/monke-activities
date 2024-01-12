@@ -18,6 +18,7 @@ end)
 ]]
 local class = {}
 class.__index = class
+setmetatable(class, basicEndCondition)
 
 export type class = basicEndCondition.class & typeof(setmetatable({}, {})) & {
     timer: timerComponent.class,
