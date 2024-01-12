@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local modeComponent = require(script.Parent.Parent.Parent.components.mode.modes)
+local modeComponent = require(script.Parent.Parent.Parent.components.mode)
 
 local mapService
 local modeService
