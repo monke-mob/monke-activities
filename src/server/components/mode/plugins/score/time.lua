@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local modeTypes = require(script.Parent.Parent.Parent.types)
-local teamTeamPlugin = require(script.Parent.Parent.Parent.plugins.team.team)
+local teamPlugin = require(script.Parent.Parent.Parent.plugins.team.team)
 local modeService
 
 Knit:OnStart():andThen(function()
@@ -49,7 +49,7 @@ end
     @returns class
 ]]
 function class:_incrementScores()
-    for teamID: teamTeamPlugin.teamID, _team: teamTeamPlugin.team in pairs(self._mode.teamPlugin.teams) do
+    for teamID: teamPlugin.teamID, _team: teamPlugin.team in pairs(self._mode.teamPlugin.teams) do
         modeService:getMode().teamPlugin:incrementTeamScore(teamID, self._increment)
     end
 end

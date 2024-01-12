@@ -7,7 +7,7 @@ local basicScorePlugin = require(script.plugins.score.basic)
 local defaultTeamBalancer = require(script.functions.defaultTeamBalancer)
 local modeTypes = require(script.types)
 local singlePlayerPlugin = require(script.plugins.team.single)
-local teamTeamPlugin = require(script.plugins.team.team)
+local teamPlugin = require(script.plugins.team.team)
 local timeEndConditionPlugin = require(script.plugins.endCondition.time)
 local timeScorePlugin = require(script.plugins.score.time)
 local mapService
@@ -19,9 +19,9 @@ end)
 --[[
     Determines which team balancer to use.
 
-    @returns { teamTeamPlugin.constructorTeam }
+    @returns { teamPlugin.constructorTeam }
 ]]
-local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamTeamPlugin.constructorTeam }
+local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamPlugin.constructorTeam }
     if config.customTeamBalancer ~= nil then
         return require(config.customTeamBalancer)(players)
     else
@@ -39,12 +39,12 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-    teamPlugin: teamTeamPlugin.class | singlePlayerPlugin.class,
+    teamPlugin: teamPlugin.class | singlePlayerPlugin.class,
     endConditionPlugin: timeEndConditionPlugin.class,
     scorePlugin: timeScorePlugin.class,
     destroy: () -> never,
     start: () -> never,
-    getScores: () -> teamTeamPlugin.teams,
+    getScores: () -> teamPlugin.teams,
     _janitor: any,
     _map: Instance,
 }
@@ -65,7 +65,7 @@ function class.new(players: players, config: modeTypes.config): class
 
     self.teamPlugin = if config.teams.type == "single"
         then singlePlayerPlugin.new(players)
-        else teamTeamPlugin.new(balanceTeams(players, config.teams))
+        else teamPlugin.new(balanceTeams(players, config.teams))
 
     self.endConditionPlugin = if config.endCondition.type == "time"
         then timeEndConditionPlugin.new(config.endCondition.duration)
@@ -118,7 +118,7 @@ end
     @returns never
 ]]
 function class:removePlayerFromRound(player: number)
-    local teamID: teamTeamPlugin.teamID? = self.teamPlugin:findTeamByPlayer(player)
+    local teamID: teamPlugin.teamID? = self.teamPlugin:findTeamByPlayer(player)
 
     if teamID == nil then
         return
@@ -132,7 +132,7 @@ end
 
     @returns teamTeamPlugin.teams
 ]]
-function class:getScores(): teamTeamPlugin.teams
+function class:getScores(): teamPlugin.teams
     return self.teamPlugin.teams
 end
 
