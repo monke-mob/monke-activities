@@ -116,7 +116,7 @@ end
 	@returns modeTypes.info?
 ]]
 function modeService.Client:getInfo(id: string)
-    return self._modes[id].info
+    return self.Server._modes[id].info
 end
 
 return modeService
