@@ -9,6 +9,8 @@ export type config = {
 }
 
 export type info = {
+    -- NOTE: The info is still allowed to have the ID as the voting service relies on it to.
+    -- The info will simply just take the ID from the config. Doig this just prevents overcomplicated code.
     id: string,
     name: string,
     description: string,
