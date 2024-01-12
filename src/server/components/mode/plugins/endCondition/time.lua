@@ -24,6 +24,7 @@ export type class = basicEndCondition.class & typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     start: () -> never,
     _end: () -> never,
+    _janitor: any,
 }
 
 --[[
