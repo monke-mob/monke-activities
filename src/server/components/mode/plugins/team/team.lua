@@ -88,13 +88,15 @@ function class:destroy()
 end
 
 --[[
-    Prevents a team from gaining any score. This is most likely called whenever a teams players are dead or when they all leave.
+    Locks a teams score. Locking the score prevents a team from gaining any score. This is most likely called
+    whenever a teams players are dead or when they all leave.
 
     @param {teamID} teamID [The team.]
+    @param {boolean} locked [If the score should be locked or not.]
     @returns never
 ]]
-function class:lockTeamScore(teamID: teamID)
-    self._teams[teamID].scoreLocked = true
+function class:lockTeamScore(teamID: teamID, locked: boolean)
+    self._teams[teamID].scoreLocked = locked
 end
 
 --[[
@@ -162,7 +164,7 @@ function class:_attemptToLockTeamScoreIfPlayersRemoved(teamID: teamID)
     end
 
     if allPlayersRemoved then
-        self:lockTeamScore(teamID)
+        self:lockTeamScore(teamID, true)
     end
 end
 
