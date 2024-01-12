@@ -1,11 +1,12 @@
 local modeTypes = require(script.Parent.Parent.types)
 
 --[[
-    Creates a team config from the passed values. If you're wondering why turn this into a function
-    its because it helps to reduce config line count.
+    NOTE: This is simply a helper function for the mode configs.
+    
+    Creates a team config from the passed values.
 
-    @param {string} players [The players.]
-    @param {number} config [The mode team config.]
+    @param {string} id [The team ID.]
+    @param {number} maxPlayers [That max number of players that the team can have.]
     @returns modeTypes.teamConfig
 ]]
 local function createTeam(id: string, maxPlayers: number): modeTypes.teamConfig
