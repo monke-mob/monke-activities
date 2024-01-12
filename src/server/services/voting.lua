@@ -70,7 +70,7 @@ end
 --[[
     Returns the results.
 
-	@returns { types.votingOption }
+	@returns { [string]: string }
 ]]
 function votingService:getResults(): { [string]: string }
     return self._state.results
