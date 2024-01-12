@@ -21,7 +21,6 @@ class.__index = class
 export type class = typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     _setupUI: () -> never,
-    _events: { [string]: (...any) -> never },
     _janitor: any,
 }
 
@@ -33,7 +32,6 @@ export type class = typeof(setmetatable({}, {})) & {
 ]]
 function class.new(): class
     local self = setmetatable({}, class)
-    self._events = require(modeController:getMode().events)
     self._janitor = Janitor.new()
     self:_setupUI()
     return self
