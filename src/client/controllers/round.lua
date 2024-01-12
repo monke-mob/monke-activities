@@ -5,8 +5,8 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
 local TIMER = require(ReplicatedStorage.constants.TIMER)
 
-local playerCountAction = require(script.Parent.Parent.app.actions.round.playerCount)
-local timerAction = require(script.Parent.Parent.app.actions.round.timer)
+local playerCountAction = require(script.Parent.Parent.components.app.actions.round.playerCount)
+local timerAction = require(script.Parent.Parent.components.app.actions.round.timer)
 local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
 
 local roundDataController = Knit.CreateController({
