@@ -49,14 +49,14 @@ function modeService:getRandomModesFromMap(count: number, mapConfig: mapTypes.co
             break
         end
 
-        local modeID: string = compatibleModes[math.random(1, #compatibleModes)]
+        local id: string = compatibleModes[math.random(1, #compatibleModes)]
 
-        if table.find(modesChosen, modeID) then
+        if table.find(modesChosen, id) then
             continue
         else
-            table.insert(modesChosen, modeID)
+            table.insert(modesChosen, id)
 
-            local mode = self._modes[modeID]
+            local mode = self._modes[id]
             table.insert(modes, mode.info)
         end
     end
