@@ -12,6 +12,8 @@ local mapTypes = require(script.Parent.Parent.components.map.types)
 local modeTypes = require(script.Parent.Parent.components.mode.types)
 local timerComponent = require(script.Parent.Parent.components.timer)
 local types = require(ReplicatedStorage.types)
+local mapService
+local modeService
 
 local votingService = Knit.CreateService({
     Name = "voting",
@@ -51,8 +53,8 @@ end
 	@returns never
 ]]
 function votingService:KnitStart()
-    self._mapService = Knit.GetService("map")
-    self._modeService = Knit.GetService("mode")
+    mapService = Knit.GetService("map")
+    modeService = Knit.GetService("mode")
 end
 
 --[[
@@ -64,7 +66,7 @@ function votingService:start()
     self._state.started = true
     self.Client.toggleVoting:FireAll(true)
     -- TODO: Implement blacklisted maps, aka maps that where used in last rounds selection.
-    self:_setStage("map", self._mapService:getRandomMapInfos(2, {}))
+    self:_setStage("map", mapService:getRandomMapInfos(2, {}))
 end
 
 --[[
@@ -175,8 +177,8 @@ function votingService:_setStage(stage: string, options: { types.votingOption })
         self._state.results[stage] = result.id
 
         if stage == "map" then
-            local mapConfig: mapTypes.config = self._mapService:getConfigFromID(result.id)
-            self:_setStage("mode", self._modeService:getRandomModesFromMap(3, mapConfig))
+            local mapConfig: mapTypes.config = mapService:getConfigFromID(result.id)
+            self:_setStage("mode", modeService:getRandomModesFromMap(3, mapConfig))
         elseif stage == "mode" then
             self:_stop()
         end
