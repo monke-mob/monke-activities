@@ -37,6 +37,10 @@ export type class = typeof(setmetatable({}, {})) & {
     _teams: teams,
     destroy: () -> never,
     incrementTeamScore: (teamID: teamID, increment: number) -> never,
+    lockTeamScore: (teamID: teamID) -> never,
+    removePlayerFromTeam: (teamID: teamID, player: number) -> never,
+    findTeamFromPlayer: (player: number) -> teamID?,
+    _attemptToLockTeamScoreIfPlayersRemoved: (teamID: teamID) -> never,
 }
 
 --[[
