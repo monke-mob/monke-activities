@@ -73,7 +73,7 @@ function class:_setPlayerTurn(userID: number)
     modeService.Client.event:FireAll("playerTurn", userID)
 
     if self._currentPlayer ~= nil then
-        local player: Player = Players:GetPlayerByUserId(userID)
+        local player: Player = Players:GetPlayerByUserId(self._currentPlayer)
         local character: Model = player.Character or player.CharacterAdded:Wait()
 
         local score: number = self:_calculatePlayerScore(character)
