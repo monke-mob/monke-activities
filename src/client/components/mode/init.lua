@@ -1,6 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
+local Knit = require(ReplicatedStorage.Packages.Knit)
+
+local modeController
+
+Knit:OnStart():andThen(function()
+    modeController = Knit.GetController("mode")
+end)
 
 --[[
     The base class for a mode.
@@ -13,6 +20,8 @@ class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
     destroy: () -> never,
+    _setupUI: () -> never,
+    _events: { [string]: (...any) -> never },
     _janitor: any,
 }
 
@@ -24,7 +33,9 @@ export type class = typeof(setmetatable({}, {})) & {
 ]]
 function class.new(): class
     local self = setmetatable({}, class)
+    self._events = require(modeController:getMode().events)
     self._janitor = Janitor.new()
+    self:_setupUI()
     return self
 end
 
@@ -39,6 +50,23 @@ function class:destroy()
     setmetatable(self, nil)
     table.clear(self)
     table.freeze(self)
+end
+
+--[[
+    Handles creating the mode UI.
+
+    @returns never
+]]
+function class:_setupUI()
+    local uiController = modeController:getMode().config.ui
+
+    -- If the mode has no UI controller then we dont have to anything.
+    if uiController == nil then
+        return
+    end
+
+    local ui = require(uiController)()
+    self._janitor:Add(ui)
 end
 
 return class

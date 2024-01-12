@@ -13,6 +13,12 @@ Knit:OnStart():andThen(function()
     modeService = Knit.GetService("mode")
 end)
 
+--[[
+    The class for the climbing mode.
+
+    @class
+    @public
+]]
 local class = {}
 class.__index = class
 setmetatable(class, modeComponent)
@@ -70,7 +76,7 @@ end
     @returns never
 ]]
 function class:_setPlayerTurn(userID: number)
-    modeService.Client.event:FireAll("playerTurn", userID)
+    modeService.Client.event:FireAll("setPlayerTurn", userID)
 
     if self._currentPlayer ~= nil then
         local player: Player = Players:GetPlayerByUserId(self._currentPlayer)

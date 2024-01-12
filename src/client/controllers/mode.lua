@@ -2,30 +2,75 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local modeAction = require(script.Parent.Parent.components.app.actions.mode)
+local modeTypes = require(script.Parent.Parent.components.mode.types)
+local modeService
 
 local modeController = Knit.CreateController({
     Name = "mode",
-    _modeService = nil,
+    _modes = {},
     _current = nil,
-    _eventHandler = nil,
 })
 
 --[[
 	@returns never
---]]
+]]
 function modeController:KnitStart()
-    local modeService = Knit.GetService("mode")
+    modeService = Knit.GetService("mode")
 
-    modeService.setMode:Connect(function(id: string)
-        self._eventHandler = require(script.Parent.Parent.components.mode:FindFirstChild(id).eventHandler)
-        self._current = id
-        modeAction:set(id)
-    end)
+    -- Storing all of the modes allows for easier access to them.
+    for _index: number, modeContainer: Folder in pairs(script.Parent.Parent.game.modes:GetChildren()) do
+        if modeContainer:IsA("Folder") == false then
+            continue
+        end
 
-    modeService.event:Connect(function(event: string, ...)
-        self._eventHandler[event](...)
+        local config: modeTypes.config = require(modeContainer:FindFirstChild("config"))
+        local info = modeService:getInfo(config.id)
+        self._modes[config.id] = { info = info, config = config, container = modeContainer }
+    end
+
+    modeService.loadMode:Connect(function(id: string?)
+        -- If the ID is nil then the mode is being removed.
+        if id == nil then
+            modeController:_remove()
+        else
+            modeController:_load(id)
+        end
     end)
+end
+
+--[[
+    Returns the current mode.
+
+	@returns modeComponent.class?
+]]
+function modeController:getMode()
+    return self._current
+end
+
+--[[
+    Loads a mode.
+
+    @param {string} id [The id of the mode.]
+	@returns never
+]]
+function modeController:_load(id: string)
+    local mode = require(self._modes[id].config.src).new()
+    mode:start()
+    self._current = mode
+end
+
+--[[
+    Destroys the current mode.
+
+	@returns never
+]]
+function modeController:_remove()
+    if self._current == nil then
+        return
+    end
+
+    self._current:Destroy()
+    self._current = nil
 end
 
 return modeController

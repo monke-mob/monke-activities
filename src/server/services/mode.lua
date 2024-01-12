@@ -11,7 +11,7 @@ local modeService = Knit.CreateService({
     _modes = {},
     _current = nil,
     Client = {
-        setMode = Knit.CreateSignal(),
+        loadMode = Knit.CreateSignal(),
         event = Knit.CreateSignal(),
     },
 })
@@ -76,7 +76,7 @@ end
 	@returns never
 ]]
 function modeService:load(id: string, players: modeComponent.players)
-    self.Client.setMode:FireAll(id)
+    self.Client.loadMode:FireAll(id)
 
     -- Its best to only require the mode whenever its needed
     -- to save on memory and increase performance.
@@ -95,6 +95,7 @@ function modeService:remove()
         return
     end
 
+    self.Client.loadMode:FireAll(nil)
     self._current:Destroy()
     self._current = nil
 end
