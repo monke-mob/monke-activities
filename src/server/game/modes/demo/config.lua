@@ -2,6 +2,8 @@ local createTeam = require(script.Parent.Parent.Parent.Parent.components.mode.fu
 local modeTypes = require(script.Parent.Parent.Parent.Parent.components.mode.types)
 
 return {
+    id = "demo",
+
     src = script.Parent.src,
 
     respawning = {

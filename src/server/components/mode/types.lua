@@ -39,6 +39,7 @@ type endConditionConfig = {
 }
 
 export type config = {
+    id: string,
     src: Folder,
     respawning: respawningConfig,
     endCondition: endConditionConfig,
@@ -48,7 +49,6 @@ export type config = {
 }
 
 export type info = {
-    id: string,
     name: string,
     type: types.teamType,
     description: string,

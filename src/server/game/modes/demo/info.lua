@@ -1,7 +1,6 @@
 local modeTypes = require(script.Parent.Parent.Parent.Parent.components.mode.types)
 
 return {
-    id = "demo",
     name = "demo",
     type = "single",
     description = "A demo game mode.",

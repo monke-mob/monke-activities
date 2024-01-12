@@ -22,7 +22,7 @@ function mapService:KnitInit()
 
         local info: mapTypes.info = require(mapContainer:FindFirstChild("info"))
         local config: mapTypes.config = require(mapContainer:FindFirstChild("config"))
-        self._maps[info.id] = { info = info, config = config, src = config.src }
+        self._maps[config.id] = { info = info, config = config, src = config.src }
     end
 end
 
@@ -111,6 +111,16 @@ end
 ]]
 function mapService:getMap()
     return self._current
+end
+
+--[[
+    Gets the info of a mode.
+
+    @param {string} id [The ID of the mode.]
+	@returns modeTypes.info?
+]]
+function mapService.Client:getInfo(id: string)
+    return self._maps[id].info
 end
 
 return mapService

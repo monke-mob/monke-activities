@@ -28,7 +28,7 @@ function modeService:KnitInit()
 
         local info: modeTypes.info = require(modeContainer:FindFirstChild("info"))
         local config: modeTypes.config = require(modeContainer:FindFirstChild("config"))
-        self._modes[info.id] = { info = info, config = config, container = modeContainer }
+        self._modes[config.id] = { info = info, config = config, container = modeContainer }
     end
 end
 
@@ -106,6 +106,16 @@ end
 ]]
 function modeService:getMode()
     return self._current
+end
+
+--[[
+    Gets the info of a mode.
+
+    @param {string} id [The ID of the mode.]
+	@returns modeTypes.info?
+]]
+function modeService.Client:getInfo(id: string)
+    return self._modes[id].info
 end
 
 return modeService
