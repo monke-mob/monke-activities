@@ -1,5 +1,3 @@
-local UserInputService = game:GetService("UserInputService")
-
 local button = require(script.Parent.Parent.components.button)
 local mouseUnlockAction = require(script.Parent.Parent.actions.mouseUnlock)
 
@@ -10,10 +8,6 @@ local mouseUnlockAction = require(script.Parent.Parent.actions.mouseUnlock)
 	@returns Fusion.Component
 --]]
 local function mouseUnlock()
-    mouseUnlockAction:connect(function(unlocked: boolean)
-        UserInputService.MouseIconEnabled = unlocked
-    end)
-
     return button({
         Visible = mouseUnlockAction.value,
         Modal = true,
