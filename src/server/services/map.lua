@@ -70,7 +70,7 @@ end
 --[[
     Gets a map config from its ID.
 
-    @param {string} id [The id of the map.]
+    @param {string} id [The ID of the map.]
     @returns mapTypes.config
 ]]
 function mapService:getConfigFromID(id: string)
@@ -80,7 +80,7 @@ end
 --[[
     Loads a map.
 
-    @param {string} id [The id of the map.]
+    @param {string} id [The ID of the map.]
 	@returns never
 ]]
 function mapService:load(id: string)

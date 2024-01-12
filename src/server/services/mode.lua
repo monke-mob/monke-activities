@@ -71,7 +71,7 @@ end
 --[[
     Loads a mode.
 
-    @param {string} id [The id of the mode.]
+    @param {string} id [The ID of the mode.]
     @param {modeComponent.players} players [The players participating in the mode.]
 	@returns never
 ]]
