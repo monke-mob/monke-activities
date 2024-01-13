@@ -82,7 +82,7 @@ function modeController:_remove()
         return
     end
 
-    self._current:Destroy()
+    self._current:destroy()
     self._current.mode = nil
     self._current.config = nil
 end

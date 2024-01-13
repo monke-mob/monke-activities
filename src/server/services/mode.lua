@@ -96,7 +96,7 @@ function modeService:remove()
     end
 
     self.Client.loadMode:FireAll(nil)
-    self._current:Destroy()
+    self._current:destroy()
     self._current = nil
 end
 
