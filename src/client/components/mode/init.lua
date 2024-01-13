@@ -64,7 +64,7 @@ end
     @returns never
 ]]
 function class:_setupUI()
-    local uiController = modeController:getMode().config.ui
+    local uiController = modeController:getModeConfig().ui
 
     -- If the mode has no UI controller then we dont have to anything.
     if uiController == nil then

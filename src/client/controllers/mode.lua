@@ -8,7 +8,10 @@ local modeService
 local modeController = Knit.CreateController({
     Name = "mode",
     _modes = {},
-    _current = nil,
+    _current = {
+        mode = nil,
+        config = nil,
+    },
 })
 
 --[[
@@ -44,7 +47,16 @@ end
 	@returns modeComponent.class?
 ]]
 function modeController:getMode()
-    return self._current
+    return self._current.mode
+end
+
+--[[
+    Returns the current mode config.
+
+	@returns modeTypes.config?
+]]
+function modeController:getModeConfig()
+    return self._current.config
 end
 
 --[[
@@ -55,8 +67,9 @@ end
 ]]
 function modeController:_load(id: string)
     local mode = require(self._modes[id].config.src).new()
+    self._current.mode = mode
+    self._current.config = self._modes[id].config
     mode:start()
-    self._current = mode
 end
 
 --[[
@@ -70,7 +83,8 @@ function modeController:_remove()
     end
 
     self._current:Destroy()
-    self._current = nil
+    self._current.mode = nil
+    self._current.config = nil
 end
 
 return modeController
