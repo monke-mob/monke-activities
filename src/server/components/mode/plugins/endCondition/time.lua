@@ -15,6 +15,7 @@ end)
 
     @class
     @public
+    @extends basicEndCondition
 ]]
 local class = {}
 class.__index = class
