@@ -14,7 +14,7 @@ local types = require(ReplicatedStorage.types)
 local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
 local votesAction = require(script.Parent.Parent.components.app.actions.voting.votes)
 local votingAction = require(script.Parent.Parent.components.app.actions.voting.voting)
-local votingService = Knit.GetService("voting")
+local votingService
 
 local votingController = Knit.CreateController({
     Name = "voting",
