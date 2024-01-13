@@ -14,10 +14,10 @@ local types = require(ReplicatedStorage.types)
 local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
 local votesAction = require(script.Parent.Parent.components.app.actions.voting.votes)
 local votingAction = require(script.Parent.Parent.components.app.actions.voting.voting)
+local votingService = Knit.GetService("voting")
 
 local votingController = Knit.CreateController({
     Name = "voting",
-    _votingService = nil,
     _votes = {},
 })
 
@@ -25,19 +25,19 @@ local votingController = Knit.CreateController({
 	@returns never
 --]]
 function votingController:KnitStart()
-    self._votingService = Knit.GetService("voting")
+    votingService = Knit.GetService("voting")
 
     self:_toggleVoting()
 
-    self._votingService.toggleVoting:Connect(function(...)
+    votingService.toggleVoting:Connect(function(...)
         self:_toggleVoting(...)
     end)
 
-    self._votingService.setStage:Connect(function(...)
+    votingService.setStage:Connect(function(...)
         self:_stageUpdated(...)
     end)
 
-    self._votingService.updateVoteCount:Connect(function(...)
+    votingService.updateVoteCount:Connect(function(...)
         self:_updateVoteCount(...)
     end)
 
@@ -54,7 +54,7 @@ end
 --]]
 function votingController:_toggleVoting(voting: boolean)
     if typeof(voting) ~= "boolean" then
-        local _success: boolean, isStarted: boolean = self._votingService:isStarted():await()
+        local _success: boolean, isStarted: boolean = votingService:isStarted():await()
         voting = isStarted
     end
 
@@ -74,7 +74,7 @@ function votingController:_stageUpdated(stage: string)
     stageAction:set(stage)
 
     -- The options need updated, as this is a new stage.
-    self._votingService:getOptions():andThen(function(options: { types.votingOption })
+    votingService:getOptions():andThen(function(options: { types.votingOption })
         for index: number, _option: types.votingOption in ipairs(options) do
             self:_updateVoteCount(index, 0)
         end
