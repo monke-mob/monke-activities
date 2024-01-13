@@ -17,7 +17,7 @@ return {
     },
 
     scoring = {
-        type = "none",
+        type = "basic",
     },
 
     teams = {
