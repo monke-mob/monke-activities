@@ -33,7 +33,6 @@ export type class = typeof(setmetatable({}, {})) & {
 function class.new(): class
     local self = setmetatable({}, class)
     self._janitor = Janitor.new()
-    self:_setupUI()
     return self
 end
 
@@ -48,6 +47,15 @@ function class:destroy()
     setmetatable(self, nil)
     table.clear(self)
     table.freeze(self)
+end
+
+--[[
+    Starts the mode.
+
+    @returns never
+]]
+function class:start()
+    self:_setupUI()
 end
 
 --[[
