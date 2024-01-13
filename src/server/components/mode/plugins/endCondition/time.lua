@@ -38,11 +38,10 @@ export type class = basicEndCondition.class & typeof(setmetatable({}, {})) & {
 ]]
 function class.new(time: number): class
     local baseClass = basicEndCondition.new()
-    local self = setmetatable({
-        timer = timerComponent.new(time),
-    }, baseClass)
+    local self = setmetatable(baseClass, class)
 
-    self._janitor:Add(self.timer)
+    self.timer = timerComponent.new(time)
+    self._janitor:Add(self.timer, "destroy")
 
     return self
 end
