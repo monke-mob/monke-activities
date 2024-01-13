@@ -54,8 +54,8 @@ end
 --]]
 function votingController:_toggleVoting(voting: boolean)
     if typeof(voting) ~= "boolean" then
-        local _success: boolean, votingPromise: boolean = self._votingService:isStarted():await()
-        voting = votingPromise
+        local _success: boolean, isStarted: boolean = self._votingService:isStarted():await()
+        voting = isStarted
     end
 
     votingAction:set(voting)
