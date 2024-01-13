@@ -31,6 +31,7 @@ function class.new()
     local self = setmetatable(baseClass, class)
 
     self.currentPlayer = nil
+    self.currentPlayerLabel = nil
 
     self._janitor:Add(modeService.event:Connect(function(event: string, ...)
         if event == "setPlayerTurn" then
@@ -50,6 +51,7 @@ end
 function class:setPlayerTurn(userID: number)
     local player = Players:GetPlayerByUserId(userID)
     self.currentPlayer = player
+    self.currentPlayerLabel.Text = player.DisplayName
 end
 
 return class
