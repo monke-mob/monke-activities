@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
@@ -31,7 +32,7 @@ function class.new()
     local self = setmetatable(baseClass, class)
 
     self.currentPlayer = nil
-    self.currentPlayerLabel = nil
+    self.currentPlayerText = Fusion.Value("")
 
     self._janitor:Add(modeService.event:Connect(function(event: string, ...)
         if event == "setPlayerTurn" then
@@ -51,7 +52,7 @@ end
 function class:setPlayerTurn(userID: number)
     local player = Players:GetPlayerByUserId(userID)
     self.currentPlayer = player
-    self.currentPlayerLabel.Text = player.DisplayName
+    self.currentPlayerText:set(player.DisplayName)
 end
 
 return class

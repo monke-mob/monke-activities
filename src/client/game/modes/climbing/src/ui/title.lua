@@ -1,6 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local strokeLabel = require(script.Parent.Parent.Parent.Parent.Parent.Parent.components.app.components.label.stroke)
@@ -17,11 +16,10 @@ end)
 --]]
 local function timer()
     return strokeLabel({
+        Text = modeController:getMode().currentPlayerText,
         Position = UDim2.fromScale(0, 0.1),
         Size = UDim2.fromScale(1, 0.05),
         TextScaled = true,
-
-        [Fusion.Ref] = modeController:getMode().currentPlayerLabel,
     })
 end
 
