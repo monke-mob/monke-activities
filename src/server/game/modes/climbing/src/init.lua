@@ -122,13 +122,16 @@ function class:_copyCharacterAtPosition(character: Model)
     local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
     characterRoot.Anchored = true
 
-    for _index: number, instance: BasePart in pairs(character:GetChildren() :: any) do
-        if instance.Name == "HumanoidRootPart" or instance:IsA("BasePart") == false then
+    for _index: number, instance: Instance in pairs(character:GetChildren() :: any) do
+        if
+            instance.Name == "HumanoidRootPart"
+            or (instance:IsA("BasePart") == false and instance:IsA("Decal") == false)
+        then
             continue
         end
 
-        instance.Transparency = 0.5
-        instance.Color = Color3.fromRGB(255, 0, 0)
+        (instance :: any).Transparency = 0.5;
+        (instance :: any).Color = Color3.fromRGB(255, 0, 0)
     end
 end
 
