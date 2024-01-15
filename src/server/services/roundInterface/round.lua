@@ -41,15 +41,6 @@ function roundService:start(players: modeComponent.players)
 end
 
 --[[
-    Returns the game state.
-
-	@returns boolean
-]]
-function roundService:isStarted()
-    return self._state.started
-end
-
---[[
 	Stops the currently running round.
 
 	@returns never
@@ -59,11 +50,22 @@ function roundService:stop()
         return
     end
 
+    self._state.started = false
+
     local scores = modeService:getMode():getScores()
     print(scores)
 
     mapService:remove()
     modeService:remove()
+end
+
+--[[
+    Returns the game state.
+
+	@returns boolean
+]]
+function roundService:isStarted()
+    return self._state.started
 end
 
 return roundService
