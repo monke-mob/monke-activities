@@ -7,6 +7,7 @@ local modeComponent = require(script.Parent.Parent.Parent.components.mode)
 local mapService
 local modeService
 local votingService
+local intermissionService
 
 local roundService = Knit.CreateService({
     Name = "round",
@@ -24,6 +25,7 @@ function roundService:KnitStart()
     mapService = Knit.GetService("map")
     modeService = Knit.GetService("mode")
     votingService = Knit.GetService("voting")
+    intermissionService = Knit.GetService("intermission")
 end
 
 --[[
@@ -57,6 +59,8 @@ function roundService:stop()
 
     mapService:remove()
     modeService:remove()
+    intermissionService:setState("waiting")
+    intermissionService:attemptState()
 end
 
 --[[
