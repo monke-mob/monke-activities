@@ -60,7 +60,7 @@ function roundService:stop()
     mapService:remove()
     modeService:remove()
     intermissionService:setState("waiting")
-    intermissionService:attemptState()
+    intermissionService:attemptStart()
 end
 
 --[[
