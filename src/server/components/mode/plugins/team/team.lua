@@ -1,3 +1,5 @@
+local Players = game:GetService("Players")
+
 type teamPlayer = {
     score: number,
     removed: boolean,
@@ -165,6 +167,31 @@ function class:_attemptToLockTeamScoreIfPlayersRemoved(teamID: teamID)
 
     if allPlayersRemoved then
         self:lockTeamScore(teamID, true)
+    end
+end
+
+--[[
+    Kills a player.
+
+    @param {number} userID [The ID of the player.]
+    @returns never
+]]
+function class:killPlayer(userID: number)
+    local player: Player = Players:GetPlayerByUserId(userID)
+    local character: Model = player.Character or player.CharacterAdded:Wait()
+    local characterHumanoid: Humanoid = character:FindFirstChildOfClass("Humanoid") :: Humanoid
+    characterHumanoid.Health = 0
+end
+
+--[[
+    Kills a team.
+
+    @param {teamID} teamID [The ID of the team.]
+    @returns never
+]]
+function class:killTeam(teamID: teamID)
+    for player: number, _playerData in pairs(self._teams[teamID].players) do
+        self:killPlayer(player)
     end
 end
 
