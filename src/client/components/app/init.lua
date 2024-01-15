@@ -1,4 +1,4 @@
-local blacklistedNames: { string } = {"actions", "components", "theme", "functions"}
+local blacklistedNames: { string } = { "actions", "components", "theme", "functions" }
 
 --[[
     Starts the ui modules.
