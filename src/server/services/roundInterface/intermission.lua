@@ -90,6 +90,16 @@ function intermissionService:attemptStart()
 end
 
 --[[
+	Sets the state name.
+
+    @param {string} state [The state name.]
+	@returns never
+]]
+function intermissionService:setState(state: string)
+    self._state.stateName = state
+end
+
+--[[
 	Starts a intermission.
 
 	@private
