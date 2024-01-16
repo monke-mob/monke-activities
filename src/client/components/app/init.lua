@@ -1,7 +1,7 @@
 local blacklistedNames: { string } = { "actions", "components", "theme", "functions" }
 
 --[[
-    Starts the ui modules.
+    Starts the UI modules.
 
     @returns never
 ]]
