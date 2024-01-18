@@ -2,8 +2,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
-local BUTTON_GRADIENT: ColorSequence = ColorSequence.new(Color3.fromHex("#060d15"), Color3.fromHex("#02080e"))
-
 local image = require(script.Parent.Parent.Parent.Parent.components.image)
 local labeledExternalSpringButton =
     require(script.Parent.Parent.Parent.Parent.components.button.animated.labeledExternalSpring)
@@ -64,7 +62,7 @@ local function subMenuButton(componentProps: componentProps)
         },
     }, {
         spring = componentProps.spring,
-        gradient = BUTTON_GRADIENT,
+        gradient = theme.gradient.dark,
     })
 end
 
