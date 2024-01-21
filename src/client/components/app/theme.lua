@@ -40,5 +40,6 @@ return {
         codes = "rbxassetid://15999737853",
         menu = "rbxassetid://14800609693",
         friendRequest = "rbxassetid://16006823235",
+        score = "rbxassetid://16000738233",
     },
 }
