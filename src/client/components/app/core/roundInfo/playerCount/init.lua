@@ -26,7 +26,7 @@ local function timer()
             }),
 
             image({
-                Image = theme.icons.players,
+                Image = theme.icons.player,
                 Size = UDim2.fromScale(0, 0.4),
             }, {
                 constrained = true,

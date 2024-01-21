@@ -36,7 +36,7 @@ return {
         logo = "rbxassetid://14827422191",
         credits = "rbxassetid://15999740081",
         settings = "rbxassetid://15999742619",
-        players = "rbxassetid://15999739064",
+        player = "rbxassetid://15999739064",
         codes = "rbxassetid://15999737853",
         menu = "rbxassetid://14800609693",
         friendRequest = "rbxassetid://16006823235",
