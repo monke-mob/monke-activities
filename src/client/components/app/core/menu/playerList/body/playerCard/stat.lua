@@ -42,7 +42,7 @@ local function stat(componentProps: componentProps)
             label({
                 TextTransparency = componentProps.spring.Transparency,
                 Text = componentProps.value,
-                Font = theme.font.light,
+                FontFace = theme.font.light,
                 Size = UDim2.fromScale(0, 0.75),
                 TextScaled = true,
                 AutomaticSize = Enum.AutomaticSize.X,
