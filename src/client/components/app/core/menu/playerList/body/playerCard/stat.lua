@@ -7,6 +7,7 @@ local image = require(script.Parent.Parent.Parent.Parent.Parent.Parent.component
 local label = require(script.Parent.Parent.Parent.Parent.Parent.Parent.components.label)
 local list = require(script.Parent.Parent.Parent.Parent.Parent.Parent.components.list)
 local springComponent = require(script.Parent.Parent.Parent.Parent.Parent.Parent.components.spring)
+local theme = require(script.Parent.Parent.Parent.Parent.Parent.Parent.theme)
 
 type componentProps = {
     icon: string,
@@ -41,6 +42,7 @@ local function stat(componentProps: componentProps)
             label({
                 TextTransparency = componentProps.spring.Transparency,
                 Text = componentProps.value,
+                Font = theme.font.light,
                 Size = UDim2.fromScale(0, 0.75),
                 TextScaled = true,
                 AutomaticSize = Enum.AutomaticSize.X,
