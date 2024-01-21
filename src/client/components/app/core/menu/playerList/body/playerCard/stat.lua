@@ -34,6 +34,7 @@ local function stat(componentProps: componentProps)
 
             image({
                 Image = componentProps.icon,
+                ImageTransparency = componentProps.spring.Transparency,
                 Size = UDim2.fromScale(0, 0.7),
             }, {
                 constrained = true,
