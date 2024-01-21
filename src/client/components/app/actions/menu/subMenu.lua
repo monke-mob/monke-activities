@@ -2,13 +2,13 @@ local action = require(script.Parent.Parent)
 
 local canToggleMenuAction = require(script.Parent.canToggle)
 local homeOpenAction = require(script.Parent.homeOpen)
-local playerListOpenAction = require(script.Parent.playerListOpen)
+local playerListAction = require(script.Parent.playerList)
 
 export type subMenu = "home" | "playerList" | ""
 
 local subMenuActionMap: { [subMenu]: action.class } = {
     home = homeOpenAction,
-    playerList = playerListOpenAction,
+    playerList = playerListAction.open,
 }
 local currentSubMenu: subMenu
 
