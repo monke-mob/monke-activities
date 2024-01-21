@@ -14,6 +14,7 @@ type componentProps = {
     spring: spring.spring,
     text: string,
     subMenu: subMenuAction.subMenu,
+    icon: string,
 }
 
 --[[
@@ -49,7 +50,7 @@ local function subMenuButton(componentProps: componentProps)
             }),
 
             image({
-                Image = theme.icons[componentProps.subMenu],
+                Image = componentProps.icon,
                 ImageTransparency = componentProps.spring.Transparency,
                 Size = UDim2.fromScale(0, 0.9),
             }, {

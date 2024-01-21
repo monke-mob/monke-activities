@@ -7,6 +7,7 @@ local handleButtonSprings = require(script.handleButtonSprings)
 local list = require(script.Parent.Parent.Parent.components.list)
 local logo = require(script.logo)
 local subMenuButton = require(script.subMenuButton)
+local theme = require(script.Parent.Parent.Parent.theme)
 
 --[[
 	NOTE: This does not use the sub menu component because it is the main menu.
@@ -38,24 +39,28 @@ local function home()
                         text = "players",
                         subMenu = "playerList",
                         spring = buttonSprings[1],
+                        icon = theme.icons.player,
                     }),
 
                     subMenuButton({
                         text = "settings",
                         subMenu = "settings",
                         spring = buttonSprings[2],
+                        icon = theme.icons.settings,
                     }),
 
                     subMenuButton({
                         text = "credits",
                         subMenu = "credits",
                         spring = buttonSprings[3],
+                        icon = theme.icons.credits,
                     }),
 
                     subMenuButton({
                         text = "codes",
                         subMenu = "codes",
                         spring = buttonSprings[3],
+                        icon = theme.icons.codes,
                     }),
                 },
             }, {}),
