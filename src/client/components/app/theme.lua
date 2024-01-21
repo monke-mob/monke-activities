@@ -39,5 +39,6 @@ return {
         players = "rbxassetid://15999739064",
         codes = "rbxassetid://15999737853",
         menu = "rbxassetid://14800609693",
+        friendRequest = "rbxassetid://16006823235",
     },
 }
