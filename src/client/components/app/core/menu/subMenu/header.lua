@@ -6,6 +6,7 @@ local action = require(script.Parent.Parent.Parent.Parent.actions)
 local button = require(script.Parent.Parent.Parent.Parent.components.button)
 local frame = require(script.Parent.Parent.Parent.Parent.components.frame)
 local strokeLabel = require(script.Parent.Parent.Parent.Parent.components.label.stroke)
+local subMenuAction = require(script.Parent.Parent.Parent.Parent.actions.menu.subMenu)
 local theme = require(script.Parent.Parent.Parent.Parent.theme)
 
 export type componentProps = {
@@ -57,6 +58,10 @@ local function header(componentProps: componentProps)
                     AnchorPoint = Vector2.new(0, 1),
                     BackgroundTransparency = 1,
                     TextScaled = true,
+
+                    [Fusion.OnEvent("Activated")] = function()
+                        subMenuAction.swap("home")
+                    end,
 
                     [Fusion.Children] = {
                         Fusion.New("UIStroke")({
