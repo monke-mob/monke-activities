@@ -26,7 +26,7 @@ local function timer()
             }),
 
             image({
-                Image = "rbxassetid://15999739064",
+                Image = theme.icons.players,
                 Size = UDim2.fromScale(0, 0.4),
             }, {
                 constrained = true,
