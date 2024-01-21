@@ -14,7 +14,7 @@ local theme = require(script.Parent.Parent.Parent.theme)
 local function menu(transparency)
     return image({
         ImageTransparency = Fusion.Computed(function()
-            -- This expression converts the 0.8-1 range to a 0-1 range.
+            -- Converts the 0.8-1 range to a 0-1 range.
             return (transparency:get() - 0.8) / 0.2
         end),
         Image = theme.icons.logo,
