@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local frame = require(script.Parent.Parent.Parent.Parent.components.frame)
+local grid = require(script.Parent.Parent.Parent.Parent.components.grid)
 local handleCardSprings = require(script.handleCardSprings)
 local handleList = require(script.handleList)
 local list = require(script.Parent.Parent.Parent.Parent.components.list)
@@ -22,15 +23,29 @@ local function body()
         Size = UDim2.fromScale(0.5, 0.6),
         Position = UDim2.fromScale(0.5, 0.3),
         AnchorPoint = Vector2.new(0.5, 0),
+        ScrollBarThickness = 8,
+        AutomaticCanvasSize = Enum.AutomaticSize.Y,
+        CanvasSize = UDim2.fromScale(0, 0),
+        VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar,
 
         [Fusion.Children] = {
-            list({}),
+            list({
+                Padding = UDim.new(0, 15),
+                VerticalAlignment = Enum.VerticalAlignment.Top,
+            }),
 
             frame({
                 AutomaticSize = Enum.AutomaticSize.Y,
                 Size = UDim2.fromScale(1, 0),
 
                 [Fusion.Children] = {
+                    grid({
+                        CellPadding = UDim2.fromOffset(0, 5),
+                        CellSize = UDim2.new(1, 0, 0, 58),
+                        HorizontalAlignment = Enum.HorizontalAlignment.Left,
+                        VerticalAlignment = Enum.VerticalAlignment.Top,
+                    }),
+
                     Fusion.ForPairs(playerList, function(index: number, player: Player)
                         return index,
                             playerCard({
