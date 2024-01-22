@@ -118,6 +118,7 @@ end
 
     @param {teamID} teamID [The team.]
     @param {number} increment [The amount to increment by.]
+    @param {number?} scoringPlayer [The player who scored the points, will give this player the points as well.]
     @returns never
 ]]
 function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlayer: number?)
