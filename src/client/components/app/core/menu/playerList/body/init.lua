@@ -46,10 +46,11 @@ local function body()
                         VerticalAlignment = Enum.VerticalAlignment.Top,
                     }),
 
-                    Fusion.ForPairs(playerList, function(index: number, player: Player)
+                    Fusion.ForPairs(playerList.players, function(index: number, player: Player)
                         return index,
                             playerCard({
                                 player = player,
+                                stats = playerList.stats[player.UserId],
                                 spring = cardSprings[index],
                             })
                     end, Fusion.cleanup),

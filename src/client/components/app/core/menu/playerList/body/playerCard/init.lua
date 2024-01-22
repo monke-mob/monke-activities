@@ -14,6 +14,7 @@ local theme = require(script.Parent.Parent.Parent.Parent.Parent.theme)
 type componentProps = {
     player: Player,
     spring: springComponent.spring,
+    stats: { [string]: any },
 }
 
 --[[
@@ -106,11 +107,16 @@ local function playerCard(componentProps: componentProps)
                                         HorizontalAlignment = Enum.HorizontalAlignment.Left,
                                     }),
 
-                                    stat({
-                                        icon = theme.icons.score,
-                                        value = "200",
-                                        spring = componentProps.spring,
-                                    }),
+                                    Fusion.ForPairs(componentProps.stats, function(statName: string, value: any)
+                                        print(componentProps.stats)
+                                        return statName,
+                                            stat({
+                                                -- TODO: Improve system for fetching icons.
+                                                icon = if statName == "score" then theme.icons.score else "",
+                                                value = value,
+                                                spring = componentProps.spring,
+                                            })
+                                    end, Fusion.cleanup),
                                 },
                             }, {}),
 

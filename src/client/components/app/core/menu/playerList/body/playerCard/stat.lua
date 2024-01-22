@@ -10,7 +10,7 @@ local springComponent = require(script.Parent.Parent.Parent.Parent.Parent.Parent
 local theme = require(script.Parent.Parent.Parent.Parent.Parent.Parent.theme)
 
 type componentProps = {
-    icon: string,
+    icon: string?,
     value: string,
     spring: springComponent.spring,
 }
@@ -27,18 +27,21 @@ local function stat(componentProps: componentProps)
 
         [Fusion.Children] = {
             list({
+                Padding = UDim.new(0, 5),
                 FillDirection = Enum.FillDirection.Horizontal,
                 -- NOTE: If the alignment is not set to left it causes the layout to be bugged.
                 HorizontalAlignment = Enum.HorizontalAlignment.Left,
             }),
 
-            image({
-                Image = componentProps.icon,
-                ImageTransparency = componentProps.spring.Transparency,
-                Size = UDim2.fromScale(0, 0.7),
-            }, {
-                constrained = true,
-            }),
+            if typeof(componentProps.icon) == "string"
+                then image({
+                    Image = componentProps.icon,
+                    ImageTransparency = componentProps.spring.Transparency,
+                    Size = UDim2.fromScale(0, 0.7),
+                }, {
+                    constrained = true,
+                })
+                else nil,
 
             label({
                 TextTransparency = componentProps.spring.Transparency,
