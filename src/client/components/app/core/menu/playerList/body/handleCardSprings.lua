@@ -1,7 +1,7 @@
 local playerListAction = require(script.Parent.Parent.Parent.Parent.Parent.actions.menu.playerList)
 local springsComponent = require(script.Parent.Parent.Parent.Parent.Parent.components.spring.springs)
 
-local cardCount: number = 12
+local cardCount: number = 16
 
 --[[
 	Handles the card springs.
