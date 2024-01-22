@@ -11,6 +11,11 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local function handleList()
     local playerList = Fusion.Value({})
 
+    --[[
+        Updates the player list.
+
+        @returns never
+    --]]
     local function updateList()
         local list = {}
 
