@@ -37,4 +37,14 @@ function class.new(players: { number }): class
     return self
 end
 
+--[[
+    This is the same thing as the incrementTeamScore in the teamPlugin but is adds the `scoringPlayer` param.
+
+    @extends teamPlugin.incrementTeamScore
+    @returns never
+]]
+function class:incrementTeamScore(...)
+    teamPlugin.incrementTeamScore(self, ..., self.id)
+end
+
 return class
