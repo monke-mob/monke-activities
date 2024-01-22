@@ -1,3 +1,5 @@
+local Players = game:GetService("Players")
+
 type teamPlayer = {
     score: number,
     removed: boolean,
@@ -127,6 +129,9 @@ function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlay
 
     if scoringPlayer ~= nil then
         self._teams[teamID].players[scoringPlayer].score += increment
+
+        local player: Player = Players:GetPlayerByUserId(scoringPlayer)
+        player:SetAttribute("score", self._teams[teamID].players[scoringPlayer].score)
     end
 end
 
