@@ -24,6 +24,18 @@ local class = {}
 class.__index = class
 setmetatable(class, modeComponent)
 
+export type class = typeof(setmetatable({}, {})) & {
+    _players: number,
+    _currentPlayer: number,
+    _currentPlayerIndex: number,
+    _cycle: number,
+    _spawn: CFrame,
+    _cycleToNextPlayer: () -> never,
+    _setPlayerTurn: () -> never,
+    _calculatePlayerScore: () -> never,
+    _copyCharacterAtPosition: () -> never,
+}
+
 --[[
     Creates the mode.
 
@@ -31,7 +43,7 @@ setmetatable(class, modeComponent)
     @param {modeComponent.players} players [The players.]
     @returns class
 ]]
-function class.new(players: modeComponent.players)
+function class.new(players: modeComponent.players): class
     local baseClass = modeComponent.new(players, config)
     local mode = setmetatable(baseClass, class)
     mode._players = players
