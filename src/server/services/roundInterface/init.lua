@@ -32,7 +32,7 @@ function roundInterfaceService:KnitStart()
     roundService = Knit.GetService("round")
 
     Players.PlayerAdded:Connect(function(...)
-        self:_playerAdded(...)
+        self:_handlePlayer(...)
     end)
 end
 
@@ -66,13 +66,13 @@ function roundInterfaceService:updatePlayerCount(playerCount: number)
 end
 
 --[[
-    Handles a player joining.
+    Handles a player.
 
     @private
     @param {Player} player [The new player to handle.]
 	@returns never
 ]]
-function roundInterfaceService:_playerAdded(player: Player)
+function roundInterfaceService:_handlePlayer(player: Player)
     local janitor = Janitor.new()
     janitor:Add(player.CharacterAdded:Connect(function(character: Model)
         local characterHumanoid: Humanoid = character:WaitForChild("Humanoid") :: Humanoid
