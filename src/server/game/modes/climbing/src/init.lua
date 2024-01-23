@@ -52,6 +52,7 @@ end
 --[[
     Cycles to the next players turn and if all players have went then it stops the round.
 
+    @private
     @returns never
 ]]
 function class:_cycleToNextPlayer()
@@ -72,6 +73,7 @@ end
 --[[
     Sets it to be a players turn.
 
+    @private
     @param {number} userID [The player.]
     @returns never
 ]]
@@ -97,6 +99,7 @@ end
 --[[
     Calculates a players score based on their position.
 
+    @private
     @param {Model} character [The character.]
     @returns number
 ]]
@@ -110,6 +113,7 @@ end
 --[[
     Sets it to be a players turn.
 
+    @private
     @param {Model} character [The character.]
     @returns never
 ]]
