@@ -10,7 +10,7 @@ Knit:OnStart():andThen(function()
 end)
 
 --[[
-    The label that displays the current person.
+    The label that displays the current player.
 	
 	@returns Fusion.Component
 --]]
