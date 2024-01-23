@@ -69,7 +69,7 @@ end
     Handles a player joining.
 
     @private
-    @param {Player} player [The new / joining player to handle.]
+    @param {Player} player [The new player to handle.]
 	@returns never
 ]]
 function roundInterfaceService:_playerAdded(player: Player)
