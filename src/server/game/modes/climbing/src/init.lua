@@ -18,6 +18,7 @@ end)
 
     @class
     @public
+    @extends modeComponent
 ]]
 local class = {}
 class.__index = class
