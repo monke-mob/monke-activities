@@ -14,7 +14,7 @@ end)
 	
 	@returns Fusion.Component
 --]]
-local function timer()
+local function title()
     return strokeLabel({
         Text = modeController:getMode().currentPlayerText,
         Position = UDim2.fromScale(0, 0.1),
@@ -23,4 +23,4 @@ local function timer()
     })
 end
 
-return timer
+return title
