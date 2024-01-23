@@ -45,21 +45,21 @@ export type class = typeof(setmetatable({}, {})) & {
 ]]
 function class.new(players: modeComponent.players): class
     local baseClass = modeComponent.new(players, config)
-    local mode = setmetatable(baseClass, class)
-    mode._players = players
-    mode._currentPlayer = nil
-    mode._currentPlayerIndex = 0
-    mode._cycle = 1
-    mode._spawn = baseClass._map:FindFirstChild("spawn").CFrame
+    local self = setmetatable(baseClass, class)
+    self._players = players
+    self._currentPlayer = nil
+    self._currentPlayerIndex = 0
+    self._cycle = 1
+    self._spawn = baseClass._map:FindFirstChild("spawn").CFrame
 
     -- Freeze all of the players to start with.
     for _index: number, player: number in pairs(players) do
         freezePlayer(player, true)
     end
 
-    mode:_cycleToNextPlayer()
+    self:_cycleToNextPlayer()
 
-    return mode
+    return self
 end
 
 --[[
