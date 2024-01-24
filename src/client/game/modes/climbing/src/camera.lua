@@ -38,7 +38,7 @@ function camera.start()
 end
 
 --[[
-    Stops the RenderStepped connection.
+    Sets the camera back to default.
 
     @returns never
 ]]
