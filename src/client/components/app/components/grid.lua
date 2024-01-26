@@ -1,9 +1,9 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
-local types = require(ReplicatedStorage.types)
 
 local concatTables = require(ReplicatedStorage.functions.concatTables)
+local types = require(ReplicatedStorage.types)
 
 --[[
 	The base class for a `UIGridLayout`.
