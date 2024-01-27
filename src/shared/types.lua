@@ -10,4 +10,9 @@ export type votingOption = {
     teamType: teamType?,
 }
 
+export type lightingConfig = {
+    main: dictionaryStringAny,
+    effects: dictionaryStringAny,
+}
+
 return nil
