@@ -27,6 +27,10 @@ function roundInterfaceService:KnitStart()
     Players.PlayerAdded:Connect(function(...)
         self:_handlePlayer(...)
     end)
+
+    Players.PlayerRemoving:Connect(function(...)
+        self:_playerLeaving(...)
+    end)
 end
 
 --[[
