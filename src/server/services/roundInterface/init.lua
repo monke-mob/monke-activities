@@ -29,7 +29,7 @@ function roundInterfaceService:KnitStart()
     end)
 
     Players.PlayerRemoving:Connect(function(...)
-        self:_playerLeaving(...)
+        self:_handlePlayerLeaving(...)
     end)
 end
 
@@ -97,7 +97,7 @@ end
     @param {Player} player [The player leaving.]
 	@returns never
 ]]
-function roundInterfaceService:_playerLeaving(player: Player)
+function roundInterfaceService:_handlePlayerLeaving(player: Player)
     intermissionService:setReady(player, false)
     self._playerJanitor:Remove(player.UserId)
 
