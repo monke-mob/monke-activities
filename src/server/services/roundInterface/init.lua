@@ -24,6 +24,11 @@ function roundInterfaceService:KnitStart()
     intermissionService = Knit.GetService("intermission")
     roundService = Knit.GetService("round")
 
+    -- Just in case we couldnt catch the players via the PlayerAdded event.
+    for _index: number, player: Player in ipairs(Players:GetPlayers()) do
+        self:_handlePlayer(player)
+    end
+
     Players.PlayerAdded:Connect(function(...)
         self:_handlePlayer(...)
     end)
