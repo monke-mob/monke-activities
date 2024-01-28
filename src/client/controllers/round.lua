@@ -7,14 +7,14 @@ local timerAction = require(script.Parent.Parent.components.app.actions.round.ti
 local updateTimeAction = require(script.Parent.Parent.functions.updateTimeAction)
 local roundInterface
 
-local roundDataController = Knit.CreateController({
-    Name = "roundData",
+local roundController = Knit.CreateController({
+    Name = "round",
 })
 
 --[[
 	@returns never
 --]]
-function roundDataController:KnitStart()
+function roundController:KnitStart()
     roundInterface = Knit.GetService("roundInterface")
 
     roundInterface.playerCount:Observe(function(newPlayerCount: number)
@@ -26,4 +26,4 @@ function roundDataController:KnitStart()
     end)
 end
 
-return roundDataController
+return roundController
