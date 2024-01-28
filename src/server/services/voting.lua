@@ -6,7 +6,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local VOTING = require(script.Parent.Parent.constants.VOTING)
-local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
 
 local mapTypes = require(script.Parent.Parent.components.map.types)
 local modeTypes = require(script.Parent.Parent.components.mode.types)
@@ -33,6 +32,7 @@ local votingService = Knit.CreateService({
         setStage = Knit.CreateSignal(),
         toggleVoting = Knit.CreateSignal(),
         updateVoteCount = Knit.CreateSignal(),
+        timer = Knit.CreateProperty(0),
     },
 })
 
@@ -40,10 +40,8 @@ local votingService = Knit.CreateService({
 	@returns never
 ]]
 function votingService:KnitInit()
-    ReplicatedStorage:SetAttribute(VOTING_TIMER, 0)
-
     self._timer.updated:Connect(function(timeRemaining: number)
-        ReplicatedStorage:SetAttribute(VOTING_TIMER, timeRemaining)
+        self.Client.timer:Set(timeRemaining)
     end)
 end
 

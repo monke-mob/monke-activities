@@ -4,9 +4,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
-local TIMER = require(ReplicatedStorage.constants.TIMER)
-
 local intermissionService
 local roundService
 
@@ -14,15 +11,11 @@ local roundInterfaceService = Knit.CreateService({
     Name = "roundInterface",
     _playerJanitor = Janitor.new(),
     _timer = nil,
+    Client = {
+        playerCount = Knit.CreateProperty(0),
+        timer = Knit.CreateProperty(0),
+    },
 })
-
---[[
-	@returns never
-]]
-function roundInterfaceService:KnitInit()
-    ReplicatedStorage:SetAttribute(PLAYER_COUNT, 0)
-    ReplicatedStorage:SetAttribute(TIMER, 0)
-end
 
 --[[
 	@returns never
@@ -48,10 +41,10 @@ function roundInterfaceService:bindTimer(timer)
         self._timer = nil
     end
 
-    ReplicatedStorage:SetAttribute(TIMER, timer.timeRemaining)
+    self.Client.timer:Set(timer.timeRemaining)
 
     self._timer = timer.updated:Connect(function(timeRemaining: number)
-        ReplicatedStorage:SetAttribute(TIMER, timeRemaining)
+        self.Client.timer:Set(timeRemaining)
     end)
 end
 
@@ -62,7 +55,7 @@ end
 	@returns never
 ]]
 function roundInterfaceService:updatePlayerCount(playerCount: number)
-    ReplicatedStorage:SetAttribute(PLAYER_COUNT, playerCount)
+    self.Client.playerCount:Set(playerCount)
 end
 
 --[[

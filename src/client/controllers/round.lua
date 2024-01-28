@@ -2,12 +2,10 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
-local TIMER = require(ReplicatedStorage.constants.TIMER)
-
 local playerCountAction = require(script.Parent.Parent.components.app.actions.round.playerCount)
 local timerAction = require(script.Parent.Parent.components.app.actions.round.timer)
-local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
+local updateTimeAction = require(script.Parent.Parent.functions.updateTimeAction)
+local roundInterface
 
 local roundDataController = Knit.CreateController({
     Name = "roundData",
@@ -16,33 +14,16 @@ local roundDataController = Knit.CreateController({
 --[[
 	@returns never
 --]]
-function roundDataController:KnitInit()
-    self:_playerCountUpdated()
-    self:_timerUpdated()
+function roundDataController:KnitStart()
+    roundInterface = Knit.GetService("roundInterface")
 
-    ReplicatedStorage:GetAttributeChangedSignal(PLAYER_COUNT):Connect(self._playerCountUpdated)
-    ReplicatedStorage:GetAttributeChangedSignal(TIMER):Connect(self._timerUpdated)
-end
+    roundInterface.playerCount:Observe(function(newPlayerCount: number)
+        playerCountAction:set(newPlayerCount)
+    end)
 
---[[
-	Updates the player count action with the new player count.
-	
-    @private
-	@returns never
---]]
-function roundDataController:_playerCountUpdated()
-    local playerCount: number = ReplicatedStorage:GetAttribute(PLAYER_COUNT)
-    playerCountAction:set(playerCount)
-end
-
---[[
-	Updates the timer action with the new time.
-    
-	@private
-	@returns never
---]]
-function roundDataController:_timerUpdated()
-    updateTimeActionWithAttribute(timerAction, TIMER)
+    roundInterface.timer:Observe(function(newTime: number)
+        updateTimeAction(timerAction, newTime)
+    end)
 end
 
 return roundDataController

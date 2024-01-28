@@ -2,8 +2,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local VOTING_TIMER = require(ReplicatedStorage.constants.VOTING_TIMER)
-
 local canToggleMenuAction = require(script.Parent.Parent.components.app.actions.menu.canToggle)
 local menuOpenAction = require(script.Parent.Parent.components.app.actions.menu.open)
 local optionsAction = require(script.Parent.Parent.components.app.actions.voting.options)
@@ -11,7 +9,7 @@ local roundInfoVisibleAction = require(script.Parent.Parent.components.app.actio
 local stageAction = require(script.Parent.Parent.components.app.actions.voting.stage)
 local timerAction = require(script.Parent.Parent.components.app.actions.voting.timer)
 local types = require(ReplicatedStorage.types)
-local updateTimeActionWithAttribute = require(script.Parent.Parent.functions.updateTimeActionWithAttribute)
+local updateTimeAction = require(script.Parent.Parent.functions.updateTimeAction)
 local votesAction = require(script.Parent.Parent.components.app.actions.voting.votes)
 local votingAction = require(script.Parent.Parent.components.app.actions.voting.voting)
 local votingService
@@ -41,8 +39,8 @@ function votingController:KnitStart()
         self:_updateVoteCount(...)
     end)
 
-    ReplicatedStorage:GetAttributeChangedSignal(VOTING_TIMER):Connect(function()
-        self:_timerUpdated()
+    votingService.timer:Observe(function(time: number)
+        updateTimeAction(timerAction, time)
     end)
 end
 
@@ -81,16 +79,6 @@ function votingController:_stageUpdated(stage: string)
 
         optionsAction:set(options)
     end)
-end
-
---[[
-	Updates the timer action with the new time.
-    
-	@private
-	@returns never
---]]
-function votingController:_timerUpdated()
-    updateTimeActionWithAttribute(timerAction, VOTING_TIMER)
 end
 
 --[[
