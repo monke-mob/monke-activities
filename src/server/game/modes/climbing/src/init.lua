@@ -124,7 +124,7 @@ function class:_calculatePlayerScore(character: Model): number
 end
 
 --[[
-    Sets it to be a players turn.
+    Copies a players character and sets it to be semi transparent and red.
 
     @private
     @param {Model} character [The character.]
