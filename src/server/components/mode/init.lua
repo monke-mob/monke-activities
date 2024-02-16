@@ -19,6 +19,8 @@ end)
 --[[
     Determines which team balancer to use.
 
+    @param {{ number }} players [The players.]
+    @param {modeTypes.teamsConfig} config [The team config.]
     @returns { teamPlugin.constructorTeam }
 ]]
 local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamPlugin.constructorTeam }
