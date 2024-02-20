@@ -151,12 +151,12 @@ end
 --[[
     Kills a player.
 
-    @param {number} userID [The ID of the player.]
+    @param {number} player [The ID of the player.]
     @returns never
 ]]
-function class:killPlayer(userID: number)
-    local player: Player = Players:GetPlayerByUserId(userID)
-    local character: Model = player.Character or player.CharacterAdded:Wait()
+function class:killPlayer(player: number)
+    local playerInstance: Player = Players:GetPlayerByUserId(player)
+    local character: Model = playerInstance.Character or playerInstance.CharacterAdded:Wait()
     local characterHumanoid: Humanoid = character:FindFirstChildOfClass("Humanoid") :: Humanoid
     characterHumanoid.Health = 0
 end
