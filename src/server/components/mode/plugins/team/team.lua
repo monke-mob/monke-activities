@@ -90,11 +90,10 @@ function class:destroy()
 end
 
 --[[
-    Locks a teams score. Locking the score prevents a team from gaining any score. This is most likely called
-    whenever a teams players are dead or when they all leave.
+    Locks a team. Locking a team prevents scoring and respawning.
 
-    @param {teamID} teamID [The team.]
-    @param {boolean} locked [If the score should be locked or not.]
+    @param {teamID} teamID [The ID of the team.]
+    @param {boolean} locked [If the team should be locked or not.]
     @returns never
 ]]
 function class:lockTeam(teamID: teamID, locked: boolean)
@@ -104,8 +103,8 @@ end
 --[[
     Sets a players removed status to true.
 
-    @param {teamID} teamID [The team.]
-	@param {number} player [The player.]
+    @param {teamID} teamID [The ID of the team.]
+    @param {number} player [The ID of the player.]
     @returns never
 ]]
 function class:removePlayerFromTeam(teamID: teamID, player: number)
@@ -116,8 +115,9 @@ end
 --[[
     Adds or subtracts from a teams score by the passed amount.
 
-    @param {teamID} teamID [The team.]
-    @param {number} increment [The amount to increment by.]
+    @param {teamID} teamID [The ID of the team.]
+    @param {number} increment [The amount to increment the score by.]
+    @param {number?} scoringPlayer [The player that scored the points. The points will also be awarded to this player if provided.]
     @returns never
 ]]
 function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlayer: number?)
@@ -135,7 +135,7 @@ end
 --[[
     Returns the team that the player is in.
 
-    @param {number} player [The player.]
+    @param {number} player [The ID of the player.]
     @returns teamID?
 ]]
 function class:findTeamFromPlayer(player: number): teamID?
@@ -165,7 +165,7 @@ end
     Kills a team.
 
     @param {teamID} teamID [The ID of the team.]
-    @param {boolean} locked [If the score should be locked or not.]
+    @param {boolean} locked [If the team should be locked or not.]
     @returns never
 ]]
 function class:killTeam(teamID: teamID, locked: boolean)
