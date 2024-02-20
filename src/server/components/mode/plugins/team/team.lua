@@ -6,7 +6,7 @@ type teamPlayer = {
 }
 
 export type team = {
-    scoreLocked: boolean,
+    locked: boolean,
     score: number,
     players: {
         [number]: teamPlayer,
@@ -66,7 +66,7 @@ function class.new(constructorTeams: { constructorTeam }): class
         end
 
         teams[team.id] = {
-            scoreLocked = false,
+            locked = false,
             score = 0,
             players = players,
         }
@@ -98,7 +98,7 @@ end
     @returns never
 ]]
 function class:lockTeamScore(teamID: teamID, locked: boolean)
-    self._teams[teamID].scoreLocked = locked
+    self._teams[teamID].locked = locked
 end
 
 --[[
@@ -121,7 +121,7 @@ end
     @returns never
 ]]
 function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlayer: number?)
-    if self._teams[teamID].scoreLocked then
+    if self._teams[teamID].locked then
         return
     end
 
@@ -165,12 +165,15 @@ end
     Kills a team.
 
     @param {teamID} teamID [The ID of the team.]
+    @param {boolean} locked [If the score should be locked or not.]
     @returns never
 ]]
-function class:killTeam(teamID: teamID)
+function class:killTeam(teamID: teamID, locked: boolean)
     for player: number, _playerData in pairs(self._teams[teamID].players) do
         self:killPlayer(player)
     end
+
+    self:lockTeamScore(teamID, locked)
 end
 
 --[[
