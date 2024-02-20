@@ -97,7 +97,7 @@ end
     @param {boolean} locked [If the score should be locked or not.]
     @returns never
 ]]
-function class:lockTeamScore(teamID: teamID, locked: boolean)
+function class:lockTeam(teamID: teamID, locked: boolean)
     self._teams[teamID].locked = locked
 end
 
@@ -110,7 +110,7 @@ end
 ]]
 function class:removePlayerFromTeam(teamID: teamID, player: number)
     self._teams[teamID].players[player].removed = true
-    self:_attemptToLockTeamScoreIfPlayersRemoved(teamID)
+    self:_attemptToLockTeamIfPlayersRemoved(teamID)
 end
 
 --[[
@@ -173,17 +173,17 @@ function class:killTeam(teamID: teamID, locked: boolean)
         self:killPlayer(player)
     end
 
-    self:lockTeamScore(teamID, locked)
+    self:lockTeam(teamID, locked)
 end
 
 --[[
-    Attempts to lock a teams score. If all players are removed then it will lock.
+    Attempts to lock a team. If all players are removed then it will lock.
 
     @private
     @param {teamID} teamID [The team.]
     @returns never
 ]]
-function class:_attemptToLockTeamScoreIfPlayersRemoved(teamID: teamID)
+function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
     local allPlayersRemoved: boolean = true
 
     for player: number, playerData in pairs(self._teams[teamID].players) do
