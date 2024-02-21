@@ -140,6 +140,7 @@ function class:_copyCharacterAtPosition(character: Model)
     character.Parent = workspace
     character.Archivable = false
     self._janitor:Add(character)
+
     local characterRoot: Part = character:FindFirstChild("HumanoidRootPart") :: any
     characterRoot.Anchored = true
 
