@@ -72,7 +72,11 @@ function class:_cycleToNextPlayer()
     if self._currentPlayerIndex == #self._players then
         self._cycle += 1
         self._currentPlayerIndex = 0
-        return
+    end
+
+    if self._currentPlayerIndex == #self._players then
+        self._cycle += 1
+        self._currentPlayerIndex = 0
     end
 
     self._currentPlayerIndex += 1
