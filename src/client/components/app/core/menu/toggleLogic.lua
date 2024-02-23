@@ -7,7 +7,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local canToggleMenuAction = require(script.Parent.Parent.Parent.actions.menu.canToggle)
 local menuOpenAction = require(script.Parent.Parent.Parent.actions.menu.open)
 local mouseUnlockAction = require(script.Parent.Parent.Parent.actions.mouseUnlock)
-local roundInfoVisibleAction = require(script.Parent.Parent.Parent.actions.round.visible)
+local roundInfoVisibleAction = require(script.Parent.Parent.Parent.actions.roundInfo.visible)
 local subMenuAction = require(script.Parent.Parent.Parent.actions.menu.subMenu)
 
 local lightingController = Knit.GetController("lighting")

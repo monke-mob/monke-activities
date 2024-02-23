@@ -6,7 +6,7 @@ local frame = require(script.Parent.Parent.components.frame)
 local menuToggle = require(script.menuToggle)
 local playerCount = require(script.playerCount)
 local timer = require(script.timer)
-local visibleAction = require(script.Parent.Parent.actions.round.visible)
+local visibleAction = require(script.Parent.Parent.actions.roundInfo.visible)
 
 --[[
 	Handles the round interface.
