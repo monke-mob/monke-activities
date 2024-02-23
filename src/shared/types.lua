@@ -1,3 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Janitor = require(ReplicatedStorage.Packages.Janitor)
+export type Janitor = typeof(Janitor.new())
+
 export type dictionaryStringAny = { [string]: any }
 
 export type dictionaryAny = { [any]: any }
