@@ -3,8 +3,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local roundInfoVisibleAction = require(script.Parent.Parent.components.app.actions.roundInfo.visible)
 local types = require(ReplicatedStorage.types)
-
 local modeController
 
 Knit:OnStart():andThen(function()
@@ -44,6 +44,7 @@ end
     @returns never
 ]]
 function class:destroy()
+    roundInfoVisibleAction:set(true)
     self._janitor:Destroy()
 
     setmetatable(self, nil)
@@ -57,6 +58,7 @@ end
     @returns never
 ]]
 function class:start()
+    roundInfoVisibleAction:set(false)
     self:_setupUI()
 end
 
