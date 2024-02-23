@@ -77,6 +77,7 @@ end
 ]]
 function roundInterfaceService:_handlePlayer(player: Player)
     local janitor: types.Janitor = Janitor.new()
+
     janitor:Add(player.CharacterAdded:Connect(function(character: Model)
         local characterHumanoid: Humanoid = character:WaitForChild("Humanoid") :: Humanoid
 
