@@ -4,6 +4,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local types = require(ReplicatedStorage.types)
 local intermissionService
 local roundService
 
@@ -75,7 +76,7 @@ end
 	@returns never
 ]]
 function roundInterfaceService:_handlePlayer(player: Player)
-    local janitor = Janitor.new()
+    local janitor: types.Janitor = Janitor.new()
     janitor:Add(player.CharacterAdded:Connect(function(character: Model)
         local characterHumanoid: Humanoid = character:WaitForChild("Humanoid") :: Humanoid
 

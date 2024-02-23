@@ -2,8 +2,10 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Fluid = require(ReplicatedStorage.Packages.Fluid)
+local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local types = require(ReplicatedStorage.types)
 local modeService
 
 Knit:OnStart():andThen(function()
@@ -25,7 +27,7 @@ class.__index = class
     @constructor
     @returns class
 ]]
-function class.new(janitor)
+function class.new(janitor: types.Janitor)
     local self = setmetatable({}, class)
 
     janitor:Add(modeService.Client.event:Connect(function(event: string)

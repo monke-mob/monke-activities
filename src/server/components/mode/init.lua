@@ -10,6 +10,7 @@ local singlePlayerPlugin = require(script.plugins.team.single)
 local teamPlugin = require(script.plugins.team.team)
 local timeEndConditionPlugin = require(script.plugins.endCondition.time)
 local timeScorePlugin = require(script.plugins.score.time)
+local types = require(ReplicatedStorage.types)
 local mapService
 
 Knit:OnStart():andThen(function()
@@ -47,7 +48,7 @@ export type class = typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     start: () -> never,
     getScores: () -> teamPlugin.teams,
-    _janitor: any,
+    _janitor: types.Janitor,
     _map: Instance,
 }
 

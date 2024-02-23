@@ -3,6 +3,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local types = require(ReplicatedStorage.types)
+
 local modeController
 
 Knit:OnStart():andThen(function()
@@ -21,7 +23,7 @@ class.__index = class
 export type class = typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     _setupUI: () -> never,
-    _janitor: any,
+    _janitor: types.Janitor,
 }
 
 --[[

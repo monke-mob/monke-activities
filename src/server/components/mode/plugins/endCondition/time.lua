@@ -4,6 +4,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local basicEndCondition = require(script.Parent.basic)
 local timerComponent = require(script.Parent.Parent.Parent.Parent.timer)
+local types = require(ReplicatedStorage.types)
 local roundInterface = nil
 
 Knit:OnStart():andThen(function()
@@ -26,7 +27,7 @@ export type class = basicEndCondition.class & typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     start: () -> never,
     _end: () -> never,
-    _janitor: any,
+    _janitor: types.Janitor,
 }
 
 --[[

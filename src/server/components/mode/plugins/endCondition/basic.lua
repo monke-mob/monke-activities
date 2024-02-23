@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local types = require(ReplicatedStorage.types)
 local roundService
 
 Knit:OnStart():andThen(function()
@@ -21,7 +22,7 @@ class.__index = class
 export type class = typeof(setmetatable({}, {})) & {
     destroy: () -> never,
     stop: () -> never,
-    _janitor: any,
+    _janitor: types.Janitor,
 }
 
 --[[
