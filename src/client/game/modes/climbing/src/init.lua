@@ -36,13 +36,12 @@ function class.new()
     self.currentPlayer = nil
     self.currentPlayerText = Fusion.Value("")
 
+    self._janitor:Add(camera, "cleanup")
     self._janitor:Add(modeService.event:Connect(function(event: string, ...)
         if event == "setPlayerTurn" then
             self:setPlayerTurn(...)
         end
     end))
-
-    self._janitor:Add(camera, "cleanup")
 
     return self
 end
