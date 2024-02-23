@@ -1,4 +1,3 @@
-local createTeam = require(script.Parent.Parent.Parent.Parent.components.mode.functions.createTeam)
 local modeTypes = require(script.Parent.Parent.Parent.Parent.components.mode.types)
 
 return {
@@ -22,10 +21,6 @@ return {
 
     teams = {
         type = "single",
-        ids = {
-            [1] = createTeam("rocketer", 1),
-            [2] = createTeam("players", 15),
-        },
     },
 
     mode = {
