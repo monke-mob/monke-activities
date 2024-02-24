@@ -50,4 +50,8 @@ function class:destroy()
     table.freeze(self)
 end
 
+function class:getStartingLedge()
+    return 
+end
+
 return class
