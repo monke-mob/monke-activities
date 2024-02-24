@@ -181,6 +181,13 @@ function class:killTeam(teamID: teamID, locked: boolean)
     self:lockTeam(teamID, locked)
 end
 
+--[[
+    Respawns a player.
+
+    @param {number} player [The ID of the player.]
+    @param {string} spawn [The ID of the spawn.]
+    @returns never
+]]
 function class:respawnPlayer(player: number, spawn: string)
     local spawnInstance: BasePart
     teleportPlayer(player, spawnInstance.CFrame)
@@ -208,6 +215,12 @@ function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
     end
 end
 
+--[[
+    Handles team spawns.
+
+    @private
+    @returns never
+]]
 function class:_handleSpawns()
     for _index, spawnInstance: BasePart in pairs(CollectionService:GetTagged("spawn")) do
         self:_handleNewSpawn(spawnInstance)
@@ -218,6 +231,13 @@ function class:_handleSpawns()
     end))
 end
 
+--[[
+    Handles team spawns.
+
+    @private
+    @param {BasePart} spawnInstance [The spawn instance.]
+    @returns never
+]]
 function class:_handleNewSpawn(spawnInstance: BasePart)
     table.insert(self._spawns, spawnInstance)
 end
