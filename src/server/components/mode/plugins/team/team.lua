@@ -180,7 +180,7 @@ end
     Attempts to lock a team. If all players are removed then it will lock.
 
     @private
-    @param {teamID} teamID [The team.]
+    @param {teamID} teamID [The ID of the team.]
     @returns never
 ]]
 function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
