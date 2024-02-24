@@ -22,13 +22,19 @@ local class = {}
 class.__index = class
 setmetatable(class, modeComponent)
 
+export type class = modeComponent.class & {
+    currentPlayer: Player | nil,
+    currentPlayerText: any,
+    _camera: climbingCamera.class,
+}
+
 --[[
     Creates the mode.
 
     @constructor
     @returns class
 ]]
-function class.new()
+function class.new(): class
     local baseClass = modeComponent.new()
     local self = setmetatable(baseClass, class)
 
