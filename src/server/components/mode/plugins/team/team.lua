@@ -1,4 +1,7 @@
+local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+
+local teleportPlayer = require(script.Parent.Parent.Parent.functions.teleportPlayer)
 
 type teamPlayer = {
     score: number,
@@ -37,6 +40,7 @@ class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
     _teams: teams,
+    _spawns: { BasePart },
     destroy: () -> never,
     incrementTeamScore: (teamID: teamID, increment: number) -> never,
     lockTeamScore: (teamID: teamID) -> never,
@@ -74,6 +78,7 @@ function class.new(constructorTeams: { constructorTeam }): class
 
     local self = setmetatable({
         _teams = teams,
+        _spawns = {},
     }, class)
     return self
 end
@@ -176,6 +181,11 @@ function class:killTeam(teamID: teamID, locked: boolean)
     self:lockTeam(teamID, locked)
 end
 
+function class:respawnPlayer(player: number, spawn: string)
+    local spawnInstance: BasePart
+    teleportPlayer(player, spawnInstance.CFrame)
+end
+
 --[[
     Attempts to lock a team. If all players are removed then it will lock.
 
@@ -196,6 +206,20 @@ function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
     if allPlayersRemoved then
         self:lockTeam(teamID, true)
     end
+end
+
+function class:_handleSpawns()
+    for _index, spawnInstance: BasePart in pairs(CollectionService:GetTagged("spawn")) do
+        self:_handleNewSpawn(spawnInstance)
+    end
+
+    self._janitor:Add(CollectionService:GetInstanceAddedSignal("spawn"):Connect(function(...)
+        self:_handleNewSpawn(...)
+    end))
+end
+
+function class:_handleNewSpawn(spawnInstance: BasePart)
+    table.insert(self._spawns, spawnInstance)
 end
 
 return class
