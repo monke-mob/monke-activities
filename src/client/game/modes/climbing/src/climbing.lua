@@ -79,7 +79,7 @@ function _onInputBegan(input: InputObject, gameProcessedEvent: boolean)
         [Enum.KeyCode.D] = nil,
     }
 
-    if controls[input.KeyCode.KeyCode] then
+    if controls[input.KeyCode] then
         if os.clock() - lastClimb > cooldown then
             lastClimb = os.clock()
         end
