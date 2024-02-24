@@ -24,7 +24,7 @@ local class = {}
 class.__index = class
 setmetatable(class, modeComponent)
 
-export type class = typeof(setmetatable({}, {})) & {
+export type class = modeComponent.class & {
     _players: number,
     _currentPlayer: number,
     _currentPlayerIndex: number,
