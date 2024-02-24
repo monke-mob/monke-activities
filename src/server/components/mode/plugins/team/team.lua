@@ -194,7 +194,7 @@ function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
     end
 
     if allPlayersRemoved then
-        self:lockTeamScore(teamID, true)
+        self:lockTeam(teamID, true)
     end
 end
 
