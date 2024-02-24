@@ -80,6 +80,7 @@ function class.new(constructorTeams: { constructorTeam }): class
         _teams = teams,
         _spawns = {},
     }, class)
+    self:_handleSpawns()
     return self
 end
 
