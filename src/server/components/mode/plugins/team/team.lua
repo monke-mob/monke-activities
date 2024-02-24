@@ -190,7 +190,7 @@ end
     Attempts to lock a team. If all players are removed then it will lock.
 
     @private
-    @param {teamID} teamID [The team.]
+    @param {teamID} teamID [The ID of the team.]
     @returns never
 ]]
 function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
@@ -204,7 +204,7 @@ function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
     end
 
     if allPlayersRemoved then
-        self:lockTeamScore(teamID, true)
+        self:lockTeam(teamID, true)
     end
 end
 
