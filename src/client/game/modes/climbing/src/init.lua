@@ -61,7 +61,7 @@ end
     @returns never
 ]]
 function class:setPlayerTurn(userID: number)
-    local player = Players:GetPlayerByUserId(userID)
+    local player: Player = Players:GetPlayerByUserId(userID)
     self.currentPlayer = player
     self.currentPlayerText:set(player.DisplayName)
     self._camera.changeTarget(player.Character or player.CharacterAdded:Wait())
