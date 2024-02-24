@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 --[[
     Teleports a player to a position.
 
-    @param {number} userID [The ID of the player.]
+    @param {number} player [The ID of the player.]
     @param {CFrame} position [The position to teleport the player to.]
     @returns never
 ]]
