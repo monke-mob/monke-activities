@@ -33,7 +33,7 @@ type map = { info: mapTypes.info, config: mapTypes.config, container: Folder }
 
     @param {number} count [The number of maps.]
     @param {{ string }} blacklist [The IDs of the maps that cannot be chosen from.]
-	@returns { mapTypes.info }
+    @returns { mapTypes.info }
 ]]
 function mapService:getRandomMapInfos(count: number, blacklist: { string })
     local mapsFlattened: { map } = TableUtil.Map(TableUtil.Values(self._maps), function(map: map)
