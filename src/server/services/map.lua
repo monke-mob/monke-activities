@@ -81,7 +81,7 @@ end
     Loads a map.
 
     @param {string} id [The ID of the map.]
-	@returns never
+    @returns never
 ]]
 function mapService:load(id: string)
     local map: Folder = self._maps[id].src:Clone()
@@ -92,7 +92,7 @@ end
 --[[
     Removes the current map.
 
-	@returns never
+    @returns never
 ]]
 function mapService:remove()
     if self._current == nil then
@@ -116,7 +116,7 @@ end
     Gets the info of a map.
 
     @param {string} id [The ID of the map.]
-	@returns mapTypes.info?
+    @returns mapTypes.info?
 ]]
 function mapService.Client:getInfo(_player: Player, id: string)
     return self.Server._maps[id].info
