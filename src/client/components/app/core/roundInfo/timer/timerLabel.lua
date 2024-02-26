@@ -1,6 +1,6 @@
 local label = require(script.Parent.Parent.Parent.Parent.components.label)
 local theme = require(script.Parent.Parent.Parent.Parent.theme)
-local timerAction = require(script.Parent.Parent.Parent.Parent.actions.round.timer)
+local timerAction = require(script.Parent.Parent.Parent.Parent.actions.roundInfo.timer)
 
 --[[
     The timer label.

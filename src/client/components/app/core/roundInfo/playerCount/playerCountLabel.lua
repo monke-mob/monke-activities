@@ -1,5 +1,5 @@
 local label = require(script.Parent.Parent.Parent.Parent.components.label)
-local playerCountAction = require(script.Parent.Parent.Parent.Parent.actions.round.playerCount)
+local playerCountAction = require(script.Parent.Parent.Parent.Parent.actions.roundInfo.playerCount)
 local theme = require(script.Parent.Parent.Parent.Parent.theme)
 
 --[[
