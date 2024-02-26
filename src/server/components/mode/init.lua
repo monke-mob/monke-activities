@@ -45,11 +45,11 @@ export type class = typeof(setmetatable({}, {})) & {
     teamPlugin: teamPlugin.class | singlePlayerPlugin.class,
     endConditionPlugin: timeEndConditionPlugin.class,
     scorePlugin: timeScorePlugin.class,
+    _janitor: types.Janitor,
+    _map: Instance,
     destroy: () -> never,
     start: () -> never,
     getScores: () -> teamPlugin.teams,
-    _janitor: types.Janitor,
-    _map: Instance,
 }
 
 export type players = { number }
