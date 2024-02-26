@@ -108,7 +108,6 @@ local function playerCard(componentProps: componentProps)
                                     }),
 
                                     Fusion.ForPairs(componentProps.stats, function(statName: string, value: any)
-                                        print(componentProps.stats)
                                         return statName,
                                             stat({
                                                 -- TODO: Improve system for fetching icons.
