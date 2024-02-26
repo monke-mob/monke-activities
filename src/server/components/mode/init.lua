@@ -84,7 +84,7 @@ function class.new(players: players, config: modeTypes.config): class
         self.scorePlugin = timeScorePlugin.new(config.scoring.time :: any)
     end
 
-    local janitor = Janitor.new()
+    local janitor: types.Janitor = Janitor.new()
     janitor:Add(self.teamPlugin, "destroy")
     janitor:Add(self.endConditionPlugin, "destroy")
     janitor:Add(self.scorePlugin, "destroy")
