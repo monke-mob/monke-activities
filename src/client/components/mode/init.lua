@@ -33,8 +33,9 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(): class
-    local self = setmetatable({}, class)
-    self._janitor = Janitor.new()
+    local self = setmetatable({
+        _janitor = Janitor.new(),
+    }, class)
     return self
 end
 
