@@ -4,10 +4,14 @@ local UserInputService = game:GetService("UserInputService")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
-local PlayerController
+
+local COOLDOWN: number = 1
+
+local types = require(ReplicatedStorage.types)
+local playerController
 
 Knit.OnStart:andThen(function()
-    PlayerController = Knit:GetController("Player")
+    playerController = Knit:GetController("Player")
 end)
 
 --[[
@@ -19,8 +23,13 @@ end)
 local class = {}
 class.__index = class
 
-local cooldown: number = 1
-local lastClimb: number = 0
+export type class = typeof(setmetatable({}, {})) & {
+    _lastMove: number,
+    _janitor: types.Janitor,
+    destroy: () -> never,
+    _moveToLedge: (origin: Vector3, direction: Vector3) -> never,
+    _onInputBegan: (input: InputObject, gameProcessedEvent: boolean) -> never,
+}
 
 --[[
     Creates and starts the controller.
@@ -28,11 +37,17 @@ local lastClimb: number = 0
     @constructor
     @returns class
 ]]
-function class.new()
-    local self = setmetatable({}, class)
-    self._janitor = Janitor.new()
+function class.new(): class
+    local self = setmetatable({
+        _lastMove = 0,
+        _janitor = Janitor.new(),
+    }, class)
 
-    self._janitor:Add(UserInputService.InputBegan:Connect(_onInputBegan))
+    playerController:disableMovement()
+
+    self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
+        self:_onInputBegan(...)
+    end))
 
     return self
 end
@@ -44,6 +59,7 @@ end
 ]]
 function class:destroy()
     self._janitor:Destroy()
+
     setmetatable(self, nil)
     table.clear(self)
     table.freeze(self)
@@ -66,7 +82,7 @@ function class:_moveToLedge(origin: Vector3, direction: Vector3)
     end
 end
 
-function _onInputBegan(input: InputObject, gameProcessedEvent: boolean)
+function class:_onInputBegan(input: InputObject, gameProcessedEvent: boolean)
     if gameProcessedEvent == true then
         return
     end
@@ -80,8 +96,8 @@ function _onInputBegan(input: InputObject, gameProcessedEvent: boolean)
     }
 
     if controls[input.KeyCode] then
-        if os.clock() - lastClimb > cooldown then
-            lastClimb = os.clock()
+        if os.clock() - self._lastMove > COOLDOWN then
+            self._lastMove = os.clock()
         end
     end
 end
