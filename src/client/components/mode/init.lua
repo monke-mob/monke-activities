@@ -64,21 +64,20 @@ function class:start()
 end
 
 --[[
-    Handles creating the mode UI.
+    Creates & starts the mode UI.
 
     @private
     @returns never
 ]]
 function class:_setupUI()
-    local uiController = modeController:getModeConfig().ui
+    local uiController: ModuleScript = modeController:getModeConfig().ui
 
     -- If the mode has no UI controller then we dont have to anything.
-    if uiController == nil then
+    if typeof(uiController) ~= "ModuleScript" then
         return
     end
 
-    local ui = require(uiController)()
-    self._janitor:Add(ui)
+    self._janitor:Add(require(uiController)())
 end
 
 return class
