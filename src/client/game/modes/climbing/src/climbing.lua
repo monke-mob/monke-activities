@@ -83,8 +83,8 @@ end
 
     @returns never 
 ]]
-function class:_handleInput(input: InputObject, gameProcessedEvent: boolean)
-    if gameProcessedEvent == true then
+function class:_handleInput(input: InputObject, processed: boolean)
+    if processed == true then
         return
     end
     local humanoidRootPart = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
