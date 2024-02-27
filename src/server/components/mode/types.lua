@@ -31,11 +31,11 @@ type scoringConfig = {
     customScorePlugin: ModuleScript?,
 }
 
-type endConditionType = "time" | "score"
+type endConditionType = "time" | "score" | "none"
 
 type endConditionConfig = {
     type: endConditionType,
-    duration: number,
+    duration: number?,
 }
 
 export type config = {
