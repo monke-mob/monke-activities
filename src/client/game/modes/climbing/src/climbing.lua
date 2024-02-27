@@ -38,12 +38,12 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(): class
+    playerController:disableMovement()
+
     local self = setmetatable({
         _lastMove = 0,
         _janitor = Janitor.new(),
     }, class)
-
-    playerController:disableMovement()
 
     self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
         self:_onInputBegan(...)
