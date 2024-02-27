@@ -75,7 +75,7 @@ function class:destroy()
 end
 
 --[[
-    Check if their a ledge in the direction the player is inputting.
+    Checks if a ledge exists using a raycast.
 
     @private
     @param {Vector3} origin [The origin of the raycast.]
