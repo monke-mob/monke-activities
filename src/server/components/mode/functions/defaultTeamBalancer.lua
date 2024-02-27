@@ -11,7 +11,7 @@ type team = teamPlugin.constructorTeam & {
 
     @param {{ number }} players [The players.]
     @param {modeTypes.teamsConfig} config [The mode team config.]
-    @returns { teamPlugin.constructorTeam }
+    @returns { team }
 ]]
 local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { team }
     local teams: { team } = {}
