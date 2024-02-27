@@ -5,7 +5,7 @@ local UserInputService = game:GetService("UserInputService")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local COOLDOWN: number = 1
+local MOVE_DEBOUNCE: number = 1
 
 local types = require(ReplicatedStorage.types)
 local raycastParams: RaycastParams = RaycastParams.new()
@@ -96,7 +96,7 @@ end
     @returns never 
 ]]
 function class:_handleInput(input: InputObject, processed: boolean)
-    if processed == true then
+    if processed then
         return
     end
 
@@ -108,7 +108,7 @@ function class:_handleInput(input: InputObject, processed: boolean)
 
     local currentTime: number = os.clock()
 
-    if currentTime - self._lastMove <= COOLDOWN then
+    if currentTime - self._lastMove <= MOVE_DEBOUNCE then
         return
     end
 
