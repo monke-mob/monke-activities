@@ -21,9 +21,10 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-    destroy: () -> never,
-    _setupUI: () -> never,
     _janitor: types.Janitor,
+    destroy: () -> never,
+    start: () -> never,
+    _setupUI: () -> never,
 }
 
 --[[
