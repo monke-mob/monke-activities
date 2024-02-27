@@ -24,7 +24,7 @@ end
     @client
     @extends isAdmin
 ]]
-function playerService.Client:isAdmin(...: any): boolean
+function playerService.Client:isAdmin(...): boolean
     return self.Server:isAdmin(...)
 end
 
