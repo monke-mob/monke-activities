@@ -137,7 +137,7 @@ function class:removePlayerFromRound(player: number)
 end
 
 --[[
-    Returns the scores of each team.
+    Returns each teams score.
 
     @returns teamTeamPlugin.teams
 ]]
