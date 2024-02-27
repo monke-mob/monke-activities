@@ -35,8 +35,8 @@ export type class = typeof(setmetatable({}, {})) & {
     _lastMove: number,
     _janitor: types.Janitor,
     destroy: () -> never,
-    _moveToLedge: (origin: Vector3, direction: Vector3) -> never,
-    _onInputBegan: (input: InputObject, gameProcessedEvent: boolean) -> never,
+    _findLedge: (origin: Vector3, direction: Vector3) -> Instance?,
+    _handleInput: (input: InputObject, processed: boolean) -> never,
 }
 
 --[[
