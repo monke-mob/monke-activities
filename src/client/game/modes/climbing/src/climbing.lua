@@ -76,10 +76,7 @@ function class:_moveToLedge(origin: Vector3, direction: Vector3)
     raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
 
     local rasycast: RaycastResult = workspace:Raycast(origin, direction)
-
-    if rasycast ~= nil then
-        return rasycast.Instance
-    end
+    return if rasycast ~= nil then rasycast.Instance else nil
 end
 
 --[[
