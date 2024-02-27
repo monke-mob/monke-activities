@@ -82,6 +82,11 @@ function class:_moveToLedge(origin: Vector3, direction: Vector3)
     end
 end
 
+--[[
+    Determines what action to take based on the players input.
+
+    @returns never 
+]]
 function class:_handleInput(input: InputObject, gameProcessedEvent: boolean)
     if gameProcessedEvent == true then
         return
