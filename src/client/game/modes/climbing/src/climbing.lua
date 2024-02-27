@@ -8,9 +8,15 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local COOLDOWN: number = 1
 
 local types = require(ReplicatedStorage.types)
-local playerController
 local raycastParams: RaycastParams = RaycastParams.new()
 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+local controls: { [Enum.KeyCode]: Vector3 } = {
+    [Enum.KeyCode.W] = Vector3.new(),
+    [Enum.KeyCode.S] = Vector3.new(),
+    [Enum.KeyCode.A] = Vector3.new(),
+    [Enum.KeyCode.D] = Vector3.new(),
+}
+local playerController
 
 Knit.OnStart:andThen(function()
     playerController = Knit:GetController("Player")
@@ -95,17 +101,12 @@ function class:_handleInput(input: InputObject, processed: boolean)
     end
     local humanoidRootPart = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
-    local controls = {
-        [Enum.KeyCode.W] = nil,
-        [Enum.KeyCode.S] = nil,
-        [Enum.KeyCode.A] = nil,
-        [Enum.KeyCode.D] = nil,
-    }
+    if typeof(controls[input.KeyCode]) ~= "Vector3" then
+        return
+    end
 
-    if controls[input.KeyCode] then
-        if os.clock() - self._lastMove > COOLDOWN then
-            self._lastMove = os.clock()
-        end
+    if os.clock() - self._lastMove > COOLDOWN then
+        self._lastMove = os.clock()
     end
 end
 
