@@ -68,9 +68,9 @@ end
 --[[
     Check if their a ledge in the direction the player is inputting.
 
-    @returns instance 
+    @returns Instance?
 ]]
-function class:_moveToLedge(origin: Vector3, direction: Vector3)
+function class:_moveToLedge(origin: Vector3, direction: Vector3): Instance?
     local raycastParams: RaycastParams = RaycastParams.new()
     raycastParams.FilterType = Enum.RaycastFilterType.Exclude
     raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
