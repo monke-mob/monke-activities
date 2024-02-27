@@ -82,7 +82,7 @@ end
     @param {Vector3} direction [The direction of the raycast.]
     @returns Instance?
 ]]
-function class:_moveToLedge(origin: Vector3, direction: Vector3): Instance?
+function class:_findLedge(origin: Vector3, direction: Vector3): Instance?
     local rasycast: RaycastResult = workspace:Raycast(origin, direction, raycastParams)
     return if rasycast ~= nil then rasycast.Instance else nil
 end
