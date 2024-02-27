@@ -71,6 +71,9 @@ end
 --[[
     Check if their a ledge in the direction the player is inputting.
 
+    @private
+    @param {Vector3} origin [The origin of the raycast.]
+    @param {Vector3} direction [The direction of the raycast.]
     @returns Instance?
 ]]
 function class:_moveToLedge(origin: Vector3, direction: Vector3): Instance?
@@ -81,6 +84,9 @@ end
 --[[
     Determines what action to take based on the players input.
 
+    @private
+    @param {InputObject} input [The player input.]
+    @param {boolean} processed [If the input was processed by the engine.]
     @returns never 
 ]]
 function class:_handleInput(input: InputObject, processed: boolean)
