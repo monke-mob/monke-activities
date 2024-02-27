@@ -46,7 +46,7 @@ function class.new(): class
     }, class)
 
     self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
-        self:_onInputBegan(...)
+        self:_handleInput(...)
     end))
 
     return self
@@ -82,7 +82,7 @@ function class:_moveToLedge(origin: Vector3, direction: Vector3)
     end
 end
 
-function class:_onInputBegan(input: InputObject, gameProcessedEvent: boolean)
+function class:_handleInput(input: InputObject, gameProcessedEvent: boolean)
     if gameProcessedEvent == true then
         return
     end
