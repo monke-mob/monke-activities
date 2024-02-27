@@ -64,7 +64,7 @@ end
     @client
     @extends setReady
 ]]
-function intermissionService.Client:setReady(...: any)
+function intermissionService.Client:setReady(...)
     self.Server:setReady(...)
 end
 
