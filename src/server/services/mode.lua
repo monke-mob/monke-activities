@@ -8,6 +8,7 @@ local modeTypes = require(script.Parent.Parent.components.mode.types)
 
 local modeService = Knit.CreateService({
     Name = "mode",
+    -- NOTE: Storing all of the modes allows for easier access to them.
     _modes = {},
     _current = nil,
     Client = {
@@ -20,7 +21,6 @@ local modeService = Knit.CreateService({
 	@returns never
 ]]
 function modeService:KnitInit()
-    -- Storing all of the modes allows for easier access to them.
     for _index: number, modeContainer: Folder in pairs(script.Parent.Parent.game.modes:GetChildren()) do
         if modeContainer:IsA("Folder") == false then
             continue
