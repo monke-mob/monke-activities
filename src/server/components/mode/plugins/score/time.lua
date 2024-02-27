@@ -46,6 +46,7 @@ end
 --[[
     Increments every teams score.
 
+    @private
     @returns class
 ]]
 function class:_incrementScores()
