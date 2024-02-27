@@ -23,6 +23,7 @@ export type class = teamPlugin.class
 function class.new(players: { number }): class
     local teams: { teamPlugin.constructorTeam } = {}
 
+    -- Assign each player their own team.
     for _index: number, player: number in pairs(players) do
         table.insert(teams, {
             id = player,
