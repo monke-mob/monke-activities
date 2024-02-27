@@ -66,6 +66,7 @@ end
 --[[
     Handles creating the mode UI.
 
+    @private
     @returns never
 ]]
 function class:_setupUI()
