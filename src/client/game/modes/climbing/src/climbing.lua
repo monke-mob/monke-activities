@@ -45,6 +45,11 @@ function class.new(): class
         _janitor = Janitor.new(),
     }, class)
 
+    local raycastParams: RaycastParams = RaycastParams.new()
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
+    self._raycastParams = raycastParams
+
     self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
         self:_handleInput(...)
     end))
@@ -71,11 +76,7 @@ end
     @returns Instance?
 ]]
 function class:_moveToLedge(origin: Vector3, direction: Vector3): Instance?
-    local raycastParams: RaycastParams = RaycastParams.new()
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
-
-    local rasycast: RaycastResult = workspace:Raycast(origin, direction)
+    local rasycast: RaycastResult = workspace:Raycast(origin, direction, self._raycastParams)
     return if rasycast ~= nil then rasycast.Instance else nil
 end
 
