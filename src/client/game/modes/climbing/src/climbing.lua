@@ -99,15 +99,22 @@ function class:_handleInput(input: InputObject, processed: boolean)
     if processed == true then
         return
     end
-    local humanoidRootPart = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
-    if typeof(controls[input.KeyCode]) ~= "Vector3" then
+    local direction: Vector3? = controls[input.KeyCode]
+
+    if typeof(direction) ~= "Vector3" then
         return
     end
 
-    if os.clock() - self._lastMove > COOLDOWN then
-        self._lastMove = os.clock()
+    local currentTime: number = os.clock()
+
+    if currentTime - self._lastMove <= COOLDOWN then
+        return
     end
+
+    self._lastMove = currentTime
+
+    local characterRoot: Part = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 end
 
 return class
