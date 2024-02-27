@@ -9,6 +9,8 @@ local COOLDOWN: number = 1
 
 local types = require(ReplicatedStorage.types)
 local playerController
+local raycastParams: RaycastParams = RaycastParams.new()
+raycastParams.FilterType = Enum.RaycastFilterType.Exclude
 
 Knit.OnStart:andThen(function()
     playerController = Knit:GetController("Player")
@@ -39,16 +41,12 @@ export type class = typeof(setmetatable({}, {})) & {
 ]]
 function class.new(): class
     playerController:disableMovement()
+    raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
 
     local self = setmetatable({
         _lastMove = 0,
         _janitor = Janitor.new(),
     }, class)
-
-    local raycastParams: RaycastParams = RaycastParams.new()
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
-    self._raycastParams = raycastParams
 
     self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
         self:_handleInput(...)
@@ -76,7 +74,7 @@ end
     @returns Instance?
 ]]
 function class:_moveToLedge(origin: Vector3, direction: Vector3): Instance?
-    local rasycast: RaycastResult = workspace:Raycast(origin, direction, self._raycastParams)
+    local rasycast: RaycastResult = workspace:Raycast(origin, direction, raycastParams)
     return if rasycast ~= nil then rasycast.Instance else nil
 end
 
