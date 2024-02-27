@@ -65,7 +65,7 @@ function class:start()
 end
 
 --[[
-    Creates & starts the mode UI.
+    Creates and starts the mode UI.
 
     @private
     @returns never
