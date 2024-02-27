@@ -64,12 +64,16 @@ export type players = { number }
     @returns class
 ]]
 function class.new(players: players, config: modeTypes.config): class
-    local self = setmetatable({}, class)
-    self._map = mapService:getMap()
+    local self = setmetatable({
+        _map = mapService:getMap(),
+        _janitor = Janitor.new(),
+    }, class)
 
-    self.teamPlugin = if config.teams.type == "single"
-        then singlePlayerPlugin.new(players)
-        else teamPlugin.new(balanceTeams(players, config.teams))
+    if config.teams.type == "single" then
+        self.teamPlugin = singlePlayerPlugin.new(players)
+    elseif config.teams.type == "team" then
+        self.teamPlugin = teamPlugin.new(balanceTeams(players, config.teams))
+    end
 
     if config.endCondition.type == "time" then
         self.endConditionPlugin = timeEndConditionPlugin.new(config.endCondition.duration or 0)
@@ -87,11 +91,9 @@ function class.new(players: players, config: modeTypes.config): class
         self.scorePlugin = timeScorePlugin.new(config.scoring.time :: any)
     end
 
-    local janitor: types.Janitor = Janitor.new()
-    janitor:Add(self.teamPlugin, "destroy")
-    janitor:Add(self.endConditionPlugin, "destroy")
-    janitor:Add(self.scorePlugin, "destroy")
-    self._janitor = janitor
+    self._janitor:Add(self.teamPlugin, "destroy")
+    self._janitor:Add(self.endConditionPlugin, "destroy")
+    self._janitor:Add(self.scorePlugin, "destroy")
 
     return self
 end
