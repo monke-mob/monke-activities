@@ -10,4 +10,6 @@ return {
     },
 
     effects = {},
+
+    music = {},
 } :: mapTypes.config
