@@ -139,7 +139,7 @@ function class:_handleInput(input: InputObject, processed: boolean)
     if nextLedge ~= nil then
         self._currentLedge = nextLedge
         self:_updateControls()
-        modeService.Client.event:FireServer(nextLedge)
+        modeService.Client.event:FireServer("climbMove", nextLedge)
     end
 end
 
