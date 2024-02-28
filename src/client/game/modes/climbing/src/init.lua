@@ -47,7 +47,7 @@ function class.new(): class
 
     self._janitor:Add(modeService.event:Connect(function(event: string, ...)
         if event == "setPlayerTurn" then
-            self:setPlayerTurn(...)
+            self:_setPlayerTurn(...)
         end
     end))
 
@@ -60,7 +60,7 @@ end
     @param {number} userID [The player.]
     @returns never
 ]]
-function class:setPlayerTurn(userID: number)
+function class:_setPlayerTurn(userID: number)
     local player: Player = Players:GetPlayerByUserId(userID)
     self.currentPlayer = player
     self.currentPlayerText:set(player.DisplayName)
