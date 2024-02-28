@@ -20,7 +20,7 @@ local playerController
 local modeService
 
 Knit.OnStart:andThen(function()
-    playerController = Knit.GetController("Player")
+    playerController = Knit.GetController("player")
     modeService = Knit.GetService("mode")
 end)
 
