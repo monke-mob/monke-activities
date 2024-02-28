@@ -30,6 +30,7 @@ class.__index = class
 export type class = typeof(setmetatable({}, {})) & {
     _lastMove: number,
     _currentLedge: BasePart,
+    _maxDistance: number,
     _janitor: types.Janitor,
     _controls: { [Enum.KeyCode]: Vector3 },
     destroy: () -> never,
@@ -51,6 +52,7 @@ function class.new(): class
     local self = setmetatable({
         _lastMove = 0,
         _currentLedge = nil,
+        _maxDistance = 5,
         _janitor = Janitor.new(),
         _controls = {
             [Enum.KeyCode.W] = Vector3.new(),
@@ -100,10 +102,10 @@ end
     @returns never
 ]]
 function class:_updateControls()
-    self._controls[Enum.KeyCode.W] = self._currentLedge.CFrame.UpVector * -5
-    self._controls[Enum.KeyCode.S] = self._currentLedge.CFrame.UpVector * -5
-    self._controls[Enum.KeyCode.A] = self._currentLedge.CFrame.RightVector * -5
-    self._controls[Enum.KeyCode.D] = self._currentLedge.CFrame.RightVector * 5
+    self._controls[Enum.KeyCode.W] = self._currentLedge.CFrame.UpVector * -self._maxDistance
+    self._controls[Enum.KeyCode.S] = self._currentLedge.CFrame.UpVector * -self._maxDistance
+    self._controls[Enum.KeyCode.A] = self._currentLedge.CFrame.RightVector * -self._maxDistance
+    self._controls[Enum.KeyCode.D] = self._currentLedge.CFrame.RightVector * self._maxDistance
 end
 
 --[[
