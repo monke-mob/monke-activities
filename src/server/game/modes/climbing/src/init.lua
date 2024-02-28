@@ -109,7 +109,7 @@ function class:_setPlayerTurn(userID: number)
     end
 
     self._currentPlayer = userID
-    freezePlayer(userID, false)
+    freezePlayer(userID, true, false)
     teleportPlayer(userID, self._spawn)
 end
 
