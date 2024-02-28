@@ -11,5 +11,7 @@ return {
 
     effects = {},
 
-    music = {},
+    music = {
+        "rbxassetid://16560984385",
+    },
 } :: mapTypes.config
