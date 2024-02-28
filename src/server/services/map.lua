@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Echo = require(ReplicatedStorage.Packages.Echo)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local TableUtil = require(ReplicatedStorage.Packages.TableUtil)
 
@@ -84,9 +85,24 @@ end
     @returns never
 ]]
 function mapService:load(id: string)
-    local map: Folder = self._maps[id].src:Clone()
-    map.Parent = workspace
-    self._current = map
+    local map = self._maps[id]
+
+    local mapInstance: Folder = map.src:Clone()
+    mapInstance.Parent = workspace
+    self._current = mapInstance
+
+    coroutine.wrap(function()
+        for _index: number, audioID: string in ipairs(map.config.music) do
+            -- Confirm that the map is still loaded.
+            if self._current ~= mapInstance then
+                break
+            end
+
+            local musicInstance: Sound = Echo:playOnServer(map.config.music[0], workspace, nil, "music")
+            musicInstance.Looped = true
+            musicInstance.Ended:Wait()
+        end
+    end)()
 end
 
 --[[
@@ -99,6 +115,7 @@ function mapService:remove()
         return
     end
 
+    Echo:stop("music")
     self._current:Destroy()
     self._current = nil
 end

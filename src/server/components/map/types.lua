@@ -5,6 +5,7 @@ export type config = {
     src: Instance,
     compatibleModes: compatibleModes,
     effects: { string },
+    music: { string },
     data: any,
 }
 
