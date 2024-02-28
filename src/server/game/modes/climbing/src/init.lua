@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local climbingController = require(script.climbing)
 local config = require(script.Parent.config)
 local freezePlayer = require(script.Parent.Parent.Parent.Parent.components.mode.functions.freezePlayer)
 local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
@@ -30,6 +31,7 @@ export type class = modeComponent.class & {
     _currentPlayerIndex: number,
     _cycle: number,
     _spawn: CFrame,
+    _climbingController: climbingController.class,
     _cycleToNextPlayer: () -> never,
     _setPlayerTurn: () -> never,
     _calculatePlayerScore: () -> never,
@@ -51,6 +53,8 @@ function class.new(players: modeComponent.players): class
     self._currentPlayerIndex = 0
     self._cycle = 1
     self._spawn = baseClass._map:FindFirstChild("spawn").CFrame
+    self._climbingController = climbingController.new()
+    self._janitor:Add(self._climbingController, "destroy")
 
     -- Freeze all of the players to start with.
     for _index: number, player: number in pairs(players) do
@@ -111,6 +115,7 @@ function class:_setPlayerTurn(userID: number)
     self._currentPlayer = userID
     freezePlayer(userID, true, false)
     teleportPlayer(userID, self._spawn)
+    self._climbingController:setPlayerTurn(userID)
 end
 
 --[[
