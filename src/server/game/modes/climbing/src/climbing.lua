@@ -22,10 +22,10 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-    _player: Player,
-    _startingLedge: Part,
     _climbSpeed: number,
-    _tweenInfo: { any },
+    _janitor: types.Janitor,
+    _currentPlayer: number,
+    _currentPlayerCharacter: Model,
 }
 
 --[[
@@ -34,28 +34,18 @@ export type class = typeof(setmetatable({}, {})) & {
     @constructor
     @returns class
 ]]
-function class.new(janitor: types.Janitor): class
-    local self = setmetatable({}, class)
-    self._offset = CFrame.new(0, 0, 0)
-    self._climbSpeed = 1
+function class.new(): class
+    local self = setmetatable({
+        _climbSpeed = 1,
+        _janitor = Janitor.new(),
+        _currentPlayer = nil,
+        _currentPlayerCharacter = nil,
+    }, class)
 
-    self.tweenInfo = {
-        duration = self._climbSpeed,
-        easing = "Linear",
-        method = "RenderStepped",
-    }
-
-    janitor:Add(Players.PlayerAdded:Connect(function(...)
-        self._player = class:getPlayer(...)
-    end))
-
-    class:getStartingLedge(self._startingLedge, self._player)
-
-    janitor:Add(modeService.Client.event:Connect(function(event: string, ...)
-        if event ~= "climbMove" then
-            return
+    self._janitor:Add(modeService.Client.event:Connect(function(event: string, player: Player, ...)
+        if event == "climbMove" and player.UserId == self._currentPlayer then
+            self:_move(...)
         end
-        class:tweenToLedge(...)
     end))
 
     return self
@@ -67,26 +57,39 @@ end
     @returns never
 ]]
 function class:destroy()
+    self._janitor:Destroy()
+
     setmetatable(self, nil)
     table.clear(self)
     table.freeze(self)
 end
 
-function class:getStartingLedge(startingLedge: Part, player: Player)
-    local characterRoot: Part = (player.Character :: Model):FindFirstChild("HumanoidRootPart") :: any
+--[[
+    Sets it to be a players turn.
 
-    characterRoot.CFrame = startingLedge.CFrame * self._offset
-    characterRoot.Anchored = true
+    @param {number} userID [The ID of the player.]
+    @returns never
+]]
+function class:setPlayerTurn(userID: number)
+    local player: Player = Players:GetPlayerByUserId(userID)
+    local character: Model = player.Character or player.CharacterAdded:Wait()
+    self._currentPlayer = userID
+    self._currentPlayerCharacter = character
 end
 
-function class:tweenToLedge(ledge: Part, player: Player)
-    local characterRoot: Part = (player.Character :: Model):FindFirstChild("HumanoidRootPart") :: any
+--[[
+    Moves the current player to the next ledge.
 
-    Fluid:create(characterRoot, self._tweenInfo, { CFrame = ledge.CFrame * self._offset }):play()
-end
-
-function class:getPlayer(Player: Player)
-    return Player
+    @private
+    @param {BasePart} ledge [The ledge to move to.]
+    @returns never
+]]
+function class:_move(ledge: BasePart)
+    self._janitor:Add(Fluid:create(self._currentPlayerCharacter, {
+        duration = self._climbSpeed,
+        easing = "Linear",
+        method = "RenderStepped",
+    }, { CFrame = ledge.CFrame * self._offset }):play())
 end
 
 return class
