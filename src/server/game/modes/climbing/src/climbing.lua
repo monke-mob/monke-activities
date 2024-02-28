@@ -5,6 +5,7 @@ local Fluid = require(ReplicatedStorage.Packages.Fluid)
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
 local types = require(ReplicatedStorage.types)
 local modeService
 
@@ -21,6 +22,11 @@ end)
 local class = {}
 class.__index = class
 
+export type class = typeof(setmetatable({}, {})) & {
+    _players: number,
+    _startingLedge: Part,
+}
+
 --[[
     Creates and starts the controller.
 
@@ -29,6 +35,7 @@ class.__index = class
 ]]
 function class.new(janitor: types.Janitor)
     local self = setmetatable({}, class)
+    self._offset = CFrame.new(0, 0, 0)
 
     janitor:Add(modeService.Client.event:Connect(function(event: string)
         if event ~= "climbMove" then
@@ -50,8 +57,10 @@ function class:destroy()
     table.freeze(self)
 end
 
-function class:getStartingLedge()
-    return 
+function class:getStartingLedge(startingLedge: Part, player: Player)
+    local characterRootPart = player.Character.HumanoidRootPart
+
+    characterRootPart.CFrame = startingLedge.CFrame * self._offset
 end
 
 return class

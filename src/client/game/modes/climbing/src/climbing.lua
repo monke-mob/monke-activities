@@ -17,9 +17,11 @@ local controls: { [Enum.KeyCode]: Vector3 } = {
     [Enum.KeyCode.D] = Vector3.new(),
 }
 local playerController
+local modeService
 
 Knit.OnStart:andThen(function()
-    playerController = Knit:GetController("Player")
+    playerController = Knit.GetController("Player")
+    modeService = Knit.GetService("mode")
 end)
 
 --[[
@@ -33,6 +35,7 @@ class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
     _lastMove: number,
+    _startingledge: Part,
     _janitor: types.Janitor,
     destroy: () -> never,
     _findLedge: (origin: Vector3, direction: Vector3) -> Instance?,
@@ -100,6 +103,13 @@ function class:_handleInput(input: InputObject, processed: boolean)
         return
     end
 
+    local currentLedge: Part = self._startingLedge
+
+    controls[Enum.KeyCode.W] = currentLedge.CFrame.UpVector * -5
+    controls[Enum.KeyCode.S] = currentLedge.CFrame.UpVector * -5
+    controls[Enum.KeyCode.A] = currentLedge.CFrame.RightVector * -5
+    controls[Enum.KeyCode.D] = currentLedge.CFrame.RightVector * 5
+
     local direction: Vector3? = controls[input.KeyCode]
 
     if typeof(direction) ~= "Vector3" then
@@ -115,6 +125,12 @@ function class:_handleInput(input: InputObject, processed: boolean)
     self._lastMove = currentTime
 
     local characterRoot: Part = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local nextLedge: Part? = class:_findLedge(currentLedge.CFrame.Position, direction)
+
+    if nextLedge ~= nil then
+        currentLedge = nextLedge
+        modeService.Client.event:FireServer(nextLedge)
+    end
 end
 
 return class
