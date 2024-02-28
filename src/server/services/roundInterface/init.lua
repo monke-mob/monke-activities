@@ -72,7 +72,7 @@ end
     Handles a player.
 
     @private
-    @param {Player} player [The new player to handle.]
+    @param {Player} player [The new player.]
 	@returns never
 ]]
 function roundInterfaceService:_handlePlayer(player: Player)
