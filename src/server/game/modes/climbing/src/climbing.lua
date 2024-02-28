@@ -57,9 +57,9 @@ function class:destroy()
 end
 
 function class:getStartingLedge(startingLedge: Part, player: Player)
-    local characterRootPart = player.Character.HumanoidRootPart
+    local characterRoot: Part = (player.Character :: Model):FindFirstChild("HumanoidRootPart") :: any
 
-    characterRootPart.CFrame = startingLedge.CFrame * self._offset
+    characterRoot.CFrame = startingLedge.CFrame * self._offset
 end
 
 return class
