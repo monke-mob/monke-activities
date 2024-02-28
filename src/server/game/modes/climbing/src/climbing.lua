@@ -32,7 +32,7 @@ export type class = typeof(setmetatable({}, {})) & {
     @constructor
     @returns class
 ]]
-function class.new(janitor: types.Janitor)
+function class.new(janitor: types.Janitor): class
     local self = setmetatable({}, class)
     self._offset = CFrame.new(0, 0, 0)
 
