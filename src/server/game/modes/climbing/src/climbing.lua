@@ -5,7 +5,6 @@ local Fluid = require(ReplicatedStorage.Packages.Fluid)
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
 local types = require(ReplicatedStorage.types)
 local modeService
 
