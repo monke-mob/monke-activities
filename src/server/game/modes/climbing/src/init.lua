@@ -42,7 +42,7 @@ export type class = modeComponent.class & {
     Creates the mode.
 
     @constructor
-    @param {modeComponent.players} players [The players.]
+    @param {modeComponent.players} players [The players involved in the round.]
     @returns class
 ]]
 function class.new(players: modeComponent.players): class
