@@ -10,12 +10,6 @@ local MOVE_DEBOUNCE: number = 1
 local types = require(ReplicatedStorage.types)
 local raycastParams: RaycastParams = RaycastParams.new()
 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-local controls: { [Enum.KeyCode]: Vector3 } = {
-    [Enum.KeyCode.W] = Vector3.new(),
-    [Enum.KeyCode.S] = Vector3.new(),
-    [Enum.KeyCode.A] = Vector3.new(),
-    [Enum.KeyCode.D] = Vector3.new(),
-}
 local playerController
 local modeService
 
@@ -35,10 +29,12 @@ class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
     _lastMove: number,
-    _startingledge: Part,
+    _currentLedge: BasePart,
     _janitor: types.Janitor,
+    _controls: { [Enum.KeyCode]: Vector3 },
     destroy: () -> never,
-    _findLedge: (origin: Vector3, direction: Vector3) -> Instance?,
+    _findLedge: (origin: Vector3, direction: Vector3) -> BasePart?,
+    _updateControls: () -> never,
     _handleInput: (input: InputObject, processed: boolean) -> never,
 }
 
@@ -54,7 +50,14 @@ function class.new(): class
 
     local self = setmetatable({
         _lastMove = 0,
+        _currentLedge = nil,
         _janitor = Janitor.new(),
+        _controls = {
+            [Enum.KeyCode.W] = Vector3.new(),
+            [Enum.KeyCode.S] = Vector3.new(),
+            [Enum.KeyCode.A] = Vector3.new(),
+            [Enum.KeyCode.D] = Vector3.new(),
+        },
     }, class)
 
     self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
@@ -83,11 +86,24 @@ end
     @private
     @param {Vector3} origin [The origin of the raycast.]
     @param {Vector3} direction [The direction of the raycast.]
-    @returns Instance?
+    @returns BasePart?
 ]]
-function class:_findLedge(origin: Vector3, direction: Vector3): Instance?
+function class:_findLedge(origin: Vector3, direction: Vector3): BasePart?
     local rasycast: RaycastResult = workspace:Raycast(origin, direction, raycastParams)
-    return if rasycast ~= nil then rasycast.Instance else nil
+    return if rasycast ~= nil then rasycast.Instance :: BasePart else nil
+end
+
+--[[
+    Updates the control directions based off the current position.
+
+    @private
+    @returns never
+]]
+function class:_updateControls()
+    self._controls[Enum.KeyCode.W] = self._currentLedge.CFrame.UpVector * -5
+    self._controls[Enum.KeyCode.S] = self._currentLedge.CFrame.UpVector * -5
+    self._controls[Enum.KeyCode.A] = self._currentLedge.CFrame.RightVector * -5
+    self._controls[Enum.KeyCode.D] = self._currentLedge.CFrame.RightVector * 5
 end
 
 --[[
@@ -103,14 +119,7 @@ function class:_handleInput(input: InputObject, processed: boolean)
         return
     end
 
-    local currentLedge: Part = self._startingLedge
-
-    controls[Enum.KeyCode.W] = currentLedge.CFrame.UpVector * -5
-    controls[Enum.KeyCode.S] = currentLedge.CFrame.UpVector * -5
-    controls[Enum.KeyCode.A] = currentLedge.CFrame.RightVector * -5
-    controls[Enum.KeyCode.D] = currentLedge.CFrame.RightVector * 5
-
-    local direction: Vector3? = controls[input.KeyCode]
+    local direction: Vector3? = self._controls[input.KeyCode]
 
     if typeof(direction) ~= "Vector3" then
         return
@@ -125,10 +134,11 @@ function class:_handleInput(input: InputObject, processed: boolean)
     self._lastMove = currentTime
 
     local characterRoot: Part = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    local nextLedge: Part? = class:_findLedge(currentLedge.CFrame.Position, direction)
+    local nextLedge: BasePart? = self:_findLedge(self._currentLedge.CFrame.Position, direction)
 
     if nextLedge ~= nil then
-        currentLedge = nextLedge
+        self._currentLedge = nextLedge
+        self:_updateControls()
         modeService.Client.event:FireServer(nextLedge)
     end
 end
