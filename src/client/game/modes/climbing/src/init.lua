@@ -26,6 +26,7 @@ export type class = modeComponent.class & {
     currentPlayer: Player | nil,
     currentPlayerText: any,
     _camera: climbingCamera.class,
+    _setPlayerTurn: (userID: number) -> never,
 }
 
 --[[
