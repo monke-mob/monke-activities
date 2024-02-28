@@ -95,7 +95,7 @@ end
     Sets it to be a players turn.
 
     @private
-    @param {number} userID [The player.]
+    @param {number} userID [The ID of the player.]
     @returns never
 ]]
 function class:_setPlayerTurn(userID: number)
