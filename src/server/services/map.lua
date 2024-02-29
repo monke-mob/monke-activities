@@ -98,8 +98,7 @@ function mapService:load(id: string)
                 break
             end
 
-            local musicInstance: Sound = Echo:playOnServer(map.config.music[0], workspace, nil, "music")
-            musicInstance.Looped = true
+            local musicInstance: Sound = Echo:playOnServer(audioID, workspace, nil, "music")
             musicInstance.Ended:Wait()
         end
     end)()
