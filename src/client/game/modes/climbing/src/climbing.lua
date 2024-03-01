@@ -135,7 +135,6 @@ function class:_handleInput(input: InputObject, processed: boolean)
 
     self._lastMove = currentTime
 
-    local characterRoot: Part = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     local nextLedge: BasePart? = self:_findLedge(self._currentLedge.CFrame.Position, direction)
 
     if nextLedge ~= nil then
