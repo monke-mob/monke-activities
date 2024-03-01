@@ -85,11 +85,13 @@ end
     @returns never
 ]]
 function class:_move(ledge: BasePart)
-    self._janitor:Add(Fluid:create(self._currentPlayerCharacter, {
+    local tween = Fluid:create(self._currentPlayerCharacter, {
         duration = self._climbSpeed,
         easing = "Linear",
         method = "RenderStepped",
-    }, { CFrame = ledge.CFrame * self._offset }):play())
+    }, { CFrame = ledge.CFrame * self._offset })
+    tween:play()
+    self._janitor:Add(tween)
 end
 
 return class
