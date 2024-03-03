@@ -6,7 +6,7 @@ realm = "shared"
 
 [dependencies]
 Fluid = "lanred-dev/fluid@0.1.2"
-Echo = "lanred-dev/echo@0.2.5"
+Echo = "lanred-dev/echo@0.2.6"
 Fusion = "elttob/fusion@0.2.0"
 Knit = "sleitnick/knit@^1.5"
 Signal = "sleitnick/signal@1.5.0"
