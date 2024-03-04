@@ -38,7 +38,7 @@ function class.new(): class
 end
 
 --[[
-    Destroys the object, clears, and freezes it to render is unusable.
+    Destroys the object, clears, and freezes it to render it unusable.
 
     @returns never
 ]]

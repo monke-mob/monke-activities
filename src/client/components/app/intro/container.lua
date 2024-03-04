@@ -5,7 +5,9 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local frame = require(script.Parent.Parent.components.frame)
 local groupSplashComponent = require(script.Parent.groupSplash)
 local handleLogic = require(script.Parent.handleLogic)
+local image = require(script.Parent.Parent.components.image)
 local list = require(script.Parent.Parent.components.list)
+local theme = require(script.Parent.Parent.theme)
 
 type componentProps = {
     enabled: any,
@@ -48,12 +50,13 @@ local function container(componentProps: componentProps)
 
             groupSplash,
 
-            Fusion.New("ImageLabel")({
+            image({
                 ImageTransparency = groupSplashTransparency,
-                Image = "rbxassetid://13607469207",
+                Image = theme.icons.logo,
                 Size = UDim2.fromScale(1, 0.08),
-                BackgroundTransparency = 1,
                 ScaleType = Enum.ScaleType.Fit,
+            }, {
+                constrained = false,
             }),
         },
     }, {})

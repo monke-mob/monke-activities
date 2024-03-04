@@ -1,21 +1,18 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local TableUtil = require(ReplicatedStorage.Packages.TableUtil)
+
+local types = require(script.Parent.Parent.types)
+
 --[[
-	Combines two tables.
+	Combines two tables. This uses TableUtil.Assign and the entire reason that this is a wrapper is so that
+    the type can be casted to types.dictionaryAny.
 
-	@param {{ any }} table1 [The first table.]
-	@param {{ any }} table2 [The second table.]
-	@returns { any }
+	@param {...} params [The params.]
+	@returns types.dictionaryAny
 ]]
-local function concatTables(table1, table2)
-    for index: any, value: any in pairs(table2) do
-        -- If the value is nil there is no need to overwrite it.
-        if value == nil then
-            continue
-        end
-
-        table1[index] = value
-    end
-
-    return table1
+local function concatTables(...): types.dictionaryAny
+    return TableUtil.Assign(...)
 end
 
 return concatTables

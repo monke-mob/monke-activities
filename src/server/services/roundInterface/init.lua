@@ -4,9 +4,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local PLAYER_COUNT = require(ReplicatedStorage.constants.PLAYER_COUNT)
-local TIMER = require(ReplicatedStorage.constants.TIMER)
-
 local intermissionService
 local roundService
 
@@ -14,17 +11,11 @@ local roundInterfaceService = Knit.CreateService({
     Name = "roundInterface",
     _playerJanitor = Janitor.new(),
     _timer = nil,
+    Client = {
+        playerCount = Knit.CreateProperty(0),
+        timer = Knit.CreateProperty(0),
+    },
 })
-
---[[
-    Sets default values.
-    
-	@returns never
-]]
-function roundInterfaceService:KnitInit()
-    ReplicatedStorage:SetAttribute(PLAYER_COUNT, 0)
-    ReplicatedStorage:SetAttribute(TIMER, 0)
-end
 
 --[[
     Requires necessary services and setups up player connections.
@@ -35,8 +26,17 @@ function roundInterfaceService:KnitStart()
     intermissionService = Knit.GetService("intermission")
     roundService = Knit.GetService("round")
 
+    -- Just in case we couldnt catch the players via the PlayerAdded event.
+    for _index: number, player: Player in ipairs(Players:GetPlayers()) do
+        self:_handlePlayer(player)
+    end
+
     Players.PlayerAdded:Connect(function(...)
-        self:_playerAdded(...)
+        self:_handlePlayer(...)
+    end)
+
+    Players.PlayerRemoving:Connect(function(...)
+        self:_handlePlayerLeaving(...)
     end)
 end
 
@@ -52,10 +52,10 @@ function roundInterfaceService:bindTimer(timer)
         self._timer = nil
     end
 
-    ReplicatedStorage:SetAttribute(TIMER, timer.timeRemaining)
+    self.Client.timer:Set(timer.timeRemaining)
 
     self._timer = timer.updated:Connect(function(timeRemaining: number)
-        ReplicatedStorage:SetAttribute(TIMER, timeRemaining)
+        self.Client.timer:Set(timeRemaining)
     end)
 end
 
@@ -66,17 +66,17 @@ end
 	@returns never
 ]]
 function roundInterfaceService:updatePlayerCount(playerCount: number)
-    ReplicatedStorage:SetAttribute(PLAYER_COUNT, playerCount)
+    self.Client.playerCount:Set(playerCount)
 end
 
 --[[
-    Handles a player joining.
+    Handles a player.
 
     @private
-    @param {Player} player [The new / joining player to handle.]
+    @param {Player} player [The new player to handle.]
 	@returns never
 ]]
-function roundInterfaceService:_playerAdded(player: Player)
+function roundInterfaceService:_handlePlayer(player: Player)
     local janitor = Janitor.new()
     janitor:Add(player.CharacterAdded:Connect(function(character: Model)
         local characterHumanoid: Humanoid = character:WaitForChild("Humanoid") :: Humanoid
@@ -104,7 +104,7 @@ end
     @param {Player} player [The player leaving.]
 	@returns never
 ]]
-function roundInterfaceService:_playerLeaving(player: Player)
+function roundInterfaceService:_handlePlayerLeaving(player: Player)
     intermissionService:setReady(player, false)
     self._playerJanitor:Remove(player.UserId)
 

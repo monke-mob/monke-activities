@@ -1,9 +1,11 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Echo = require(ReplicatedStorage.Packages.Echo)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local modeComponent = require(script.Parent.Parent.Parent.components.mode)
+local LOBBY_PLAYLIST = require(script.Parent.Parent.Parent.constants.LOBBY_PLAYLIST)
 
+local modeComponent = require(script.Parent.Parent.Parent.components.mode)
 local mapService
 local modeService
 local votingService
@@ -38,6 +40,7 @@ end
 ]]
 function roundService:start(players: modeComponent.players)
     self._state.started = true
+    Echo:resetQueue()
 
     local results: { [string]: string } = votingService:getResults()
     mapService:load(results.map)
@@ -55,6 +58,13 @@ function roundService:stop()
     end
 
     self._state.started = false
+    Echo:resetQueue()
+
+    for _index: number, audioID: string in ipairs(LOBBY_PLAYLIST) do
+        Echo.queue:add(audioID, {
+            audioID = audioID,
+        })
+    end
 
     local scores = modeService:getMode():getScores()
     print(scores)

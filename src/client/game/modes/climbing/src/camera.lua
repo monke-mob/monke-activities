@@ -38,7 +38,7 @@ function camera.start()
 end
 
 --[[
-    Stops the RenderStepped connection.
+    Sets the camera back to default.
 
     @returns never
 ]]
@@ -50,6 +50,10 @@ function camera.cleanup()
     camera.target = nil
     camera.renderStepped:Disconnect()
     camera.renderStepped = nil
+
+    repeat
+        currentCamera.CameraType = Enum.CameraType.Custom
+    until currentCamera.CameraType == Enum.CameraType.Custom
 end
 
 return camera

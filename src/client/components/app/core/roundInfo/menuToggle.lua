@@ -4,6 +4,7 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local button = require(script.Parent.Parent.Parent.components.button)
 local frame = require(script.Parent.Parent.Parent.components.frame)
+local image = require(script.Parent.Parent.Parent.components.image)
 local menuOpenAction = require(script.Parent.Parent.Parent.actions.menu.open)
 local theme = require(script.Parent.Parent.Parent.theme)
 
@@ -42,20 +43,13 @@ local function menuToggle()
                         Rotation = 90,
                     }),
 
-                    Fusion.New("ImageLabel")({
-                        ImageColor3 = theme.foreground.light,
-                        Image = "rbxassetid://14800609693",
+                    image({
+                        Image = theme.icons.menu,
                         AnchorPoint = Vector2.new(0.5, 0.5),
                         Size = UDim2.fromScale(0, 0.4),
                         Position = UDim2.fromScale(0.5, 0.5),
-                        BackgroundTransparency = 1,
-
-                        [Fusion.Children] = {
-                            Fusion.New("UIAspectRatioConstraint")({
-                                AspectType = Enum.AspectType.ScaleWithParentSize,
-                                DominantAxis = Enum.DominantAxis.Height,
-                            }),
-                        },
+                    }, {
+                        constrained = true,
                     }),
                 },
             }, {}),

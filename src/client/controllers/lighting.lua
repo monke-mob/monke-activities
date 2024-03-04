@@ -1,3 +1,5 @@
+-- TODO: Redo this service.
+
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 

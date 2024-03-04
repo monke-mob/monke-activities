@@ -94,7 +94,7 @@ function class.new(constructorTeams: { constructorTeam }): class
 end
 
 --[[
-    Destroys the object, clears, and freezes it to render is unusable.
+    Destroys the object, clears, and freezes it to render it unusable.
 
     @returns never
 ]]
@@ -144,6 +144,9 @@ function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlay
 
     if scoringPlayer ~= nil then
         self._teams[teamID].players[scoringPlayer].score += increment
+
+        local player: Player = Players:GetPlayerByUserId(scoringPlayer)
+        player:SetAttribute("score", self._teams[teamID].players[scoringPlayer].score)
     end
 end
 

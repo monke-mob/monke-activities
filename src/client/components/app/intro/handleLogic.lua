@@ -55,7 +55,6 @@ local function handleLogic(componentProps: componentProps)
         playerController:enableMovement()
         intermissionService:setReady(true)
         StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
-        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
     end)
 end
 

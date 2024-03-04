@@ -39,6 +39,17 @@ function class.new(): class
 end
 
 --[[
+    Destroys the object, clears, and freezes it to render it unusable.
+
+    @returns never
+]]
+function class:destroy()
+    setmetatable(self, nil)
+    table.clear(self)
+    table.freeze(self)
+end
+
+--[[
     Increments a team score. This is just a wrapper around `incrementTeamScore` but all scoring
     should go through the score plugin.
 

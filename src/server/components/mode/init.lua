@@ -19,6 +19,8 @@ end)
 --[[
     Determines which team balancer to use.
 
+    @param {{ number }} players [The players.]
+    @param {modeTypes.teamsConfig} config [The team config.]
     @returns { teamPlugin.constructorTeam }
 ]]
 local function balanceTeams(players: { number }, config: modeTypes.teamsConfig): { teamPlugin.constructorTeam }
@@ -84,13 +86,14 @@ function class.new(players: players, config: modeTypes.config): class
     local janitor = Janitor.new()
     janitor:Add(self.teamPlugin, "destroy")
     janitor:Add(self.endConditionPlugin, "destroy")
+    janitor:Add(self.scorePlugin, "destroy")
     self._janitor = janitor
 
     return self
 end
 
 --[[
-    Destroys the object, clears, and freezes it to render is unusable.
+    Destroys the object, clears, and freezes it to render it unusable.
 
     @returns never
 ]]

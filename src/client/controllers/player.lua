@@ -4,7 +4,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local DISABLE_MOVEMENT_ACTION = "disableMovement"
+local DISABLE_MOVEMENT_ACTION: string = "disableMovement"
 
 local playerController = Knit.CreateController({
     Name = "player",

@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Echo = require(ReplicatedStorage.Packages.Echo)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local TableUtil = require(ReplicatedStorage.Packages.TableUtil)
 
@@ -38,7 +39,7 @@ type map = { info: mapTypes.info, config: mapTypes.config, container: Folder }
 
     @param {number} count [The number of maps.]
     @param {{ string }} blacklist [The IDs of the maps that cannot be chosen from.]
-	@returns { mapTypes.info }
+    @returns { mapTypes.info }
 ]]
 function mapService:getRandomMapInfos(count: number, blacklist: { string })
     local mapsFlattened: { map } = TableUtil.Map(TableUtil.Values(self._maps), function(map: map)
@@ -86,24 +87,33 @@ end
     Loads a map.
 
     @param {string} id [The ID of the map.]
-	@returns never
+    @returns never
 ]]
 function mapService:load(id: string)
-    local map: Folder = self._maps[id].src:Clone()
-    map.Parent = workspace
-    self._current = map
+    local map = self._maps[id]
+
+    local mapInstance: Folder = map.src:Clone()
+    mapInstance.Parent = workspace
+    self._current = mapInstance
+
+    for _index: number, audioID: string in ipairs(map.config.music) do
+        Echo.queue:add(audioID, {
+            audioID = audioID,
+        })
+    end
 end
 
 --[[
     Removes the current map.
 
-	@returns never
+    @returns never
 ]]
 function mapService:remove()
     if self._current.instance == nil then
         return
     end
 
+    Echo:stop("music")
     self._current.instance:Destroy()
     self._current.instance = nil
 end
@@ -126,7 +136,7 @@ end
 
     @param {Player} player [The player.]
     @param {string} id [The ID of the map.]
-	@returns mapTypes.info?
+    @returns mapTypes.info?
 ]]
 function mapService.Client:getInfoFromID(_player: Player, id: string)
     return self.Server._maps[id].info

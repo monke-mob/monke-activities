@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Fusion = require(ReplicatedStorage.Packages.Fusion)
 
 local container = require(script.Parent.container)
+local image = require(script.Parent.Parent.Parent.components.image)
 local list = require(script.Parent.Parent.Parent.components.list)
 local playerCountLabel = require(script.playerCountLabel)
 local theme = require(script.Parent.Parent.Parent.theme)
@@ -24,18 +25,11 @@ local function timer()
                 Padding = UDim.new(0.065, 0),
             }),
 
-            Fusion.New("ImageLabel")({
-                ImageColor3 = theme.foreground.light,
-                Image = "rbxassetid://14799447549",
+            image({
+                Image = theme.icons.player,
                 Size = UDim2.fromScale(0, 0.4),
-                BackgroundTransparency = 1,
-
-                [Fusion.Children] = {
-                    Fusion.New("UIAspectRatioConstraint")({
-                        AspectType = Enum.AspectType.ScaleWithParentSize,
-                        DominantAxis = Enum.DominantAxis.Height,
-                    }),
-                },
+            }, {
+                constrained = true,
             }),
 
             playerCountLabel(),

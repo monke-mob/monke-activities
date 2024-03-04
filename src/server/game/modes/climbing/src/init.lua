@@ -18,10 +18,23 @@ end)
 
     @class
     @public
+    @extends modeComponent
 ]]
 local class = {}
 class.__index = class
 setmetatable(class, modeComponent)
+
+export type class = typeof(setmetatable({}, {})) & {
+    _players: number,
+    _currentPlayer: number,
+    _currentPlayerIndex: number,
+    _cycle: number,
+    _spawn: CFrame,
+    _cycleToNextPlayer: () -> never,
+    _setPlayerTurn: () -> never,
+    _calculatePlayerScore: () -> never,
+    _copyCharacterAtPosition: () -> never,
+}
 
 --[[
     Creates the mode.
@@ -30,28 +43,29 @@ setmetatable(class, modeComponent)
     @param {modeComponent.players} players [The players.]
     @returns class
 ]]
-function class.new(players: modeComponent.players)
+function class.new(players: modeComponent.players): class
     local baseClass = modeComponent.new(players, config)
-    local mode = setmetatable(baseClass, class)
-    mode._players = players
-    mode._currentPlayer = nil
-    mode._currentPlayerIndex = 0
-    mode._cycle = 1
-    mode._spawn = baseClass._map:FindFirstChild("spawn").CFrame
+    local self = setmetatable(baseClass, class)
+    self._players = players
+    self._currentPlayer = nil
+    self._currentPlayerIndex = 0
+    self._cycle = 1
+    self._spawn = baseClass._map:FindFirstChild("spawn").CFrame
 
     -- Freeze all of the players to start with.
     for _index: number, player: number in pairs(players) do
         freezePlayer(player, true)
     end
 
-    mode:_cycleToNextPlayer()
+    self:_cycleToNextPlayer()
 
-    return mode
+    return self
 end
 
 --[[
     Cycles to the next players turn and if all players have went then it stops the round.
 
+    @private
     @returns never
 ]]
 function class:_cycleToNextPlayer()
@@ -72,6 +86,7 @@ end
 --[[
     Sets it to be a players turn.
 
+    @private
     @param {number} userID [The player.]
     @returns never
 ]]
@@ -97,6 +112,7 @@ end
 --[[
     Calculates a players score based on their position.
 
+    @private
     @param {Model} character [The character.]
     @returns number
 ]]
@@ -108,8 +124,9 @@ function class:_calculatePlayerScore(character: Model): number
 end
 
 --[[
-    Sets it to be a players turn.
+    Copies a players character and sets it to be semi transparent and red.
 
+    @private
     @param {Model} character [The character.]
     @returns never
 ]]
