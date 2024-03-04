@@ -37,6 +37,8 @@ local votingService = Knit.CreateService({
 })
 
 --[[
+    Updates voting timer to remaining amount of time.
+
 	@returns never
 ]]
 function votingService:KnitInit()
@@ -48,6 +50,8 @@ function votingService:KnitInit()
 end
 
 --[[
+    Gets maps and modes for their respective services.
+    
 	@returns never
 ]]
 function votingService:KnitStart()

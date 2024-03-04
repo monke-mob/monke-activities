@@ -12,6 +12,8 @@ local mapService = Knit.CreateService({
 })
 
 --[[
+    Finds and configures maps.
+
 	@returns never
 ]]
 function mapService:KnitInit()

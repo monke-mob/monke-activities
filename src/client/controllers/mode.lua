@@ -15,6 +15,8 @@ local modeController = Knit.CreateController({
 })
 
 --[[
+    Finds all modes and removes modes with no ID.
+    
 	@returns never
 ]]
 function modeController:KnitStart()

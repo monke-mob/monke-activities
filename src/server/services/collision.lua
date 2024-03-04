@@ -11,6 +11,8 @@ local collisionService = Knit.CreateService({
 })
 
 --[[
+    Sets up player collisions.
+    
 	@returns never
 ]]
 function collisionService:KnitStart()

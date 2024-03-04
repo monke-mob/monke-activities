@@ -1,8 +1,8 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Lighting = game:GetService("Lighting")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Knit = require(ReplicatedStorage.Packages.Knit)
 local Fluid = require(ReplicatedStorage.Packages.Fluid)
+local Knit = require(ReplicatedStorage.Packages.Knit)
 local types = require(ReplicatedStorage.types)
 
 type dataIndex = "default" | "atmosphere" | "bloom" | "blur"
@@ -13,24 +13,26 @@ local bloomEffect: BloomEffect = Lighting:WaitForChild("Bloom")
 local blurEffect: BlurEffect = Lighting:WaitForChild("Blur")
 
 local lightingController = Knit.CreateController({
-	Name = "lighting",
-	_ready = false,
-	_current = "",
-	_configs = {},
-	_tweens = {},
-	_tweenable = {},
+    Name = "lighting",
+    _ready = false,
+    _current = "",
+    _configs = {},
+    _tweens = {},
+    _tweenable = {},
 })
 
 --[[
+	Configures lighting congig.
+
 	@returns never
 --]]
 function lightingController:KnitStart()
-	for _index: number, config: ModuleScript in ipairs(lightingConfigs:GetChildren()) do
-		self._configs[config.Name] = require(config)
-	end
+    for _index: number, config: ModuleScript in ipairs(lightingConfigs:GetChildren()) do
+        self._configs[config.Name] = require(config)
+    end
 
-	self._ready = true
-	self:setConfig("default")
+    self._ready = true
+    self:setConfig("default")
 end
 
 --[[
@@ -40,17 +42,17 @@ end
 	@returns never
 --]]
 function lightingController:setConfig(configName: string)
-	repeat
-		task.wait()
-	until self._ready
+    repeat
+        task.wait()
+    until self._ready
 
-	self._current = configName
+    self._current = configName
 
-	local config = self._configs[configName]
+    local config = self._configs[configName]
 
-	for dataIndex: dataIndex, data: types.dictionaryStringAny in pairs(config) do
-		self:_updateInstanceWithDataFromConfig(dataIndex, data)
-	end
+    for dataIndex: dataIndex, data: types.dictionaryStringAny in pairs(config) do
+        self:_updateInstanceWithDataFromConfig(dataIndex, data)
+    end
 end
 
 --[[
@@ -61,7 +63,7 @@ end
 	@returns never
 --]]
 function lightingController:toggleTweenable(valueName: string, tweenable: boolean)
-	self._tweenable[valueName] = tweenable
+    self._tweenable[valueName] = tweenable
 end
 
 --[[
@@ -78,44 +80,44 @@ end
 	@returns never
 --]]
 function lightingController:tweenValue(
-	dataIndex: dataIndex,
-	valueName: string,
-	value: any,
-	resetValueToConfig: boolean?,
-	callback: ((...any) -> ())?
+    dataIndex: dataIndex,
+    valueName: string,
+    value: any,
+    resetValueToConfig: boolean?,
+    callback: ((...any) -> ())?
 )
-	if self._tweenable[valueName] == false then
-		return
-	end
+    if self._tweenable[valueName] == false then
+        return
+    end
 
-	local instance
+    local instance
 
-	if dataIndex == "default" then
-		instance = Lighting
-	elseif dataIndex == "atmosphere" then
-		instance = atmosphere
-	elseif dataIndex == "bloom" then
-		instance = bloomEffect
-	elseif dataIndex == "blur" then
-		instance = blurEffect
-	end
+    if dataIndex == "default" then
+        instance = Lighting
+    elseif dataIndex == "atmosphere" then
+        instance = atmosphere
+    elseif dataIndex == "bloom" then
+        instance = bloomEffect
+    elseif dataIndex == "blur" then
+        instance = blurEffect
+    end
 
-	local tween = Fluid:create(instance, {
-		duration = 1,
-		easing = "InOutSine",
-		destroyOnComplete = true,
-	}, {
-		[valueName] = if resetValueToConfig then self._configs[self._current][dataIndex][valueName] else value,
-	})
-	self._tweens[valueName] = tween
-	tween.completed:Connect(function()
-		self._tweens[valueName] = nil
+    local tween = Fluid:create(instance, {
+        duration = 1,
+        easing = "InOutSine",
+        destroyOnComplete = true,
+    }, {
+        [valueName] = if resetValueToConfig then self._configs[self._current][dataIndex][valueName] else value,
+    })
+    self._tweens[valueName] = tween
+    tween.completed:Connect(function()
+        self._tweens[valueName] = nil
 
-		if callback ~= nil then
-			callback()
-		end
-	end)
-	tween:play()
+        if callback ~= nil then
+            callback()
+        end
+    end)
+    tween:play()
 end
 
 --[[
@@ -127,15 +129,15 @@ end
 	@returns never
 --]]
 function lightingController:_updateInstanceWithDataFromConfig(dataIndex: dataIndex, data: types.dictionaryStringAny)
-	for index: string, value: any in pairs(data) do
-		-- If this value is already being tweened then we do not
-		-- want to interfer with the current tween.
-		if self._tweens[index] ~= nil then
-			continue
-		end
+    for index: string, value: any in pairs(data) do
+        -- If this value is already being tweened then we do not
+        -- want to interfer with the current tween.
+        if self._tweens[index] ~= nil then
+            continue
+        end
 
-		self:tweenValue(dataIndex, index, value)
-	end
+        self:tweenValue(dataIndex, index, value)
+    end
 end
 
 return lightingController
