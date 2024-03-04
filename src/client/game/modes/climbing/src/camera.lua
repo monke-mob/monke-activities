@@ -31,7 +31,7 @@ function class.new(): class
         _janitor = Janitor.new(),
     }, class)
 
-    self:start()
+    self:_start()
 
     return self
 end
