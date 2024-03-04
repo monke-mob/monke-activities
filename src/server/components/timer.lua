@@ -18,12 +18,12 @@ export type class = typeof(setmetatable({}, {})) & {
     timeRemaining: number,
     updated: any,
     ended: any,
-    destroy: () -> never,
-    start: () -> never,
-    stop: () -> never,
-    restart: () -> never,
-    _nextUpdateInterval: (tick: number) -> never,
-    _increment: () -> never,
+    destroy: (self: class) -> never,
+    start: (self: class) -> never,
+    stop: (self: class) -> never,
+    restart: (self: class) -> never,
+    _nextUpdateInterval: (self: class, tick: number) -> never,
+    _increment: (self: class) -> never,
 }
 
 --[[
