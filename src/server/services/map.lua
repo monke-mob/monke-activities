@@ -91,17 +91,11 @@ function mapService:load(id: string)
     mapInstance.Parent = workspace
     self._current = mapInstance
 
-    coroutine.wrap(function()
-        for _index: number, audioID: string in ipairs(map.config.music) do
-            -- Confirm that the map is still loaded.
-            if self._current ~= mapInstance then
-                break
-            end
-
-            local musicInstance: Sound = Echo:playOnServer(audioID, workspace, nil, "music")
-            musicInstance.Ended:Wait()
-        end
-    end)()
+    for _index: number, audioID: string in ipairs(map.config.music) do
+        Echo.queue:add(audioID, {
+            audioID = audioID,
+        })
+    end
 end
 
 --[[
