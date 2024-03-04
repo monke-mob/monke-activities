@@ -8,7 +8,10 @@ local mapTypes = require(script.Parent.Parent.components.map.types)
 local mapService = Knit.CreateService({
     Name = "map",
     _maps = {},
-    _current = nil,
+    _current = {
+        id = nil,
+        instance = nil,
+    },
 })
 
 --[[
@@ -97,12 +100,12 @@ end
 	@returns never
 ]]
 function mapService:remove()
-    if self._current == nil then
+    if self._current.instance == nil then
         return
     end
 
-    self._current:Destroy()
-    self._current = nil
+    self._current.instance:Destroy()
+    self._current.instance = nil
 end
 
 --[[
@@ -111,7 +114,11 @@ end
     @returns Instance
 ]]
 function mapService:getMap()
-    return self._current
+    return {
+        id = self._current.id,
+        instance = self._current.instance,
+        config = self._maps[self._current.id].config,
+    }
 end
 
 --[[

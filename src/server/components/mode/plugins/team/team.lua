@@ -1,7 +1,15 @@
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local teleportPlayer = require(script.Parent.Parent.Parent.functions.teleportPlayer)
+local mapService
+
+Knit:OnStart():andThen(function()
+    mapService = Knit.GetService("map")
+end)
 
 type teamPlayer = {
     score: number,
@@ -190,7 +198,8 @@ end
     @returns never
 ]]
 function class:respawnPlayer(player: number, spawn: string)
-    local spawnInstance: BasePart
+    local spawns: { [string]: BasePart } = mapService:getMap().config.spawns
+    local spawnInstance: BasePart = spawns[spawn]
     teleportPlayer(player, spawnInstance.CFrame)
 end
 
