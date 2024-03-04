@@ -10,4 +10,6 @@ return {
     },
 
     effects = {},
+
+    respawns = {},
 } :: mapTypes.config
