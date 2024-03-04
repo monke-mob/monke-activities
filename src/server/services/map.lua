@@ -9,10 +9,15 @@ local mapTypes = require(script.Parent.Parent.components.map.types)
 local mapService = Knit.CreateService({
     Name = "map",
     _maps = {},
-    _current = nil,
+    _current = {
+        id = nil,
+        instance = nil,
+    },
 })
 
 --[[
+    Stores map info.
+
 	@returns never
 ]]
 function mapService:KnitInit()
@@ -104,13 +109,13 @@ end
     @returns never
 ]]
 function mapService:remove()
-    if self._current == nil then
+    if self._current.instance == nil then
         return
     end
 
     Echo:stop("music")
-    self._current:Destroy()
-    self._current = nil
+    self._current.instance:Destroy()
+    self._current.instance = nil
 end
 
 --[[
@@ -119,16 +124,21 @@ end
     @returns Instance
 ]]
 function mapService:getMap()
-    return self._current
+    return {
+        id = self._current.id,
+        instance = self._current.instance,
+        config = self._maps[self._current.id].config,
+    }
 end
 
 --[[
     Gets the info of a map.
 
+    @param {Player} player [The player.]
     @param {string} id [The ID of the map.]
     @returns mapTypes.info?
 ]]
-function mapService.Client:getInfo(_player: Player, id: string)
+function mapService.Client:getInfoFromID(_player: Player, id: string)
     return self.Server._maps[id].info
 end
 

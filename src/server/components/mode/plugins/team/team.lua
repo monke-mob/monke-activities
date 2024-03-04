@@ -1,4 +1,16 @@
+local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Knit = require(ReplicatedStorage.Packages.Knit)
+
+local respawnPlayer = require(script.Parent.Parent.Parent.functions.respawnPlayer)
+local teleportPlayer = require(script.Parent.Parent.Parent.functions.teleportPlayer)
+local mapService
+
+Knit:OnStart():andThen(function()
+    mapService = Knit.GetService("map")
+end)
 
 type teamPlayer = {
     score: number,
@@ -6,7 +18,7 @@ type teamPlayer = {
 }
 
 export type team = {
-    scoreLocked: boolean,
+    locked: boolean,
     score: number,
     players: {
         [number]: teamPlayer,
@@ -37,6 +49,7 @@ class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
     _teams: teams,
+    _spawns: { BasePart },
     destroy: () -> never,
     incrementTeamScore: (teamID: teamID, increment: number) -> never,
     lockTeamScore: (teamID: teamID) -> never,
@@ -66,7 +79,7 @@ function class.new(constructorTeams: { constructorTeam }): class
         end
 
         teams[team.id] = {
-            scoreLocked = false,
+            locked = false,
             score = 0,
             players = players,
         }
@@ -74,7 +87,9 @@ function class.new(constructorTeams: { constructorTeam }): class
 
     local self = setmetatable({
         _teams = teams,
+        _spawns = {},
     }, class)
+    self:_handleSpawns()
     return self
 end
 
@@ -90,39 +105,38 @@ function class:destroy()
 end
 
 --[[
-    Locks a teams score. Locking the score prevents a team from gaining any score. This is most likely called
-    whenever a teams players are dead or when they all leave.
+    Locks a team. Locking a team prevents scoring and respawning.
 
-    @param {teamID} teamID [The team.]
-    @param {boolean} locked [If the score should be locked or not.]
+    @param {teamID} teamID [The ID of the team.]
+    @param {boolean} locked [If the team should be locked or not.]
     @returns never
 ]]
-function class:lockTeamScore(teamID: teamID, locked: boolean)
-    self._teams[teamID].scoreLocked = locked
+function class:lockTeam(teamID: teamID, locked: boolean)
+    self._teams[teamID].locked = locked
 end
 
 --[[
     Sets a players removed status to true.
 
-    @param {teamID} teamID [The team.]
-	@param {number} player [The player.]
+    @param {teamID} teamID [The ID of the team.]
+    @param {number} player [The ID of the player.]
     @returns never
 ]]
 function class:removePlayerFromTeam(teamID: teamID, player: number)
     self._teams[teamID].players[player].removed = true
-    self:_attemptToLockTeamScoreIfPlayersRemoved(teamID)
+    self:_attemptToLockTeamIfPlayersRemoved(teamID)
 end
 
 --[[
     Adds or subtracts from a teams score by the passed amount.
 
-    @param {teamID} teamID [The team.]
-    @param {number} increment [The amount to increment by.]
-    @param {number?} scoringPlayer [The player who scored the points, will give this player the points as well.]
+    @param {teamID} teamID [The ID of the team.]
+    @param {number} increment [The amount to increment the score by.]
+    @param {number?} scoringPlayer [The player that scored the points. The points will also be awarded to this player if provided.]
     @returns never
 ]]
 function class:incrementTeamScore(teamID: teamID, increment: number, scoringPlayer: number?)
-    if self._teams[teamID].scoreLocked then
+    if self._teams[teamID].locked then
         return
     end
 
@@ -139,7 +153,7 @@ end
 --[[
     Returns the team that the player is in.
 
-    @param {number} player [The player.]
+    @param {number} player [The ID of the player.]
     @returns teamID?
 ]]
 function class:findTeamFromPlayer(player: number): teamID?
@@ -153,13 +167,69 @@ function class:findTeamFromPlayer(player: number): teamID?
 end
 
 --[[
-    Attempts to lock a teams score. If all players are removed then it will lock.
+    Kills a player.
 
-    @private
-    @param {teamID} teamID [The team.]
+    @param {number} player [The ID of the player.]
     @returns never
 ]]
-function class:_attemptToLockTeamScoreIfPlayersRemoved(teamID: teamID)
+function class:killPlayer(player: number)
+    local playerInstance: Player = Players:GetPlayerByUserId(player)
+    local character: Model = playerInstance.Character or playerInstance.CharacterAdded:Wait()
+    local characterHumanoid: Humanoid = character:FindFirstChildOfClass("Humanoid") :: Humanoid
+    characterHumanoid.Health = 0
+end
+
+--[[
+    Kills a team.
+
+    @param {teamID} teamID [The ID of the team.]
+    @param {boolean} locked [If the team should be locked or not.]
+    @returns never
+]]
+function class:killTeam(teamID: teamID, locked: boolean)
+    for player: number, _playerData in pairs(self._teams[teamID].players) do
+        self:killPlayer(player)
+    end
+
+    self:lockTeam(teamID, locked)
+end
+
+--[[
+    Respawns a player.
+
+    @param {number} player [The ID of the player.]
+    @param {string} spawn [The ID of the spawn.]
+    @returns never
+]]
+function class:respawnPlayer(player: number, spawn: string)
+    respawnPlayer(player)
+
+    local spawns: { [string]: BasePart } = mapService:getMap().config.spawns
+    local spawnInstance: BasePart = spawns[spawn]
+    teleportPlayer(player, spawnInstance.CFrame)
+end
+
+--[[
+    Respawns a team.
+
+    @param {teamID} teamID [The ID of the team.]
+    @param {string} spawn [The ID of the spawn.]
+    @returns never
+]]
+function class:respawnTeam(teamID: teamID, spawn: string)
+    for player: number, _playerData in pairs(self._teams[teamID].players) do
+        self:respawnPlayer(player, spawn)
+    end
+end
+
+--[[
+    Attempts to lock a team. If all players are removed then it will lock.
+
+    @private
+    @param {teamID} teamID [The ID of the team.]
+    @returns never
+]]
+function class:_attemptToLockTeamIfPlayersRemoved(teamID: teamID)
     local allPlayersRemoved: boolean = true
 
     for player: number, playerData in pairs(self._teams[teamID].players) do
@@ -170,8 +240,35 @@ function class:_attemptToLockTeamScoreIfPlayersRemoved(teamID: teamID)
     end
 
     if allPlayersRemoved then
-        self:lockTeamScore(teamID, true)
+        self:lockTeam(teamID, true)
     end
+end
+
+--[[
+    Handles team spawns.
+
+    @private
+    @returns never
+]]
+function class:_handleSpawns()
+    for _index, spawnInstance: BasePart in pairs(CollectionService:GetTagged("spawn")) do
+        self:_handleNewSpawn(spawnInstance)
+    end
+
+    self._janitor:Add(CollectionService:GetInstanceAddedSignal("spawn"):Connect(function(...)
+        self:_handleNewSpawn(...)
+    end))
+end
+
+--[[
+    Handles team spawns.
+
+    @private
+    @param {BasePart} spawnInstance [The spawn instance.]
+    @returns never
+]]
+function class:_handleNewSpawn(spawnInstance: BasePart)
+    table.insert(self._spawns, spawnInstance)
 end
 
 return class

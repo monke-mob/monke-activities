@@ -11,5 +11,7 @@ return {
 
     effects = {},
 
+    respawns = {},
+  
     music = {},
 } :: mapTypes.config

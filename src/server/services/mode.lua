@@ -17,6 +17,8 @@ local modeService = Knit.CreateService({
 })
 
 --[[
+    Stores mode info.
+    
 	@returns never
 ]]
 function modeService:KnitInit()
@@ -111,11 +113,12 @@ end
 
 --[[
     Gets the info of a mode.
-
+    
+    @param {Player} player [The player.]
     @param {string} id [The ID of the mode.]
 	@returns modeTypes.info?
 ]]
-function modeService.Client:getInfo(_player: Player, id: string)
+function modeService.Client:getInfoFromID(_player: Player, id: string)
     return self.Server._modes[id].info
 end
 

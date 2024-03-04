@@ -63,7 +63,7 @@ export type players = { number }
 ]]
 function class.new(players: players, config: modeTypes.config): class
     local self = setmetatable({}, class)
-    self._map = mapService:getMap()
+    self._map = mapService:getMap().instance
 
     self.teamPlugin = if config.teams.type == "single"
         then singlePlayerPlugin.new(players)

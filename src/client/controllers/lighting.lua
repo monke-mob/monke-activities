@@ -24,6 +24,8 @@ local lightingController = Knit.CreateController({
 })
 
 --[[
+	Stores and sets default lighting config.
+
 	@returns never
 --]]
 function lightingController:KnitStart()

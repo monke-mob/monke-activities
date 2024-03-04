@@ -18,6 +18,8 @@ local roundInterfaceService = Knit.CreateService({
 })
 
 --[[
+    Requires necessary services and setups up player connections.
+
 	@returns never
 ]]
 function roundInterfaceService:KnitStart()

@@ -37,6 +37,8 @@ local votingService = Knit.CreateService({
 })
 
 --[[
+    Sets up the voting timer.
+
 	@returns never
 ]]
 function votingService:KnitInit()
@@ -46,6 +48,8 @@ function votingService:KnitInit()
 end
 
 --[[
+    Requires necessary services.
+    
 	@returns never
 ]]
 function votingService:KnitStart()

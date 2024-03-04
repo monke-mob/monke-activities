@@ -20,6 +20,8 @@ local votingController = Knit.CreateController({
 })
 
 --[[
+    Sets up voting system.
+
 	@returns never
 --]]
 function votingController:KnitStart()

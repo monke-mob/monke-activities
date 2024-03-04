@@ -11,6 +11,8 @@ return {
 
     effects = {},
 
+    respawns = {},
+
     music = {
         "rbxassetid://16560984385",
     },
