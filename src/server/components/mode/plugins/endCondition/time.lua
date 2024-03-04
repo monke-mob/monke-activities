@@ -7,7 +7,7 @@ local timerComponent = require(script.Parent.Parent.Parent.Parent.timer)
 local types = require(ReplicatedStorage.types)
 local roundInterface = nil
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     roundInterface = Knit.GetService("roundInterface")
 end)
 

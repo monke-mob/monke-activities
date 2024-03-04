@@ -8,7 +8,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local types = require(ReplicatedStorage.types)
 local modeService
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     modeService = Knit.GetService("mode")
 end)
 

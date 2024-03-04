@@ -10,7 +10,7 @@ local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode
 local teleportPlayer = require(script.Parent.Parent.Parent.Parent.components.mode.functions.teleportPlayer)
 local modeService
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     modeService = Knit.GetService("mode")
 end)
 

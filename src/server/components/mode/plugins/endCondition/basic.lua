@@ -6,7 +6,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local types = require(ReplicatedStorage.types)
 local roundService
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     roundService = Knit.GetService("round")
 end)
 

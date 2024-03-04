@@ -6,7 +6,7 @@ local modeTypes = require(script.Parent.Parent.Parent.types)
 local teamPlugin = require(script.Parent.Parent.Parent.plugins.team.team)
 local modeService
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     modeService = Knit.GetService("mode")
 end)
 

@@ -14,7 +14,7 @@ local timeScorePlugin = require(script.plugins.score.time)
 local types = require(ReplicatedStorage.types)
 local mapService
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     mapService = Knit.GetService("map")
 end)
 

@@ -7,7 +7,7 @@ local roundInfoVisibleAction = require(script.Parent.Parent.components.app.actio
 local types = require(ReplicatedStorage.types)
 local modeController
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     modeController = Knit.GetController("mode")
 end)
 

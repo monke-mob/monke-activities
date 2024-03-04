@@ -13,7 +13,7 @@ raycastParams.FilterType = Enum.RaycastFilterType.Exclude
 local playerController
 local modeService
 
-Knit.OnStart:andThen(function()
+Knit.OnStart():andThen(function()
     playerController = Knit.GetController("player")
     modeService = Knit.GetService("mode")
 end)

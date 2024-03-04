@@ -15,7 +15,7 @@ local votesAction = require(script.Parent.Parent.actions.voting.votes)
 
 local votingService
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     votingService = Knit.GetService("voting")
 end)
 

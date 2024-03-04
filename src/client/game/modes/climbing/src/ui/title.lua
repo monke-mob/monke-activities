@@ -5,7 +5,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local strokeLabel = require(script.Parent.Parent.Parent.Parent.Parent.Parent.components.app.components.label.stroke)
 local modeController
 
-Knit:OnStart():andThen(function()
+Knit.OnStart():andThen(function()
     modeController = Knit.GetController("mode")
 end)
 
