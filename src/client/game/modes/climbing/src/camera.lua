@@ -2,9 +2,15 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
+local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local types = require(ReplicatedStorage.types)
-local currentCamera = workspace.CurrentCamera
+local currentCamera: Camera = workspace.CurrentCamera
+local cameraController
+
+Knit.OnStart():andThen(function()
+    cameraController = Knit.GetController("camera")
+end)
 
 --[[
     The class for the camera controller.
@@ -54,9 +60,7 @@ end
 function class:destroy()
     self._janitor:Destroy()
 
-    repeat
-        currentCamera.CameraType = Enum.CameraType.Custom
-    until currentCamera.CameraType == Enum.CameraType.Custom
+    cameraController:setCameraType(Enum.CameraType.Custom)
 
     setmetatable(self, nil)
     table.clear(self)
@@ -70,9 +74,7 @@ end
     @returns never
 ]]
 function class:_start()
-    repeat
-        currentCamera.CameraType = Enum.CameraType.Scriptable
-    until currentCamera.CameraType == Enum.CameraType.Scriptable
+    cameraController:setCameraType(Enum.CameraType.Scriptable)
 
     self._janitor:Add(RunService.RenderStepped:Connect(function()
         if self.target == nil then
