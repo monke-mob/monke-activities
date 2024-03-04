@@ -17,7 +17,7 @@ local modeService = Knit.CreateService({
 })
 
 --[[
-    Finds and configures modes.
+    Stores mode info.
     
 	@returns never
 ]]

@@ -12,7 +12,7 @@ local mapService = Knit.CreateService({
 })
 
 --[[
-    Finds and configures maps.
+    Stores map info.
 
 	@returns never
 ]]

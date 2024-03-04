@@ -14,7 +14,7 @@ local roundDataController = Knit.CreateController({
 })
 
 --[[
-    Sets up rounds.
+    Sets up round data.
     
 	@returns never
 --]]

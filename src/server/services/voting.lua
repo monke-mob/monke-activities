@@ -37,7 +37,7 @@ local votingService = Knit.CreateService({
 })
 
 --[[
-    Updates voting timer to remaining amount of time.
+    Sets up the voting timer.
 
 	@returns never
 ]]

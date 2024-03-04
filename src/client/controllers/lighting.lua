@@ -22,7 +22,7 @@ local lightingController = Knit.CreateController({
 })
 
 --[[
-	Configures lighting congig.
+	Stores and sets default lighting config.
 
 	@returns never
 --]]

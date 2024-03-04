@@ -19,6 +19,8 @@ local roundService = Knit.CreateService({
 })
 
 --[[
+    Requires necessary services.
+
 	@returns never
 ]]
 function roundService:KnitStart()

@@ -17,6 +17,8 @@ local roundInterfaceService = Knit.CreateService({
 })
 
 --[[
+    Sets default values.
+    
 	@returns never
 ]]
 function roundInterfaceService:KnitInit()
@@ -25,6 +27,8 @@ function roundInterfaceService:KnitInit()
 end
 
 --[[
+    Requires necessary services and setups up player connections.
+
 	@returns never
 ]]
 function roundInterfaceService:KnitStart()

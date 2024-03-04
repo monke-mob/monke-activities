@@ -24,6 +24,8 @@ local intermissionService = Knit.CreateService({
 })
 
 --[[
+    Requires necessary services.
+    
 	@returns never
 ]]
 function intermissionService:KnitStart()

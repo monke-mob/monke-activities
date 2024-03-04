@@ -15,7 +15,7 @@ local modeController = Knit.CreateController({
 })
 
 --[[
-    Finds all modes and removes modes with no ID.
+    Stores modes and listens for requested modes from the server.
     
 	@returns never
 ]]
