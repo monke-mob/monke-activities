@@ -4,6 +4,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
+local respawnPlayer = require(script.Parent.Parent.Parent.functions.respawnPlayer)
 local teleportPlayer = require(script.Parent.Parent.Parent.functions.teleportPlayer)
 local mapService
 
@@ -198,9 +199,24 @@ end
     @returns never
 ]]
 function class:respawnPlayer(player: number, spawn: string)
+    respawnPlayer(player)
+
     local spawns: { [string]: BasePart } = mapService:getMap().config.spawns
     local spawnInstance: BasePart = spawns[spawn]
     teleportPlayer(player, spawnInstance.CFrame)
+end
+
+--[[
+    Respawns a team.
+
+    @param {teamID} teamID [The ID of the team.]
+    @param {string} spawn [The ID of the spawn.]
+    @returns never
+]]
+function class:respawnTeam(teamID: teamID, spawn: string)
+    for player: number, _playerData in pairs(self._teams[teamID].players) do
+        self:respawnPlayer(player, spawn)
+    end
 end
 
 --[[
