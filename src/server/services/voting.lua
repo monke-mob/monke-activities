@@ -50,7 +50,7 @@ function votingService:KnitInit()
 end
 
 --[[
-    Gets maps and modes for their respective services.
+    Requires necessary services.
     
 	@returns never
 ]]
