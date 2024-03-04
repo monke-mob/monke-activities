@@ -5,7 +5,6 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local ROUND = require(script.Parent.Parent.Parent.constants.ROUND)
 
 local timerComponent = require(script.Parent.Parent.Parent.components.timer)
-
 local roundInterface
 local roundService
 local votingService
@@ -106,11 +105,9 @@ end
 	@returns never
 ]]
 function intermissionService:_start()
-    local timer = timerComponent.new(ROUND.intermissionTime)
-
-    roundInterface:bindTimer(timer)
+    local timer: timerComponent.class = timerComponent.new(ROUND.intermissionTime)
     self._state.timer = timer
-
+    roundInterface:bindTimer(timer)
     timer:start()
 
     -- If this event fires that means that the round can start. So send a request to the interface to start.
@@ -120,6 +117,7 @@ function intermissionService:_start()
     end)
 
     votingService:start()
+    self:setState("intermission")
 end
 
 --[[
@@ -145,7 +143,7 @@ end
 ]]
 function intermissionService:_waitForPlayers()
     self:stop()
-    self._state.stateName = "waiting"
+    self:setState("waiting")
 end
 
 return intermissionService
