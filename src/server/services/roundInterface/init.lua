@@ -20,7 +20,7 @@ local roundInterfaceService = Knit.CreateService({
 --[[
     Requires necessary services and setups up player connections.
 
-	@returns never
+    @returns never
 ]]
 function roundInterfaceService:KnitStart()
     intermissionService = Knit.GetService("intermission")
