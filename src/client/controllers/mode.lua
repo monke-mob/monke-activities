@@ -29,7 +29,7 @@ function modeController:KnitStart()
         end
 
         local config: modeTypes.config = require(modeContainer:FindFirstChild("config"))
-        local _success: boolean, info = modeService:getInfo(config.id):await()
+        local _success: boolean, info = modeService:getInfoFromID(config.id):await()
         self._modes[config.id] = { info = info, config = config, container = modeContainer }
     end
 

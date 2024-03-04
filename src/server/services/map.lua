@@ -127,7 +127,7 @@ end
     @param {string} id [The ID of the map.]
 	@returns mapTypes.info?
 ]]
-function mapService.Client:getInfo(_player: Player, id: string)
+function mapService.Client:getInfoFromID(_player: Player, id: string)
     return self.Server._maps[id].info
 end
 
