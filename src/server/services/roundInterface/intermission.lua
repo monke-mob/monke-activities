@@ -17,18 +17,11 @@ local intermissionService = Knit.CreateService({
     _votingService = nil,
     _state = {
         -- Possible states: "waiting" or "intermission"
-        stateName = "",
+        stateName = "waiting",
         players = {},
         timer = nil,
     },
 })
-
---[[
-	@returns never
-]]
-function intermissionService:KnitInit()
-    self._state.stateName = "waiting"
-end
 
 --[[
 	@returns never
