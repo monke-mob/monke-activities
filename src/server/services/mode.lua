@@ -113,7 +113,8 @@ end
 
 --[[
     Gets the info of a mode.
-
+    
+    @param {Player} player [The player.]
     @param {string} id [The ID of the mode.]
 	@returns modeTypes.info?
 ]]

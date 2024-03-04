@@ -124,6 +124,7 @@ end
 --[[
     Gets the info of a map.
 
+    @param {Player} player [The player.]
     @param {string} id [The ID of the map.]
 	@returns mapTypes.info?
 ]]
