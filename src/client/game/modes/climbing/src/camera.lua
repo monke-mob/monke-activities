@@ -19,7 +19,7 @@ end)
     @private
 ]]
 local class = {}
-class._index = class
+class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
     _target: Instance | nil,
