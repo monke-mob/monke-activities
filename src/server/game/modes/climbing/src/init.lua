@@ -73,9 +73,8 @@ end
     @returns never
 ]]
 function class:_cycleToNextPlayer()
-    if self._currentPlayerIndex == #self._players then
-        self._cycle += 1
-        self._currentPlayerIndex = 0
+    if self._cycle == config.mode.attemptsPerPlayer and self._currentPlayerIndex == #self._players then
+        self.endConditionPlugin:stop()
     end
 
     if self._currentPlayerIndex == #self._players then
