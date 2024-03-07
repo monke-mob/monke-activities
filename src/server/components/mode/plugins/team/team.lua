@@ -53,7 +53,9 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(constructorTeams: { constructorTeam }): class
-    local teams: teams = {}
+    local self = setmetatable({
+        _teams = {},
+    }, class)
 
     for _index: number, team: constructorTeam in pairs(constructorTeams) do
         local players: { [number]: teamPlayer } = {}
@@ -65,16 +67,13 @@ function class.new(constructorTeams: { constructorTeam }): class
             }
         end
 
-        teams[team.id] = {
+        self._teams[team.id] = {
             scoreLocked = false,
             score = 0,
             players = players,
         }
     end
 
-    local self = setmetatable({
-        _teams = teams,
-    }, class)
     return self
 end
 
