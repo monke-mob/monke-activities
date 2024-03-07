@@ -36,7 +36,7 @@ function class.new(config: modeTypes.timeScoringConfig): class
         _increment = config.pointsPerIncrement,
     }, class)
 
-    self._mode.endConditionPlugin.timer.updated:Connect(function()
+    modeService:getMode().endConditionPlugin.timer.updated:Connect(function()
         self:_incrementScores()
     end)
 
@@ -50,8 +50,10 @@ end
     @returns class
 ]]
 function class:_incrementScores()
-    for teamID: teamPlugin.teamID, _team: teamPlugin.team in pairs(self._mode.teamPlugin.teams) do
-        modeService:getMode().teamPlugin:incrementTeamScore(teamID, self._increment)
+    local teamPlugin = modeService:getMode().teamPlugin
+
+    for teamID: teamPlugin.teamID, _team: teamPlugin.team in pairs(teamPlugin._teams) do
+        teamPlugin:incrementTeamScore(teamID, self._increment)
     end
 end
 
