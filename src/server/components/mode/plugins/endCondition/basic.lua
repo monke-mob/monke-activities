@@ -52,6 +52,15 @@ function class:destroy()
 end
 
 --[[
+    This acts a placeholder function.
+
+    @returns never
+]]
+function class:start()
+    return
+end
+
+--[[
     Handles ending the round.
 
     @returns never
