@@ -52,7 +52,7 @@ local function container(componentProps: componentProps)
 
             image({
                 ImageTransparency = groupSplashTransparency,
-                Image = theme.icons.logo,
+                Image = theme.icons.monkeMob,
                 Size = UDim2.fromScale(1, 0.08),
                 ScaleType = Enum.ScaleType.Fit,
             }, {

@@ -33,6 +33,7 @@ return {
     },
 
     icons = {
+        monkeMob = "rbxassetid://16651606794",
         logo = "rbxassetid://14827422191",
         credits = "rbxassetid://15999740081",
         settings = "rbxassetid://15999742619",
