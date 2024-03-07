@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
@@ -28,15 +29,14 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-    _lastMove: number,
-    _currentLedge: BasePart,
-    _maxDistance: number,
     _janitor: types.Janitor,
-    _controls: { [Enum.KeyCode]: Vector3 },
-    destroy: () -> never,
-    _findLedge: (origin: Vector3, direction: Vector3) -> BasePart?,
-    _updateControls: () -> never,
-    _handleInput: (input: InputObject, processed: boolean) -> never,
+    _cooldown: number,
+    _raycastDistance: number,
+    _holdDistanceFromWall: number,
+    _climbSpeed: number,
+    _animationSpeed: number,
+    _lastClimb: number,
+    _currentPlayer: Player | nil,
 }
 
 --[[
@@ -50,21 +50,21 @@ function class.new(): class
     raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
 
     local self = setmetatable({
-        _lastMove = 0,
-        _currentLedge = nil,
-        _maxDistance = 5,
         _janitor = Janitor.new(),
-        _controls = {
-            [Enum.KeyCode.W] = Vector3.new(),
-            [Enum.KeyCode.S] = Vector3.new(),
-            [Enum.KeyCode.A] = Vector3.new(),
-            [Enum.KeyCode.D] = Vector3.new(),
-        },
+        _cooldown = 0.25,
+        _raycastDistance = 4,
+        _holdDistanceFromWall = 2,
+        _climbSpeed = 20,
+        _animationSpeed = 2,
+        _lastClimb = 0,
+        _currentPlayer = Players.LocalPlayer,
     }, class)
 
-    self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
-        self:_handleInput(...)
+    self._janitor:Add(RunService.RenderStepped:Connect(function(...)
+        self:OnFrameUpdate(...)
     end))
+
+    print("climbing controller has started")
 
     return self
 end
@@ -82,66 +82,71 @@ function class:destroy()
     table.freeze(self)
 end
 
---[[
-    Checks if a ledge exists using a raycast.
+function class:_onFrameUpdate(deltaTime: number)
+    local raycastResult = self:raycast()
 
-    @private
-    @param {Vector3} origin [The origin of the raycast.]
-    @param {Vector3} direction [The direction of the raycast.]
-    @returns BasePart?
-]]
-function class:_findLedge(origin: Vector3, direction: Vector3): BasePart?
-    local rasycast: RaycastResult = workspace:Raycast(origin, direction, raycastParams)
-    return if rasycast ~= nil then rasycast.Instance :: BasePart else nil
+    if raycastResult and self:_checkCooldown() then
+        self:_climb(raycastResult, deltaTime)
+    end
 end
 
---[[
-    Updates the control directions based off the current position.
+function class:_raycast(deltaTime: number)
+    if not self.CFrame then
+        self.CFrame = self._currentPlayer.Character.HumanoidRootPart.CFrame
+    end
 
-    @private
-    @returns never
-]]
-function class:_updateControls()
-    self._controls[Enum.KeyCode.W] = self._currentLedge.CFrame.UpVector * -self._maxDistance
-    self._controls[Enum.KeyCode.S] = self._currentLedge.CFrame.UpVector * -self._maxDistance
-    self._controls[Enum.KeyCode.A] = self._currentLedge.CFrame.RightVector * -self._maxDistance
-    self._controls[Enum.KeyCode.D] = self._currentLedge.CFrame.RightVector * self._maxDistance
+    local position: Vector3 = self.CFrame.Position
+    local direction: Vector3 = self.CFrame.LookVector
+
+    local raycastParams: RaycastParams = RaycastParams.new()
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    raycastParams.FilterDescendantsInstances = {}
+
+    local raycastResult: RaycastResult = workspace:Raycast(position, direction * self._raycastDistance, raycastParams)
+
+    return raycastResult
 end
 
---[[
-    Determines what action to take based on the players input.
-
-    @private
-    @param {InputObject} input [The player input.]
-    @param {boolean} processed [If the input was processed by the engine.]
-    @returns never 
-]]
-function class:_handleInput(input: InputObject, processed: boolean)
-    if processed then
-        return
-    end
-
-    local direction: Vector3? = self._controls[input.KeyCode]
-
-    if typeof(direction) ~= "Vector3" then
-        return
-    end
-
+function class:_checkCooldown()
     local currentTime: number = os.clock()
 
-    if currentTime - self._lastMove <= MOVE_DEBOUNCE then
+    if currentTime - self._lastClimb < self._cooldown then
         return
     end
 
-    self._lastMove = currentTime
+    return true
+end
 
-    local nextLedge: BasePart? = self:_findLedge(self._currentLedge.CFrame.Position, direction)
+function class:_getClimbCFrame(rasycastResult: RaycastResult)
+    local lookVector: Vector3 = rasycastResult.Normal * -1
+    local rightVector: Vector3 = lookVector:Cross(Vector3.yAxis).Unit
+    local upVector: Vector3 = rightVector:Cross(lookVector).Unit
 
-    if nextLedge ~= nil then
-        self._currentLedge = nextLedge
-        self:_updateControls()
-        modeService.Client.event:FireServer("climbMove", nextLedge)
+    local position = rasycastResult.Position + rasycastResult.Normal * self._holdDistanceFromWall
+
+    return CFrame.fromMatrix(position, rightVector, upVector)
+end
+
+function class:_getMoveVector(cframe: CFrame)
+    local normalCframe: CFrame = cframe * CFrame.Angles(math.pi / -2, 0, 0)
+
+    local moveDirection: Vector3 = self._currentPlayer.Character.Humanoid.moveDirection
+
+    local relativeMoveDirection = workspace.CurrentCamera.CFrame.Rotation:PointToObjectSpace(moveDirection)
+    relativeMoveDirection *= Vector3.new(1, 0, -1)
+
+    if relativeMoveDirection.Magitiude > 0 then
+        relativeMoveDirection = relativeMoveDirection.Unit
     end
+
+    local moveVector = normalCframe.Rotation:PointToWorldSpace(relativeMoveDirection)
+
+    return moveVector
+end
+
+function class:_climb(rasycastResult: RaycastResult, deltaTime: number)
+    self._framerate = 60
+    local timeMultiplier = deltaTime * self._framerate * deltaTime
 end
 
 return class
