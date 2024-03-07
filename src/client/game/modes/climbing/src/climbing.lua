@@ -30,15 +30,14 @@ local class = {}
 class.__index = class
 
 export type class = typeof(setmetatable({}, {})) & {
-    _lastMove: number,
-    _currentLedge: BasePart,
-    _maxDistance: number,
     _janitor: types.Janitor,
-    _controls: { [Enum.KeyCode]: Vector3 },
-    destroy: () -> never,
-    _findLedge: (origin: Vector3, direction: Vector3) -> BasePart?,
-    _updateControls: () -> never,
-    _handleInput: (input: InputObject, processed: boolean) -> never,
+    _cooldown: number,
+    _raycastDistance: number,
+    _holdDistanceFromWall: number,
+    _climbSpeed: number,
+    _animationSpeed: number,
+    _lastClimb: number,
+    _currentPlayer: Player | nil,
 }
 
 --[[
