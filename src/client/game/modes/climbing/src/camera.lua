@@ -82,7 +82,7 @@ function class:_start()
         end
 
         local forwardVector = self._target.CFrame.LookVector
-        local newCameraPosition = self._target.Position - forwardVector * Vector3.new(0, 0, 25)
+        local newCameraPosition = self._target.Position - forwardVector * Vector3.new(0, 0, 15)
         currentCamera.CFrame = CFrame.new(newCameraPosition, self._target.Position)
     end))
 end
