@@ -142,7 +142,7 @@ end
     @returns teamTeamPlugin.teams
 ]]
 function class:getScores(): teamPlugin.teams
-    return self.teamPlugin.teams
+    return self.teamPlugin._teams
 end
 
 return class
