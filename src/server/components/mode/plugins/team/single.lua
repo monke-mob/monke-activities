@@ -44,8 +44,8 @@ end
     @extends teamPlugin.incrementTeamScore
     @returns never
 ]]
-function class:incrementTeamScore(...)
-    teamPlugin.incrementTeamScore(self, ..., self.id)
+function class:incrementTeamScore(teamID: any, increment: number)
+    teamPlugin.incrementTeamScore(self, teamID, increment, teamID)
 end
 
 return class
