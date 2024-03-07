@@ -11,8 +11,7 @@ return {
     },
 
     endCondition = {
-        type = "time",
-        duration = 20,
+        type = "none",
     },
 
     scoring = {
