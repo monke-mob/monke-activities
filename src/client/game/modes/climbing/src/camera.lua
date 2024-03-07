@@ -77,13 +77,13 @@ function class:_start()
     cameraController:setCameraType(Enum.CameraType.Scriptable)
 
     self._janitor:Add(RunService.RenderStepped:Connect(function()
-        if self.target == nil then
+        if self._target == nil then
             return
         end
 
-        local forwardVector = self.target.CFrame.LookVector
-        local newCameraPosition = self.target.Position - forwardVector * Vector3.new(0, 0, 25)
-        currentCamera.CFrame = CFrame.new(newCameraPosition, self.target.Position)
+        local forwardVector = self._target.CFrame.LookVector
+        local newCameraPosition = self._target.Position - forwardVector * Vector3.new(0, 0, 25)
+        currentCamera.CFrame = CFrame.new(newCameraPosition, self._target.Position)
     end))
 end
 
