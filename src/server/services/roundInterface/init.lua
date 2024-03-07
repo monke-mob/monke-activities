@@ -7,6 +7,7 @@ local Knit = require(ReplicatedStorage.Packages.Knit)
 local types = require(ReplicatedStorage.types)
 local intermissionService
 local roundService
+local modeService
 
 local roundInterfaceService = Knit.CreateService({
     Name = "roundInterface",
@@ -24,6 +25,7 @@ local roundInterfaceService = Knit.CreateService({
 function roundInterfaceService:KnitStart()
     intermissionService = Knit.GetService("intermission")
     roundService = Knit.GetService("round")
+    modeService = Knit.GetService("mode")
 
     -- Just in case we couldnt catch the players via the PlayerAdded event.
     for _index: number, player: Player in ipairs(Players:GetPlayers()) do
@@ -109,7 +111,8 @@ function roundInterfaceService:_handlePlayerLeaving(player: Player)
     self._playerJanitor:Remove(player.UserId)
 
     if roundService:isStarted() then
-        roundService:removePlayer(player)
+        local mode = modeService:getMode()
+        mode:removePlayerFromTeam(mode:findTeamFromPlayer(player.UserId), player.UserId)
     end
 
     intermissionService:attemptStart()
