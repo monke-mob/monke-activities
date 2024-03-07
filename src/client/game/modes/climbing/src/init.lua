@@ -5,6 +5,7 @@ local Fusion = require(ReplicatedStorage.Packages.Fusion)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
 local climbingCamera = require(script.camera)
+local climbingController = require(script.climbing)
 local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
 local modeService
 
@@ -26,6 +27,7 @@ export type class = modeComponent.class & {
     currentPlayer: Player | nil,
     currentPlayerText: any,
     _camera: climbingCamera.class,
+    _climbingController: climbingController.class,
     _setPlayerTurn: (userID: number) -> never,
 }
 
@@ -39,12 +41,10 @@ function class.new(): class
     local baseClass = modeComponent.new()
     local self = setmetatable(baseClass, class)
 
-    local camera: climbingCamera.class = climbingCamera.new()
-    self._janitor:Add(camera, "destroy")
-    self._camera = camera
-
     self.currentPlayer = nil
     self.currentPlayerText = Fusion.Value("")
+    self._camera = climbingCamera.new()
+    self._janitor:Add(self._camera, "destroy")
 
     self._janitor:Add(modeService.event:Connect(function(event: string, ...)
         if event == "setPlayerTurn" then
@@ -62,6 +62,14 @@ end
     @returns never
 ]]
 function class:_setPlayerTurn(userID: number)
+    if userID == Players.LocalPlayer.UserId then
+        self._climbingController = climbingController.new()
+        self._janitor:Add(self._climbingController, "destroy", "climbingController")
+    elseif self._climbingController then
+        self._climbingController = nil
+        self._janitor:Remove("climbingController")
+    end
+
     local player: Player = Players:GetPlayerByUserId(userID)
     self.currentPlayer = player
     self.currentPlayerText:set(player.DisplayName)

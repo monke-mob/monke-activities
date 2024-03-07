@@ -1,15 +1,17 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 
 local Janitor = require(ReplicatedStorage.Packages.Janitor)
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local MOVE_DEBOUNCE: number = 1
+local LERP_SPEED: number = 0.2
+local REACH_DISTANCE: number = 4
+local DISTANCE_FROM_SURFACE: number = 2
 
 local types = require(ReplicatedStorage.types)
 local raycastParams: RaycastParams = RaycastParams.new()
-raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+raycastParams.FilterType = Enum.RaycastFilterType.Include
 local playerController
 local modeService
 
@@ -46,25 +48,17 @@ export type class = typeof(setmetatable({}, {})) & {
     @returns class
 ]]
 function class.new(): class
-    playerController:disableMovement()
-    raycastParams.FilterDescendantsInstances = { Players.LocalPlayer.Character }
+    local character: Model = Players.LocalPlayer.Character or Players.LocalPlayer.CharacterAdded:Wait()
 
     local self = setmetatable({
-        _lastMove = 0,
-        _currentLedge = nil,
-        _maxDistance = 5,
+        _speed = 20,
         _janitor = Janitor.new(),
-        _controls = {
-            [Enum.KeyCode.W] = Vector3.new(),
-            [Enum.KeyCode.S] = Vector3.new(),
-            [Enum.KeyCode.A] = Vector3.new(),
-            [Enum.KeyCode.D] = Vector3.new(),
-        },
+        _currentPosition = nil,
+        _characterRoot = character:WaitForChild("HumanoidRootPart"),
+        _characterHumanoid = character:WaitForChild("Humanoid"),
     }, class)
 
-    self._janitor:Add(UserInputService.InputBegan:Connect(function(...)
-        self:_handleInput(...)
-    end))
+    self:_start()
 
     return self
 end
@@ -77,71 +71,98 @@ end
 function class:destroy()
     self._janitor:Destroy()
 
+    self._characterRoot.Anchored = false
+
     setmetatable(self, nil)
     table.clear(self)
     table.freeze(self)
 end
 
 --[[
-    Checks if a ledge exists using a raycast.
-
-    @private
-    @param {Vector3} origin [The origin of the raycast.]
-    @param {Vector3} direction [The direction of the raycast.]
-    @returns BasePart?
-]]
-function class:_findLedge(origin: Vector3, direction: Vector3): BasePart?
-    local rasycast: RaycastResult = workspace:Raycast(origin, direction, raycastParams)
-    return if rasycast ~= nil then rasycast.Instance :: BasePart else nil
-end
-
---[[
-    Updates the control directions based off the current position.
+    Starts the climbing system.
 
     @private
     @returns never
 ]]
-function class:_updateControls()
-    self._controls[Enum.KeyCode.W] = self._currentLedge.CFrame.UpVector * -self._maxDistance
-    self._controls[Enum.KeyCode.S] = self._currentLedge.CFrame.UpVector * -self._maxDistance
-    self._controls[Enum.KeyCode.A] = self._currentLedge.CFrame.RightVector * -self._maxDistance
-    self._controls[Enum.KeyCode.D] = self._currentLedge.CFrame.RightVector * self._maxDistance
+function class:_start()
+    playerController:disableMovement()
+    self._characterRoot.Anchored = true
+
+    self._janitor:Add(modeService.event:Connect(function(event: string, ...)
+        if event == "getClimbable" then
+            raycastParams.FilterDescendantsInstances = { ... }
+        end
+    end))
+
+    modeService.event:Fire("getClimbable")
+
+    self._janitor:Add(RunService.RenderStepped:Connect(function(...)
+        self:_update(...)
+    end))
 end
 
 --[[
-    Determines what action to take based on the players input.
+    Updates the position.
 
     @private
-    @param {InputObject} input [The player input.]
-    @param {boolean} processed [If the input was processed by the engine.]
+    @param {number} deltaTime [The delta time.]
     @returns never 
 ]]
-function class:_handleInput(input: InputObject, processed: boolean)
-    if processed then
+function class:_update(deltaTime: number)
+    local raycastResult: RaycastResult = self:_raycast()
+
+    if raycastResult == nil then
         return
     end
 
-    local direction: Vector3? = self._controls[input.KeyCode]
+    local timeMutliplier: number = deltaTime * 60
+    local cframe = self:_getCFrame(raycastResult)
+    local moveVector = self:_getMoveVector(cframe)
 
-    if typeof(direction) ~= "Vector3" then
-        return
+    self._currentPosition = cframe
+    self._currentPosition += moveVector * self._speed * deltaTime
+
+    self._characterRoot.Anchored = true
+    self._characterRoot.CFrame = self._characterRoot.CFrame:Lerp(self._currentPosition, LERP_SPEED * timeMutliplier)
+end
+
+function class:_raycast()
+    if not self._currentPosition then
+        self._currentPosition = self._characterRoot.CFrame
     end
 
-    local currentTime: number = os.clock()
+    return workspace:Raycast(
+        self._currentPosition.Position,
+        self._currentPosition.LookVector * REACH_DISTANCE,
+        raycastParams
+    )
+end
 
-    if currentTime - self._lastMove <= MOVE_DEBOUNCE then
-        return
+function class:_getCFrame(raycast: RaycastResult)
+    local lookVector = raycast.Normal * -1
+    local rightVector = lookVector:Cross(Vector3.yAxis).Unit
+    local upVector = rightVector:Cross(lookVector).Unit
+
+    local position = raycast.Position + (raycast.Normal * DISTANCE_FROM_SURFACE)
+
+    return CFrame.fromMatrix(position, rightVector, upVector)
+end
+
+function class:_getMoveVector(position: CFrame)
+    local normalCFrame = position * CFrame.Angles(math.pi / -2, 0, 0)
+
+    local moveDirection = self._characterHumanoid.MoveDirection
+
+    local relativeMoveDirection = workspace.CurrentCamera.CFrame.Rotation:PointToObjectSpace(moveDirection)
+    relativeMoveDirection *= Vector3.new(1, 0, -1)
+
+    if relativeMoveDirection.Magnitude > 0 then
+        relativeMoveDirection = relativeMoveDirection.Unit
     end
 
-    self._lastMove = currentTime
+    local moveVector = normalCFrame.Rotation:PointToWorldSpace(relativeMoveDirection)
 
-    local nextLedge: BasePart? = self:_findLedge(self._currentLedge.CFrame.Position, direction)
-
-    if nextLedge ~= nil then
-        self._currentLedge = nextLedge
-        self:_updateControls()
-        modeService.Client.event:FireServer("climbMove", nextLedge)
-    end
+    return moveVector
 end
 
 return class

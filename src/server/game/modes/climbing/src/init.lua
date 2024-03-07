@@ -3,7 +3,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 
-local climbingController = require(script.climbing)
 local config = require(script.Parent.config)
 local freezePlayer = require(script.Parent.Parent.Parent.Parent.components.mode.functions.freezePlayer)
 local modeComponent = require(script.Parent.Parent.Parent.Parent.components.mode)
@@ -31,7 +30,6 @@ export type class = modeComponent.class & {
     _currentPlayerIndex: number,
     _cycle: number,
     _spawn: CFrame,
-    _climbingController: climbingController.class,
     _cycleToNextPlayer: () -> never,
     _setPlayerTurn: () -> never,
     _calculatePlayerScore: () -> never,
@@ -53,13 +51,17 @@ function class.new(players: modeComponent.players): class
     self._currentPlayerIndex = 0
     self._cycle = 1
     self._spawn = baseClass._map:FindFirstChild("spawn").CFrame
-    self._climbingController = climbingController.new()
-    self._janitor:Add(self._climbingController, "destroy")
 
     -- Freeze all of the players to start with.
     for _index: number, player: number in pairs(players) do
         freezePlayer(player, true)
     end
+
+    self._janitor:Add(modeService.Client.event:Connect(function(player: Player, event: string, ...)
+        if event == "getClimbable" then
+            modeService.Client.event:Fire(player, "getClimbable", self._map:FindFirstChild("climbable"))
+        end
+    end))
 
     self:_cycleToNextPlayer()
 
@@ -73,8 +75,17 @@ end
     @returns never
 ]]
 function class:_cycleToNextPlayer()
-    if self._cycle == config.mode.attemptsPerPlayer and self._currentPlayerIndex == #self._players then
+    if self._currentPlayer ~= nil then
+        local player: Player = Players:GetPlayerByUserId(self._currentPlayer)
+        local character: Model = player.Character or player.CharacterAdded:Wait()
+
+        local score: number = self:_calculatePlayerScore(character)
+        self.scorePlugin:incrementScore(self._currentPlayer, score)
+    end
+
+    if self._cycle >= config.mode.attemptsPerPlayer and self._currentPlayerIndex == #self._players then
         self.endConditionPlugin:stop()
+        return
     end
 
     if self._currentPlayerIndex == #self._players then
@@ -98,23 +109,19 @@ end
     @returns never
 ]]
 function class:_setPlayerTurn(userID: number)
-    modeService.Client.event:FireAll("setPlayerTurn", userID)
-
     if self._currentPlayer ~= nil then
         local player: Player = Players:GetPlayerByUserId(self._currentPlayer)
         local character: Model = player.Character or player.CharacterAdded:Wait()
-
-        local score: number = self:_calculatePlayerScore(character)
-        self.scorePlugin:incrementScore(self._currentPlayer, score)
 
         self:_copyCharacterAtPosition(character)
         freezePlayer(self._currentPlayer, true)
     end
 
     self._currentPlayer = userID
-    freezePlayer(userID, true, false)
+    freezePlayer(userID, false)
     teleportPlayer(userID, self._spawn)
-    self._climbingController:setPlayerTurn(userID)
+
+    modeService.Client.event:FireAll("setPlayerTurn", userID)
 end
 
 --[[
