@@ -74,7 +74,7 @@ function class:_setupUI()
     local uiController: ModuleScript = modeController:getModeConfig().ui
 
     -- If the mode has no UI controller then we dont have to anything.
-    if typeof(uiController) ~= "ModuleScript" then
+    if typeof(uiController) ~= "Instance" or not uiController:IsA("ModuleScript") then
         return
     end
 
