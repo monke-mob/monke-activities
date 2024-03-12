@@ -110,16 +110,22 @@ end
 ]]
 function class:_setPlayerTurn(userID: number)
     if self._currentPlayer ~= nil then
-        local player: Player = Players:GetPlayerByUserId(self._currentPlayer)
+        local currentPlayer: number = self._currentPlayer
+        local player: Player = Players:GetPlayerByUserId(currentPlayer)
         local character: Model = player.Character or player.CharacterAdded:Wait()
 
         self:_copyCharacterAtPosition(character)
-        freezePlayer(self._currentPlayer, true)
+        freezePlayer(currentPlayer, true)
     end
 
     self._currentPlayer = userID
     freezePlayer(userID, false)
     teleportPlayer(userID, self._spawn)
+
+    -- TEMP
+    local player: Player = Players:GetPlayerByUserId(userID)
+    local character: Model = player.Character or player.CharacterAdded:Wait();
+    (character:FindFirstChild("HumanoidRootPart") :: BasePart):SetNetworkOwner(player)
 
     modeService.Client.event:FireAll("setPlayerTurn", userID)
 end
