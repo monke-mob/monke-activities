@@ -1,3 +1,0 @@
-return {
-    timePerStage = 10,
-}
