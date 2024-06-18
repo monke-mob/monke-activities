@@ -84,7 +84,6 @@ end
     @returns never
 ]]
 function class:_start()
-    playerController:disableMovement()
     self._characterRoot.Anchored = true
 
     self._janitor:Add(modeService.event:Connect(function(event: string, ...)
